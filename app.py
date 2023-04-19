@@ -45,6 +45,8 @@ creditsLabel.pack(side="left", fill="x", padx=10, pady=10)
 pygame.init()
 joysticks = {}
 active = False
+mouse_x = 0
+mouse_y = 0
 
 while app_running:
     for event in pygame.event.get():
@@ -65,6 +67,8 @@ while app_running:
         if joy.get_guid() == "03000000443300005982000000000000": # VPC Panel 1
             ## check if activatino button is pressed
             active = joy.get_button(19)
+            if not active:
+                mouse_x, mouse_y = mouse.get_position()
 
         if joy.get_guid() == "030000001d2300000002000000000000": # Gladiator NXT
             # set mouse position
@@ -72,9 +76,12 @@ while app_running:
                 x_axis_value = int(joy.get_axis(0) * 10000 / 2)
                 y_axis_value = int(joy.get_axis(1) * 10000 / 2)
 
-                mouse.move(x_axis_value, y_axis_value, absolute=True, duration=0)
-    
-    
+                mouse.move(mouse_x + x_axis_value, 
+                           mouse_y + y_axis_value, 
+                           absolute=True, 
+                           duration=0)
+
+
     ## Update the display
     time.sleep(0.005)
     window.update()
