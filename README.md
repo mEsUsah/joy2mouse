@@ -22,3 +22,8 @@ chmod +x venv/bin/activate
 source venv/bin/activate
 pip install -r requirements.txt 
 ```
+
+## Third-party documentation
+- Mouse [Doc](https://github.com/boppreh/mouse)
+- Keyboard [Doc](https://github.com/boppreh/keyboard)
+- PyGame joystick [Doc](https://www.pygame.org/docs/ref/joystick.html)
