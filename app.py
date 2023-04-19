@@ -4,14 +4,49 @@ import keyboard  # using module keyboard
 import mouse
 import pygame
 import time
+import tkinter as tk
+from tkinter import ttk
+import gui
 
+app_running = True
+def stop_app():
+    global app_running
+    app_running = False
+
+# Create the window
+window = tk.Tk()
+window.title("Joy 2 Game Mouse")
+window.geometry("-100+100")
+window.resizable(False, False)
+window.protocol("WM_DELETE_WINDOW", stop_app)
+
+main_control_tab = ttk.Notebook(window)
+run_tab = ttk.Frame(main_control_tab)
+test_tab = ttk.Frame(main_control_tab)
+config_tab = ttk.Frame(main_control_tab)
+main_control_tab.add(run_tab, text="Run")
+main_control_tab.add(test_tab, text="Test")
+main_control_tab.add(config_tab, text="Config")
+main_control_tab.pack(expand=1, fill="both")
+
+gui.run.Tab(run_tab)
+gui.test.Tab(test_tab)
+gui.config.Tab(config_tab)
+
+# Credits
+bottomFrame = ttk.Frame(window)
+bottomFrame.pack(side="bottom", fill="x")
+versionLabel = ttk.Label(bottomFrame, text="v0.0.1")
+versionLabel.pack(side="right", fill="x", padx=10, pady=10)
+
+creditsLabel = ttk.Label(bottomFrame, text="Created by Stanley Skarshaug - www.haxor.no")
+creditsLabel.pack(side="left", fill="x", padx=10, pady=10)
 
 pygame.init()
 joysticks = {}
 active = False
 
-while True:
-    time.sleep(0.005)
+while app_running:
     for event in pygame.event.get():
         # Handle hotplugging
         if event.type == pygame.JOYDEVICEADDED:
@@ -38,3 +73,8 @@ while True:
                 y_axis_value = int(joy.get_axis(1) * 10000 / 2)
 
                 mouse.move(x_axis_value, y_axis_value, absolute=True, duration=0)
+    
+    
+    ## Update the display
+    time.sleep(0.005)
+    window.update()

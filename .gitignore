@@ -1,1 +1,5 @@
 venv/
+gui/__pycache__/
+gui/run/__pycache__/
+gui/test/__pycache__/
+gui/config/__pycache__/
