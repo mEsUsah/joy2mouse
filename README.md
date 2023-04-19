@@ -1,4 +1,4 @@
-# joy2game_mouse
+# joy2mouse
 Simple app to translate joystick axis to mouse movement.
 
 ## Installation windows

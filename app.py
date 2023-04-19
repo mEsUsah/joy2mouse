@@ -15,7 +15,7 @@ def stop_app():
 
 # Create the window
 window = tk.Tk()
-window.title("Joy 2 Game Mouse")
+window.title("Joy 2 Mouse")
 window.geometry("-100+100")
 window.resizable(False, False)
 window.protocol("WM_DELETE_WINDOW", stop_app)
