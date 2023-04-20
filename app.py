@@ -1,6 +1,7 @@
 #! /bin/env python3
 
-import keyboard  # using module keyboard
+import keyboard
+import pydirectinput
 import mouse
 import pygame
 import time
@@ -48,6 +49,14 @@ active = False
 mouse_x = 0
 mouse_y = 0
 
+screen_x = 2560
+screen_y = 1440
+
+mechwarrior5 = True
+debugging = False
+
+pydirectinput.FAILSAFE = False
+
 while app_running:
     for event in pygame.event.get():
         # Handle hotplugging
@@ -56,31 +65,50 @@ while app_running:
             # joystick, filling up the list without needing to create them manually.
             joy = pygame.joystick.Joystick(event.device_index)
             joysticks[joy.get_instance_id()] = joy
-            print(f"Joystick {joy.get_guid()} connencted")
+            print(f'Connencted Joystick "{joy.get_name()}" \t{joy.get_guid()}')
 
         if event.type == pygame.JOYDEVICEREMOVED:
             del joysticks[event.instance_id]
             print(f"Joystick {event.instance_id} disconnected")
 
-
+    # Loop over all joysticks
     for joy in joysticks.values():
         if joy.get_guid() == "03000000443300005982000000000000": # VPC Panel 1
-            ## check if activatino button is pressed
+            ## check if activation button is pressed
             active = joy.get_button(19)
             if not active:
                 mouse_x, mouse_y = mouse.get_position()
 
         if joy.get_guid() == "030000001d2300000002000000000000": # Gladiator NXT
-            # set mouse position
             if active:
-                x_axis_value = int(joy.get_axis(0) * 10000 / 2)
-                y_axis_value = int(joy.get_axis(1) * 10000 / 2)
+                # set mouse position
+                if mechwarrior5:
+                    x_axis_value = int(joy.get_axis(0) * (screen_x/2) )
+                    y_axis_value = int(joy.get_axis(1) * screen_y/2 )
+                    pydirectinput.moveTo(int(screen_x/2) + x_axis_value, int(screen_y/2) - y_axis_value, duration=0.1, _pause=False)
 
-                mouse.move(mouse_x + x_axis_value, 
-                           mouse_y + y_axis_value, 
-                           absolute=True, 
-                           duration=0)
+                    # center torso if joystick is in deadzone
+                    deadzone = 10
+                    within_deadzone_x = x_axis_value > -deadzone and x_axis_value < deadzone
+                    within_deadzone_y = y_axis_value > -deadzone and y_axis_value < deadzone
+                    if within_deadzone_x and within_deadzone_y:
+                        keyboard.press_and_release("c")
 
+                else:
+                    x_axis_value = int(joy.get_axis(0) * 10000 / 2)
+                    y_axis_value = int(joy.get_axis(1) * 10000 / 2)
+                    pydirectinput.moveTo(mouse_x + x_axis_value, mouse_y - y_axis_value, duration=0.1, _pause=False)
+                
+                if debugging:
+                    print(f"X: {x_axis_value} \tY: {y_axis_value}")
+                
+
+                # extra functionality for buttons
+                if joy.get_button(0):
+                    pydirectinput.click()
+                if joy.get_button(2):
+                    pydirectinput.click(button="right")
+                    
 
     ## Update the display
     time.sleep(0.005)

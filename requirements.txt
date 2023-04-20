@@ -1,3 +1,6 @@
 keyboard==0.13.5
 mouse==0.7.1
+PyDirectInput==1.0.4
 pygame==2.3.0
+screeninfo==0.8.1
+six==1.16.0
