@@ -7,12 +7,25 @@ import pygame
 import time
 import tkinter as tk
 from tkinter import ttk
+from screeninfo import get_monitors
 import gui
 
-app_running = True
 def stop_app():
     global app_running
     app_running = False
+
+
+# Get game screen size
+screen_x = None
+screen_y = None
+for m in get_monitors():
+    if m.is_primary:
+        screen_x = m.width
+        screen_y = m.height
+
+screen_x_center = int(screen_x/2)
+screen_y_center = int(screen_y/2)
+
 
 # Create the window
 window = tk.Tk()
@@ -24,6 +37,9 @@ window.protocol("WM_DELETE_WINDOW", stop_app)
 main_control_tab = ttk.Notebook(window)
 run_tab = ttk.Frame(main_control_tab)
 test_tab = ttk.Frame(main_control_tab)
+
+
+# Tab setup
 config_tab = ttk.Frame(main_control_tab)
 main_control_tab.add(run_tab, text="Run")
 main_control_tab.add(test_tab, text="Test")
@@ -34,6 +50,7 @@ gui.run.Tab(run_tab)
 gui.test.Tab(test_tab)
 gui.config.Tab(config_tab)
 
+
 # Credits
 bottomFrame = ttk.Frame(window)
 bottomFrame.pack(side="bottom", fill="x")
@@ -43,20 +60,21 @@ versionLabel.pack(side="right", fill="x", padx=10, pady=10)
 creditsLabel = ttk.Label(bottomFrame, text="Created by Stanley Skarshaug - www.haxor.no")
 creditsLabel.pack(side="left", fill="x", padx=10, pady=10)
 
+
+# Start the app
 pygame.init()
+pydirectinput.FAILSAFE = False # allow mouse to go outside of screen
 joysticks = {}
+app_running = True
 active = False
 mouse_x = 0
 mouse_y = 0
-
-screen_x = 2560
-screen_y = 1440
-
-mechwarrior5 = True
+mechwarrior5 = False
 debugging = False
+max_refresh_rate = 165
 
-pydirectinput.FAILSAFE = False
 
+# Main loop
 while app_running:
     for event in pygame.event.get():
         # Handle hotplugging
@@ -71,21 +89,29 @@ while app_running:
             del joysticks[event.instance_id]
             print(f"Joystick {event.instance_id} disconnected")
 
+
     # Loop over all joysticks
     for joy in joysticks.values():
+        
+        # Handle start button
         if joy.get_guid() == "03000000443300005982000000000000": # VPC Panel 1
             ## check if activation button is pressed
             active = joy.get_button(19)
-            if not active:
+
+            ## update center position of mouse
+            if not active and not mechwarrior5:
                 mouse_x, mouse_y = mouse.get_position()
 
+        # Handle joystick input
         if joy.get_guid() == "030000001d2300000002000000000000": # Gladiator NXT
             if active:
                 # set mouse position
                 if mechwarrior5:
-                    x_axis_value = int(joy.get_axis(0) * (screen_x/2) )
-                    y_axis_value = int(joy.get_axis(1) * screen_y/2 )
-                    pydirectinput.moveTo(int(screen_x/2) + x_axis_value, int(screen_y/2) - y_axis_value, duration=0.1, _pause=False)
+                    x_axis_value = int(joy.get_axis(0) * screen_x_center)
+                    y_axis_value = int(joy.get_axis(1) * screen_y_center)
+                    mouse_x_pos = screen_x_center + x_axis_value
+                    mouse_y_pos = screen_y_center - y_axis_value
+                    pydirectinput.moveTo(mouse_x_pos, mouse_y_pos, _pause=False)
 
                     # center torso if joystick is in deadzone
                     deadzone = 10
@@ -93,11 +119,12 @@ while app_running:
                     within_deadzone_y = y_axis_value > -deadzone and y_axis_value < deadzone
                     if within_deadzone_x and within_deadzone_y:
                         keyboard.press_and_release("c")
-
                 else:
-                    x_axis_value = int(joy.get_axis(0) * 10000 / 2)
-                    y_axis_value = int(joy.get_axis(1) * 10000 / 2)
-                    pydirectinput.moveTo(mouse_x + x_axis_value, mouse_y - y_axis_value, duration=0.1, _pause=False)
+                    x_axis_value = int(joy.get_axis(0) * 5000)
+                    y_axis_value = int(joy.get_axis(1) * 5000)
+                    mouse_x_pos = mouse_x + x_axis_value
+                    mouse_y_pos = mouse_y - y_axis_value
+                    pydirectinput.moveTo(mouse_x_pos, mouse_y_pos, _pause=False)
                 
                 if debugging:
                     print(f"X: {x_axis_value} \tY: {y_axis_value}")
@@ -105,11 +132,13 @@ while app_running:
 
                 # extra functionality for buttons
                 if joy.get_button(0):
-                    pydirectinput.click()
+                    # Left mouse button
+                    pydirectinput.click(button="left")
                 if joy.get_button(2):
+                    # Right mouse button
                     pydirectinput.click(button="right")
                     
 
-    ## Update the display
-    time.sleep(0.005)
+    ## Update the mouse position every frame
+    time.sleep(1/max_refresh_rate)
     window.update()
