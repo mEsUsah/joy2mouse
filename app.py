@@ -69,7 +69,7 @@ app_running = True
 active = False
 mouse_x = 0
 mouse_y = 0
-mechwarrior5 = False
+mechwarrior5 = True
 debugging = False
 max_refresh_rate = 165
 
