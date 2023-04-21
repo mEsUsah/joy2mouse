@@ -71,9 +71,8 @@ mouse_x = 0
 mouse_y = 0
 debugging = False
 max_refresh_rate = 165
-joystick_resolution = int(32767/8)
-last_mouse_x = joystick_resolution
-last_mouse_y = joystick_resolution
+last_mouse_x = 0
+last_mouse_y = 0
 deadzone = 10
 
 
@@ -84,6 +83,7 @@ while app_running:
     autocenter = config.get_autocenter()
     armed = run.get_armed()
     run.set_run_status(active)
+    joystick_resolution = config.get_joystick_resolution() / 16
 
 
     # Handle PyGame events
