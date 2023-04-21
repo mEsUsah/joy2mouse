@@ -82,6 +82,7 @@ while app_running:
     # Get configuation
     translation_method = config.get_translation_method()
     autocenter = config.get_autocenter()
+    armed = run.get_armed()
 
 
     # Handle PyGame events
@@ -105,7 +106,10 @@ while app_running:
         # Handle start button
         if joy.get_guid() == "03000000443300005982000000000000": # VPC Panel 1
             ## check if activation button is pressed
-            active = joy.get_button(19)
+            if armed:
+                active = joy.get_button(19)
+            else:
+                active = False
 
             ## update center position of mouse
             if not active:
