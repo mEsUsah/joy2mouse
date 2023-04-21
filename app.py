@@ -83,6 +83,7 @@ while app_running:
     translation_method = config.get_translation_method()
     autocenter = config.get_autocenter()
     armed = run.get_armed()
+    run.set_run_status(active)
 
 
     # Handle PyGame events

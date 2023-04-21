@@ -50,9 +50,18 @@ class Tab():
     def disable_arming(self):
         self.arm_button.config(state="disabled")
 
+    def set_run_status(self, status):
+        self.running = status
+        self.update_status()
 
     def update_status(self):
-        if self.armed.get() and not self.running:
+        if self.running:
+            self.status_label.config(
+                text="Running",
+                foreground="white",
+                background="red"
+            )
+        elif self.armed.get() and not self.running:
             self.status_label.config(
                 text="Armed",
                 foreground="white",
