@@ -69,7 +69,6 @@ app_running = True
 active = False
 mouse_x = 0
 mouse_y = 0
-autocenter = False
 debugging = False
 max_refresh_rate = 165
 joystick_resolution = int(32767/8)
@@ -82,6 +81,7 @@ deadzone = 10
 while app_running:
     # Get configuation
     translation_method = config.get_translation_method()
+    autocenter = config.get_autocenter()
 
 
     # Handle PyGame events
