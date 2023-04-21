@@ -14,7 +14,11 @@ class Tab():
         self.row_1.pack(side="top", expand=1, fill="both")
 
         # Translation method selection
-        self.transation_label = ttk.Label(self.row_1,text="Translation method")
+        self.transation_label = ttk.Label(
+            self.row_1,
+            text="Translation method:",
+            font="TkDefaultFont 10 bold"
+        )
         self.transation_label.pack(side="top", fill="x", padx=10, pady=6)
 
         self.transation_methods = {
@@ -56,8 +60,3 @@ class Tab():
             self.center_option.destroy()
             self.showing_center_option = False
             self.autocenter.set(False)
-
-
-
-
-
