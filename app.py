@@ -110,6 +110,10 @@ while app_running:
                 active = joy.get_button(19)
             else:
                 active = False
+                if joy.get_button(19) == True:
+                    run.disable_arming()
+                else:
+                    run.enable_arming()
 
             ## update center position of mouse
             if not active:
