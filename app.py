@@ -69,9 +69,15 @@ app_running = True
 active = False
 mouse_x = 0
 mouse_y = 0
-mechwarrior5 = True
+mechwarrior5v1 = False
+mechwarrior5v2 = False
+autocenter = False
 debugging = False
 max_refresh_rate = 165
+joystick_resolution = int(32767/8)
+last_mouse_x = joystick_resolution
+last_mouse_y = joystick_resolution
+deadzone = 10
 
 
 # Main loop
@@ -99,35 +105,53 @@ while app_running:
             active = joy.get_button(19)
 
             ## update center position of mouse
-            if not active and not mechwarrior5:
+            if not active:
                 mouse_x, mouse_y = mouse.get_position()
+                last_mouse_x = joystick_resolution
+                last_mouse_y = joystick_resolution
 
         # Handle joystick input
         if joy.get_guid() == "030000001d2300000002000000000000": # Gladiator NXT
             if active:
                 # set mouse position
-                if mechwarrior5:
+                if mechwarrior5v1: # absolute mouse movement
                     x_axis_value = int(joy.get_axis(0) * screen_x_center)
                     y_axis_value = int(joy.get_axis(1) * screen_y_center)
                     mouse_x_pos = screen_x_center + x_axis_value
                     mouse_y_pos = screen_y_center - y_axis_value
                     pydirectinput.moveTo(mouse_x_pos, mouse_y_pos, _pause=False)
 
-                    # center torso if joystick is in deadzone
-                    deadzone = 10
-                    within_deadzone_x = x_axis_value > -deadzone and x_axis_value < deadzone
-                    within_deadzone_y = y_axis_value > -deadzone and y_axis_value < deadzone
-                    if within_deadzone_x and within_deadzone_y:
-                        keyboard.press_and_release("c")
-                else:
+                elif mechwarrior5v2: # relavitve mouse movement
+                    x_axis_value = int(joy.get_axis(0) * joystick_resolution)
+                    y_axis_value = int(joy.get_axis(1) * joystick_resolution)
+                    mouse_Dx = x_axis_value - last_mouse_x
+                    mouse_Dy = y_axis_value - last_mouse_y
+                    last_mouse_x = x_axis_value
+                    last_mouse_y = y_axis_value
+                    pydirectinput.moveRel(mouse_Dx,mouse_Dy, _pause=False, relative=True)
+
+                else: # default
                     x_axis_value = int(joy.get_axis(0) * 5000)
                     y_axis_value = int(joy.get_axis(1) * 5000)
                     mouse_x_pos = mouse_x + x_axis_value
                     mouse_y_pos = mouse_y - y_axis_value
                     pydirectinput.moveTo(mouse_x_pos, mouse_y_pos, _pause=False)
                 
+
+                # center torso if joystick is in deadzone
+                if autocenter:
+                    within_deadzone_x = x_axis_value > -deadzone and x_axis_value < deadzone
+                    within_deadzone_y = y_axis_value > -deadzone and y_axis_value < deadzone
+
+                    if within_deadzone_x and within_deadzone_y:
+                        keyboard.press_and_release("c")
+
+
                 if debugging:
-                    print(f"X: {x_axis_value} \tY: {y_axis_value}")
+                    if mechwarrior5v2:
+                        print(f"dX: {mouse_Dx} \tdY: {mouse_Dy}")
+                    else:
+                        print(f"X: {x_axis_value} \tY: {y_axis_value}")
                 
 
                 # extra functionality for buttons
