@@ -26,3 +26,9 @@ class Tab():
 
     def get_armed(self):
         return self.armed.get()
+    
+    def enable_arming(self):
+        self.arm_button.config(state="normal")
+        
+    def disable_arming(self):
+        self.arm_button.config(state="disabled")
