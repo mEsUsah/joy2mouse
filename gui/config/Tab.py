@@ -13,8 +13,12 @@ class Tab():
 
         self.joysticks = {}
         self.joystick_selected = tk.StringVar(value="None")
+        
         self.joystick_x_selected = tk.StringVar(value="None")
+        self.joystick_x_inverted = tk.BooleanVar(value=False)
+        
         self.joystick_y_selected = tk.StringVar(value="None")
+        self.joystick_y_inverted = tk.BooleanVar(value=False)
         
 
         self.row_1 = ttk.Frame(self.tab)
@@ -119,14 +123,19 @@ class Tab():
 
 
     def update_axis_selection(self,event=None):
-        # Destroy axis selection if it exists and deselect axis
+        # Destroy axis selection if it exists and deselect axis amd invertion
         try:
             self.x_axis_label.destroy()
             self.x_axis_list.destroy()
+            self.x_axis_inverted.destroy()
+            self.joystick_x_selected.set("None")
+            self.joystick_x_inverted.set(False)
+
             self.y_axis_label.destroy()
             self.y_axis_list.destroy()
-            self.joystick_x_selected.set("None")
+            self.y_axis_inverted.destroy()
             self.joystick_y_selected.set("None")
+            self.joystick_y_inverted.set(False)
         except:
             pass
 
@@ -141,6 +150,7 @@ class Tab():
                         text="X axis:",
                     )
                     self.x_axis_label.pack(side="left", padx=10)
+
                     self.x_axis_list = ttk.Combobox(
                         self.row_5,
                         values=axis_list,
@@ -148,6 +158,14 @@ class Tab():
                         textvariable=self.joystick_x_selected,
                     )  
                     self.x_axis_list.pack(side="left", padx=10)
+
+                    self.x_axis_inverted = ttk.Checkbutton(
+                        self.row_5,
+                        text="Inverted",
+                        variable=self.joystick_x_inverted,
+                    )
+                    self.x_axis_inverted.pack(side="left", padx=10)
+
                     
                     # Y axis selection
                     self.y_axis_label = ttk.Label(
@@ -155,13 +173,21 @@ class Tab():
                         text="Y axis:",
                     )
                     self.y_axis_label.pack(side="left", padx=10)
+
                     self.y_axis_list = ttk.Combobox(
                         self.row_6,
                         values=axis_list,
                         state="readonly",
                         textvariable=self.joystick_y_selected,
                     )
-                    self.y_axis_list.pack(side="left", padx=10)
+                    self.y_axis_list.pack(side="left", padx=10
+                                          )
+                    self.y_axis_inverted = ttk.Checkbutton(
+                        self.row_6,
+                        text="Inverted",
+                        variable=self.joystick_y_inverted,
+                    )
+                    self.y_axis_inverted.pack(side="left", padx=10)
 
 
     def get_translation_method(self):
