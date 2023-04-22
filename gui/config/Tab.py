@@ -146,8 +146,7 @@ class Tab():
                         values=axis_list,
                         state="readonly",
                         textvariable=self.joystick_x_selected,
-                    )
-                    self.x_axis_list.bind('<<ComboboxSelected>>', self.update_joystick_x_axis)    
+                    )  
                     self.x_axis_list.pack(side="left", padx=10)
                     
                     # Y axis selection
@@ -162,16 +161,7 @@ class Tab():
                         state="readonly",
                         textvariable=self.joystick_y_selected,
                     )
-                    self.y_axis_list.bind('<<ComboboxSelected>>', self.update_joystick_y_axis)  
                     self.y_axis_list.pack(side="left", padx=10)
-                    
-                    
-    def update_joystick_x_axis(self, event=None):
-        print(self.joystick_x_selected.get())
-
-
-    def update_joystick_y_axis(self, event=None):
-        print(self.joystick_y_selected.get())
 
 
     def get_translation_method(self):

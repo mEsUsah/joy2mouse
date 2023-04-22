@@ -14,6 +14,16 @@ def stop_app():
     global app_running
     app_running = False
 
+def joystick_config_ready():
+    global selected_joystick
+    global selected_x_axis
+    global selected_y_axis
+    
+    if selected_joystick == None or selected_x_axis == None or selected_y_axis == None:
+        return False
+    else:
+        return True
+
 
 # Get game screen size
 screen_x = None
@@ -82,13 +92,12 @@ while app_running:
     translation_method = config.get_translation_method()
     autocenter = config.get_autocenter()
     armed = run.get_armed()
-    run.set_run_status(active)
     joystick_resolution = int((2**config.get_joystick_resolution()) / 16)
     selected_joystick = config.get_joystick_selected()
     selected_x_axis = config.get_joystick_x_axis()
     selected_y_axis = config.get_joystick_y_axis()
 
-    
+    run.set_run_status(active, configured=joystick_config_ready())
 
 
     # Handle PyGame events
@@ -99,7 +108,6 @@ while app_running:
             # joystick, filling up the list without needing to create them manually.
             joy = pygame.joystick.Joystick(event.device_index)
             joysticks[joy.get_instance_id()] = joy
-            print(f'Connencted Joystick "{joy.get_name()}" \t{joy.get_guid()}')
             test.update_device_list(joysticks)
             config.update_device_list(joysticks)
 
@@ -116,14 +124,19 @@ while app_running:
         # Handle start button
         if joy.get_guid() == "03000000443300005982000000000000": # VPC Panel 1
             ## check if activation button is pressed
+            run_button_pressed = joy.get_button(19)
             if armed:
-                active = joy.get_button(19)
+                active = run_button_pressed
             else:
                 active = False
-                if joy.get_button(19) == True:
-                    run.disable_arming()
+                
+                if joystick_config_ready():
+                    if not run_button_pressed:
+                        run.enable_arming()
+                    else:
+                        run.disable_arming()
                 else:
-                    run.enable_arming()
+                    run.disable_arming()
 
             ## update center position of mouse
             if not active:
