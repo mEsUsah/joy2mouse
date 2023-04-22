@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import gui
+import os
 
 class Tab():
     def __init__(self, tab):
@@ -9,6 +10,16 @@ class Tab():
         
         self.row_1 = ttk.Frame(tab)
         self.row_1.pack(side="top", expand=1, fill="both")
+
+        self.row_2 = ttk.Frame(tab)
+        self.row_2.pack(side="top", expand=1, fill="both")
+
+        self.open_win_joystick = ttk.Button(
+            self.row_2,
+            text="Open Window Joystick Properties",
+            command=self.open_win_joystick,
+        )
+        self.open_win_joystick.pack(side="bottom", fill="x", padx=10, pady=10)
 
 
     def update_device_list(self, joysticks):
@@ -36,3 +47,6 @@ class Tab():
                 text="GUID: " + device.get_guid(),
                 font="TkDefaultFont 8",
             ).pack(side="top", fill="x", padx=10, pady=(0,8))
+
+    def open_win_joystick(self):
+        os.system('%SystemRoot%\System32\joy.cpl')
