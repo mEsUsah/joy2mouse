@@ -18,9 +18,15 @@ def joystick_config_ready():
     global selected_joystick
     global selected_x_axis
     global selected_y_axis
+    global selected_buttonbox
+    global activation_button
     
-    if selected_joystick == None or selected_x_axis == None or selected_y_axis == None:
-        return False
+    if selected_joystick == None or \
+        selected_x_axis == None or \
+        selected_y_axis == None or \
+        selected_buttonbox == None or \
+        activation_button == None:
+            return False
     else:
         return True
     
@@ -107,6 +113,10 @@ while app_running:
     joystick_y_inverted = config.get_joystick_y_inverted()
 
     selected_buttonbox = config.get_buttonbox_selected()
+    activation_button = config.get_activation_button()
+
+    if not joystick_config_ready():
+        run.disable_arming()
 
 
     run.set_run_status(active, configured=joystick_config_ready())
@@ -134,22 +144,19 @@ while app_running:
     for joy in joysticks.values():
         
         # Handle start button
-        if selected_buttonbox:
+        if selected_buttonbox and activation_button != None:
             if joy.get_guid() == selected_buttonbox:
                 ## check if activation button is pressed
-                run_button_pressed = joy.get_button(19)
+                run_button_pressed = joy.get_button(activation_button)
                 if armed:
                     active = run_button_pressed
                 else:
                     active = False
 
-                    if joystick_config_ready():
-                        if not run_button_pressed:
-                            run.enable_arming()
-                        else:
-                            run.disable_arming()
-                    else:
-                        run.disable_arming()
+                if not run_button_pressed:
+                    run.enable_arming()
+                else:
+                    run.disable_arming()
 
                 ## update center position of mouse
                 if not active:

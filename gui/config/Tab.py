@@ -325,6 +325,13 @@ class Tab():
                     return device.get_guid()
         else:
             return None
+        
+    def get_activation_button(self):
+        selected_button = self.buttonbox_activate_selected.get()
+        if selected_button != "None":
+            return int(selected_button) - 1
+        else:
+            return None
 
 
     def update_options(self):
