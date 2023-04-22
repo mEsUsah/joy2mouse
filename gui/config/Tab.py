@@ -59,11 +59,18 @@ class Tab():
                 text=value,
                 variable=self.translation_method,
                 value=key,
-                command=self.update_options
             ).pack(side="top", fill="x", padx=10)
         
         self.row_2 = ttk.Frame(self.tab)
         self.row_2.pack(side="top", expand=1, fill="both")
+
+        # Autocenter option
+        self.center_option = ttk.Checkbutton(
+            self.row_2,
+            text="Autocenter mouse",
+            variable=self.autocenter
+        )
+        self.center_option.pack(side="top", fill="x", padx=10, pady=6)
 
         # Joystick resolution options
         self.transation_label = ttk.Label(
@@ -514,19 +521,3 @@ class Tab():
 
     def get_mouse_right_inverted(self):
         return self.mouse_right_inverted.get()
-
-
-    def update_options(self):
-        if self.translation_method.get() != 1:
-            if not self.showing_center_option:
-                self.showing_center_option = True
-                self.center_option = ttk.Checkbutton(
-                    self.row_2,
-                    text="Autocenter mouse",
-                    variable=self.autocenter
-                )
-                self.center_option.pack(side="top", fill="x", padx=10, pady=6)
-        else:
-            self.center_option.destroy()
-            self.showing_center_option = False
-            self.autocenter.set(False)
