@@ -97,6 +97,7 @@ max_refresh_rate = 165
 last_mouse_x = 0
 last_mouse_y = 0
 deadzone = 10
+activate_button_released = True
 
 
 # Main loop
@@ -112,6 +113,7 @@ while app_running:
     joystick_x_inverted = config.get_joystick_x_inverted()
     joystick_y_inverted = config.get_joystick_y_inverted()
 
+    selected_activation_method = config.get_activation_method()
     selected_buttonbox = config.get_buttonbox_selected()
     activation_button = config.get_activation_button()
     activation_button_inverted = config.get_activation_button_inverted()
@@ -144,20 +146,36 @@ while app_running:
     # Loop over all joysticks
     for joy in joysticks.values():
         
-        # Handle start button
+        # Handle activate button
         if selected_buttonbox and activation_button != None:
             if joy.get_guid() == selected_buttonbox:
                 ## check if activation button is pressed
-                run_button_pressed = joy.get_button(activation_button)
+                activate_button_pressed = joy.get_button(activation_button)
                 if activation_button_inverted:
-                    run_button_pressed = not run_button_pressed
-                    
+                    activate_button_pressed = not activate_button_pressed
+
+                if selected_activation_method == 1: # hold
+                    activated = activate_button_pressed
+
+                elif selected_activation_method == 2: # toggle
+                    if not activated and activate_button_pressed and activate_button_released:
+                        activated = True
+                        activate_button_released = False
+                    elif activated and not activate_button_pressed:
+                        activate_button_released = True
+                    elif activated and activate_button_pressed and activate_button_released:
+                        activated = False
+                        activate_button_released = False
+                    elif not activated and not activate_button_pressed and not activate_button_released:
+                        activate_button_released = True
+
+
                 if armed:
-                    active = run_button_pressed
+                    active = activated
                 else:
                     active = False
 
-                if not run_button_pressed:
+                if not activate_button_pressed:
                     run.enable_arming()
                 else:
                     run.disable_arming()

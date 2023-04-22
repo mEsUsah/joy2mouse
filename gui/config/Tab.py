@@ -343,6 +343,10 @@ class Tab():
         return self.joystick_y_inverted.get()
 
 
+    def get_activation_method(self):
+        return self.activation_method.get()
+
+
     def get_buttonbox_selected(self):
         selected_name = self.buttonbox_selected.get()
         if selected_name != "None":
@@ -351,7 +355,8 @@ class Tab():
                     return device.get_guid()
         else:
             return None
-        
+
+
     def get_activation_button(self):
         selected_button = self.buttonbox_activate_selected.get()
         if selected_button != "None":
