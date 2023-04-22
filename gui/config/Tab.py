@@ -225,6 +225,7 @@ class Tab():
                     self.x_axis_label = ttk.Label(
                         self.row_5,
                         text="X axis:",
+                        width=8
                     )
                     self.x_axis_label.pack(side="left", padx=10)
 
@@ -233,6 +234,7 @@ class Tab():
                         values=axis_list,
                         state="readonly",
                         textvariable=self.joystick_x_selected,
+                        width=6
                     )  
                     self.x_axis_list.pack(side="left", padx=10)
 
@@ -248,6 +250,7 @@ class Tab():
                     self.y_axis_label = ttk.Label(
                         self.row_6,
                         text="Y axis:",
+                        width=8
                     )
                     self.y_axis_label.pack(side="left", padx=10)
 
@@ -256,6 +259,7 @@ class Tab():
                         values=axis_list,
                         state="readonly",
                         textvariable=self.joystick_y_selected,
+                        width=6
                     )
                     self.y_axis_list.pack(side="left", padx=10
                                           )
@@ -293,7 +297,7 @@ class Tab():
                     self.activate_button_label = ttk.Label(
                         self.row_8,
                         text="Activate:",
-                        width=10
+                        width=8
                     )
                     self.activate_button_label.pack(side="left", padx=10)
 
@@ -318,7 +322,7 @@ class Tab():
                         self.deactivate_button_label = ttk.Label(
                             self.row_10,
                             text="Deactivate:",
-                            width=10
+                            width=8
                         )
                         self.deactivate_button_label.pack(side="left", padx=10)
 
@@ -409,6 +413,18 @@ class Tab():
         
     def get_activation_button_inverted(self):
         return self.buttonbox_activate_inverted.get()
+    
+
+    def get_deactivation_button(self):
+        selected_button = self.buttonbox_deactivate_selected.get()
+        if selected_button != "None":
+            return int(selected_button) - 1
+        else:
+            return None
+    
+
+    def get_deactivation_button_inverted(self):
+        return self.buttonbox_deactivate_inverted.get()
 
 
     def update_options(self):
