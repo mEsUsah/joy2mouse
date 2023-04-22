@@ -20,6 +20,8 @@ def joystick_config_ready():
     global selected_y_axis
     global selected_buttonbox
     global activation_button
+    global autocenter
+    global autocenter_key
     
     if selected_joystick == None or \
         selected_x_axis == None or \
@@ -106,7 +108,10 @@ activated = False
 while app_running:
     # Get configuation
     translation_method = config.get_translation_method()
+
     autocenter = config.get_autocenter()
+    autocenter_key = config.get_autocenter_key()
+
     armed = run.get_armed()
     joystick_resolution = int((2**config.get_joystick_resolution()) / 16)
     selected_joystick = config.get_joystick_selected()
@@ -267,12 +272,12 @@ while app_running:
 
 
                     # center torso if joystick is in deadzone
-                    if autocenter:
+                    if autocenter and autocenter_key != None:
                         within_deadzone_x = x_axis_value > -deadzone and x_axis_value < deadzone
                         within_deadzone_y = y_axis_value > -deadzone and y_axis_value < deadzone
 
                         if within_deadzone_x and within_deadzone_y:
-                            keyboard.press_and_release("c")
+                            keyboard.press_and_release(autocenter_key)
 
 
                     if debugging:
