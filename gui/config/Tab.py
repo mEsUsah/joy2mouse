@@ -263,6 +263,18 @@ class Tab():
             self.y_axis_inverted.destroy()
             self.joystick_y_selected.set("None")
             self.joystick_y_inverted.set(False)
+
+            self.left_mouse_button_label.destroy()
+            self.left_mouse_button_list.destroy()
+            self.left_mouse_inverted.destroy()
+            self.mouse_left_selected.set("None")
+            self.mouse_left_inverted.set(False)
+            
+            self.right_mouse_button_label.destroy()
+            self.right_mouse_button_list.destroy()
+            self.right_mouse_inverted.destroy()
+            self.mouse_right_selected.set("None")
+            self.mouse_right_inverted.set(False)
         except:
             pass
 
@@ -450,6 +462,13 @@ class Tab():
 
     def get_autocenter(self):
         return self.autocenter.get()
+    
+
+    def get_autocenter_key(self):
+        if self.autocenter_key.get() == "":
+            return None
+        else:
+            return self.autocenter_key.get()
 
 
     def get_joystick_resolution(self):
