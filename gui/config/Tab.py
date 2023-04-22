@@ -493,7 +493,11 @@ class Tab():
 
 
     def get_mouse_left(self):
-        return self.mouse_left_selected.get()
+        selected_button = self.mouse_left_selected.get()
+        if selected_button != "None":
+            return int(selected_button) - 1
+        else:
+            return None
     
     
     def get_mouse_left_inverted(self):
@@ -501,7 +505,11 @@ class Tab():
     
 
     def get_mouse_right(self):
-        return self.mouse_right_selected.get()
+        selected_button = self.mouse_right_selected.get()
+        if selected_button != "None":
+            return int(selected_button) - 1
+        else:
+            return None
     
 
     def get_mouse_right_inverted(self):
