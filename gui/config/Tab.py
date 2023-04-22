@@ -50,8 +50,8 @@ class Tab():
 
         self.transation_methods = {
             1: "Absolute - From last mouse position before activation",
-            2: "Absolute - From center of screen",
-            3: "Relative - Based on absolute joystick position",
+            2: "Absolute - From center of screen (Screen size limited)",
+            3: "Emulate mouse movement based on joystick position",
         }
 
         for key, value in self.transation_methods.items():
