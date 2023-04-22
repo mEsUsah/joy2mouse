@@ -15,6 +15,12 @@ pip install -r requriements.txt
 deactivate
 ```
 
+## How to run
+Once the installed, the program can be launched from within the virtual environment.
+```cmd
+python app.py
+```
+
 ## Third-party documentation
 - Mouse [Doc](https://github.com/boppreh/mouse)
 - Keyboard [Doc](https://github.com/boppreh/keyboard)
