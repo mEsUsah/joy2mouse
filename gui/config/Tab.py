@@ -20,6 +20,12 @@ class Tab():
         self.joystick_y_selected = tk.StringVar(value="None")
         self.joystick_y_inverted = tk.BooleanVar(value=False)
 
+        self.mouse_left_selected = tk.StringVar(value="None")
+        self.mouse_left_inverted = tk.BooleanVar(value=False)
+        
+        self.mouse_right_selected = tk.StringVar(value="None")
+        self.mouse_right_inverted = tk.BooleanVar(value=False)
+
         self.activation_method = tk.IntVar(value=1)
 
         self.buttonbox_selected = tk.StringVar(value="None")
@@ -101,6 +107,14 @@ class Tab():
         # X axis selection
         self.row_6 = ttk.Frame(self.tab)
         self.row_6.pack(side="top", expand=1, fill="both", pady=6)
+
+        # Left mouse button selection
+        self.row_11 = ttk.Frame(self.tab)
+        self.row_11.pack(side="top", expand=1, fill="both", pady=6)
+
+        # Right mouse button selection
+        self.row_12 = ttk.Frame(self.tab)
+        self.row_12.pack(side="top", expand=1, fill="both", pady=6)
 
         # Activation method selection
         self.row_9 = ttk.Frame(self.tab)
@@ -220,6 +234,7 @@ class Tab():
             for device in self.joysticks.values():
                 if device.get_name() == self.joystick_selected.get():
                     axis_list = [x+1 for x in range(device.get_numaxes())]
+                    button_list = [x+1 for x in range(device.get_numbuttons())]
 
                     # X axis selection
                     self.x_axis_label = ttk.Label(
@@ -269,6 +284,56 @@ class Tab():
                         variable=self.joystick_y_inverted,
                     )
                     self.y_axis_inverted.pack(side="left", padx=10)
+
+
+                    # Left mouse button selection
+                    self.left_mouse_button_label = ttk.Label(
+                        self.row_11,
+                        text="Left:",
+                        width=8
+                    )
+                    self.left_mouse_button_label.pack(side="left", padx=10)
+
+                    self.left_mouse_button_list = ttk.Combobox(
+                        self.row_11,
+                        values=button_list,
+                        state="readonly",
+                        textvariable=self.mouse_left_selected,
+                        width=6
+                    )
+                    self.left_mouse_button_list.pack(side="left", padx=10)
+
+                    self.left_mouse_inverted = ttk.Checkbutton(
+                        self.row_11,
+                        text="Inverted",
+                        variable=self.mouse_left_inverted,
+                    )
+                    self.left_mouse_inverted.pack(side="left", padx=10)
+
+
+                    # Right mouse button selection
+                    self.right_mouse_button_label = ttk.Label(
+                        self.row_12,
+                        text="Right:",
+                        width=8
+                    )
+                    self.right_mouse_button_label.pack(side="left", padx=10)
+
+                    self.right_mouse_button_list = ttk.Combobox(
+                        self.row_12,
+                        values=button_list,
+                        state="readonly",
+                        textvariable=self.mouse_right_selected,
+                        width=6
+                    )
+                    self.right_mouse_button_list.pack(side="left", padx=10)
+
+                    self.right_mouse_inverted = ttk.Checkbutton(
+                        self.row_12,
+                        text="Inverted",
+                        variable=self.mouse_right_inverted,
+                    )
+                    self.right_mouse_inverted.pack(side="left", padx=10)
 
 
     def update_button_selection(self,event=None):
