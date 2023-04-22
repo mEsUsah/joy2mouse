@@ -19,6 +19,10 @@ class Tab():
         
         self.joystick_y_selected = tk.StringVar(value="None")
         self.joystick_y_inverted = tk.BooleanVar(value=False)
+
+        self.buttonbox_selected = tk.StringVar(value="None")
+        self.buttonbox_activate_selected = tk.StringVar(value="None")
+        self.buttonbox_activate_inverted = tk.BooleanVar(value=False)
         
 
         self.row_1 = ttk.Frame(self.tab)
@@ -93,11 +97,27 @@ class Tab():
         self.row_6 = ttk.Frame(self.tab)
         self.row_6.pack(side="top", expand=1, fill="both", pady=6)
 
+        # Buttonbox selection
+        self.row_7 = ttk.Frame(self.tab)
+        self.row_7.pack(side="top", expand=1, fill="both", pady=6)
+
+        self.joystick_select_label = ttk.Label(
+            self.row_7,
+            text="Button box:",
+            font="TkDefaultFont 10 bold"
+        )
+        self.joystick_select_label.pack(side="top", fill="x", padx=10, pady=6)
+
+        # Activate button
+        self.row_8 = ttk.Frame(self.tab)
+        self.row_8.pack(side="top", expand=1, fill="both", pady=6)
+
 
     def update_device_list(self, joysticks):
         self.joysticks = joysticks
         self.update_joystick_selection()
         self.update_axis_selection()
+        self.update_buttonbox_selection()
 
 
     def update_joystick_selection(self):
@@ -120,6 +140,28 @@ class Tab():
         )
         self.joystick_list.bind('<<ComboboxSelected>>', self.update_axis_selection)    
         self.joystick_list.pack(side="top", fill="x", padx=10)
+
+
+    def update_buttonbox_selection(self):
+        # Destroy combobox if it exists
+        try:
+            self.buttonbox_list.destroy()
+        except:
+            pass
+
+        # Create new selection combobox
+        buttonbox_list_values = ['None']
+        for device in self.joysticks.values():
+            buttonbox_list_values.append(device.get_name())
+
+        self.buttonbox_list = ttk.Combobox(
+            self.row_7,
+            values=buttonbox_list_values,
+            textvariable=self.buttonbox_selected,
+            state="readonly",
+        )
+        self.buttonbox_list.bind('<<ComboboxSelected>>', self.update_button_selection)    
+        self.buttonbox_list.pack(side="top", fill="x", padx=10)
 
 
     def update_axis_selection(self,event=None):
@@ -188,6 +230,45 @@ class Tab():
                         variable=self.joystick_y_inverted,
                     )
                     self.y_axis_inverted.pack(side="left", padx=10)
+
+
+    def update_button_selection(self,event=None):
+        # Destroy axis selection if it exists and deselect axis amd invertion
+        try:
+            self.activate_button_label.destroy()
+            self.activate_button_list.destroy()
+            self.activate_button_inverted.destroy()
+            self.buttonbox_activate_selected.set("None")
+            self.buttonbox_activate_inverted.set(False)
+        except:
+            pass
+
+        if self.buttonbox_selected.get() != "None":
+            for device in self.joysticks.values():
+                if device.get_name() == self.buttonbox_selected.get():
+                    button_list = [x+1 for x in range(device.get_numbuttons())]
+
+                    # Activate button selection
+                    self.activate_button_label = ttk.Label(
+                        self.row_8,
+                        text="Activate:",
+                    )
+                    self.activate_button_label.pack(side="left", padx=10)
+
+                    self.activate_button_list = ttk.Combobox(
+                        self.row_8,
+                        values=button_list,
+                        state="readonly",
+                        textvariable=self.buttonbox_activate_selected,
+                    )  
+                    self.activate_button_list.pack(side="left", padx=10)
+
+                    self.activate_button_inverted = ttk.Checkbutton(
+                        self.row_8,
+                        text="Inverted",
+                        variable=self.buttonbox_activate_inverted,
+                    )
+                    self.activate_button_inverted.pack(side="left", padx=10)
 
 
     def get_translation_method(self):
