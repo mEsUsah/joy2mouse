@@ -10,6 +10,7 @@ class Tab():
         self.translation_method = tk.IntVar(value=1)
         self.joystick_resolution = tk.IntVar(value=16)
         self.autocenter = tk.BooleanVar(value=False)
+        self.autocenter_key = tk.StringVar(value="c")
 
         self.joysticks = {}
         self.joystick_selected = tk.StringVar(value="None")
@@ -67,10 +68,15 @@ class Tab():
         # Autocenter option
         self.center_option = ttk.Checkbutton(
             self.row_2,
-            text="Autocenter mouse",
-            variable=self.autocenter
+            text="Autocenter:",
+            variable=self.autocenter,
+            command=self.updater_autocenter,
+            width=10
         )
-        self.center_option.pack(side="top", fill="x", padx=10, pady=6)
+        self.center_option.pack(side="left", padx=10, pady=6)
+
+        self.row_13 = ttk.Frame(self.tab)
+        self.row_13.pack(side="top", expand=1, fill="both")
 
         # Joystick resolution options
         self.transation_label = ttk.Label(
@@ -175,6 +181,29 @@ class Tab():
         self.update_axis_selection()
         self.update_buttonbox_selection()
 
+
+    def updater_autocenter(self):
+        try:
+            self.autocenter_list_label.destroy()
+            self.autocenter_list.destroy()
+        except:
+            pass
+
+        if self.autocenter.get():
+            self.autocenter_list_label = ttk.Label(
+                self.row_2,
+                text="Key*:",
+                width=5
+            )
+            self.autocenter_list_label.pack(side="left", padx=10)
+            
+            self.autocenter_list = ttk.Entry(
+                self.row_2,
+                textvariable=self.autocenter_key,
+                width=10,
+            )
+            self.autocenter_list.pack(side="left", fill="x", padx=10)
+            
 
     def update_joystick_selection(self):
         # Destroy combobox if it exists
