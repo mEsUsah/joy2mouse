@@ -195,6 +195,21 @@ class Tab():
         else:
             return None
 
+    def get_joystick_x_axis(self):
+        selected_x_axise = self.joystick_x_selected.get()
+        if selected_x_axise != "None":
+            return int(selected_x_axise) - 1
+        else:
+            return None
+    
+    
+    def get_joystick_y_axis(self):
+        selected_y_axise = self.joystick_y_selected.get()
+        if selected_y_axise != "None":
+            return int(selected_y_axise) - 1
+        else:
+            return None
+
 
     def update_options(self):
         if self.translation_method.get() != 1:
