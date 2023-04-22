@@ -115,6 +115,11 @@ while app_running:
     joystick_x_inverted = config.get_joystick_x_inverted()
     joystick_y_inverted = config.get_joystick_y_inverted()
 
+    mouse_left_button = config.get_mouse_left()
+    mouse_left_inverted = config.get_mouse_left_inverted()
+    mouse_right_button = config.get_mouse_right()
+    mouse_right_inverted = config.get_mouse_right_inverted()
+
     selected_activation_method = config.get_activation_method()
     selected_buttonbox = config.get_buttonbox_selected()
     activation_button = config.get_activation_button()
@@ -277,14 +282,15 @@ while app_running:
                             print(f"Mouse: \tX: {x_axis_value} \tY: {y_axis_value}")
 
 
-                    # extra functionality for buttons
-                    if joy.get_button(0):
-                        # Left mouse button
-                        pydirectinput.click(button="left")
-                    if joy.get_button(2):
-                        # Right mouse button
-                        pydirectinput.click(button="right")
-                    
+                    # Mouse buttons
+                    if mouse_left_button != None:
+                        if joy.get_button(mouse_left_button):
+                            pydirectinput.click(button="left")
+                    if mouse_right_button != None:
+                        if joy.get_button(mouse_right_button):
+                            # Right mouse button
+                            pydirectinput.click(button="right")
+
 
     ## Update the mouse position every frame
     time.sleep(1/max_refresh_rate)
