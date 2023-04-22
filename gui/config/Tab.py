@@ -96,11 +96,11 @@ class Tab():
 
     def update_device_list(self, joysticks):
         self.joysticks = joysticks
-        self.update_joystick_combobox()
+        self.update_joystick_selection()
         self.update_axis_selection()
 
 
-    def update_joystick_combobox(self):
+    def update_joystick_selection(self):
         # Destroy combobox if it exists
         try:
             self.joystick_list.destroy()
@@ -210,6 +210,7 @@ class Tab():
                     return device.get_guid()
         else:
             return None
+        
 
     def get_joystick_x_axis(self):
         selected_x_axise = self.joystick_x_selected.get()
