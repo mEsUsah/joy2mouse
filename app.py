@@ -98,6 +98,8 @@ last_mouse_x = 0
 last_mouse_y = 0
 deadzone = 10
 activate_button_released = True
+deactivate_button_released = True
+activated = False
 
 
 # Main loop
@@ -117,6 +119,9 @@ while app_running:
     selected_buttonbox = config.get_buttonbox_selected()
     activation_button = config.get_activation_button()
     activation_button_inverted = config.get_activation_button_inverted()
+
+    deactivation_button = config.get_deactivation_button()
+    deactivation_button_inverted = config.get_deactivation_button_inverted()
 
     if not joystick_config_ready():
         run.disable_arming()
@@ -169,6 +174,29 @@ while app_running:
                     elif not activated and not activate_button_pressed and not activate_button_released:
                         activate_button_released = True
 
+                elif selected_activation_method == 3: # on/off
+                    if deactivation_button != None:
+                        deactivate_button_pressed = joy.get_button(deactivation_button)
+                        if deactivation_button_inverted:
+                            deactivate_button_pressed = not deactivate_button_pressed
+
+                        if not activated and activate_button_released and activate_button_pressed and\
+                            not deactivate_button_pressed:
+                                activated = True
+                                activate_button_released = False
+
+                        elif activated and not activate_button_pressed and not activate_button_released and \
+                            not deactivate_button_pressed:
+                                activate_button_released = True
+                        
+                        elif activated and deactivate_button_released and deactivate_button_pressed and\
+                            not activate_button_pressed:
+                                activated = False
+                                deactivate_button_released = False
+                        
+                        elif activated and not deactivate_button_released and not deactivate_button_pressed:
+                                deactivate_button_released = True
+                        
 
                 if armed:
                     active = activated
