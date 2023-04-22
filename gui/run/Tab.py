@@ -14,7 +14,7 @@ class Tab():
 
         self.row_1_label = ttk.Label(
             self.row_1, 
-            text="Arm to run, then activate to run:",
+            text="Arm, then activate on joystick:",
             font="TkDefaultFont 10 bold"
         )
         self.row_1_label.pack(side="top", fill="x", padx=10, pady=6)
