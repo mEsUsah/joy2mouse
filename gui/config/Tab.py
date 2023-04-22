@@ -70,15 +70,6 @@ class Tab():
         self.row_4 = ttk.Frame(self.tab)
         self.row_4.pack(side="top", expand=1, fill="both")
 
-
-    def update_device_list(self, joysticks):
-        self.joysticks = joysticks
-
-        # destroy all widgets in frame
-        for widget in self.row_4.winfo_children():
-            widget.destroy()
-
-        # Joystick selection
         self.joystick_select_label = ttk.Label(
             self.row_4,
             text="Joystick for mouse control:",
@@ -86,6 +77,20 @@ class Tab():
         )
         self.joystick_select_label.pack(side="top", fill="x", padx=10, pady=6)
 
+
+    def update_device_list(self, joysticks):
+        self.joysticks = joysticks
+        self.update_joystick_combobox()
+
+
+    def update_joystick_combobox(self):
+        # Destroy combobox if it exists
+        try:
+            self.joystick_list.destroy()
+        except:
+            pass
+
+        # Create new selection combobox
         joystick_list_values = ['None']
         for device in self.joysticks.values():
             joystick_list_values.append(device.get_name())
@@ -96,7 +101,7 @@ class Tab():
             textvariable=self.joystick_selected,
             state="readonly"
         )
-        self.joystick_list.pack(side="top", fill="x", padx=10, pady=(6,0))
+        self.joystick_list.pack(side="top", fill="x", padx=10)
 
 
     def get_translation_method(self):
