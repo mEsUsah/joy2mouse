@@ -133,11 +133,8 @@ while app_running:
 
         # Handle joystick input
         if selected_joystick and selected_x_axis != None and selected_y_axis != None:
-            print(f"Joystick: {selected_joystick}")
             if joy.get_guid() == selected_joystick:
                 if active:
-                    print(f"Joystick: {selected_joystick} \tX: {selected_x_axis} \tY: {selected_y_axis}")
-
                     # set mouse position
                     if translation_method == 1: # default
                         x_axis_value = int(joy.get_axis(selected_x_axis) * 5000)
