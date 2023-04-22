@@ -106,6 +106,9 @@ while app_running:
     joystick_x_inverted = config.get_joystick_x_inverted()
     joystick_y_inverted = config.get_joystick_y_inverted()
 
+    selected_buttonbox = config.get_buttonbox_selected()
+
+
     run.set_run_status(active, configured=joystick_config_ready())
 
 
@@ -131,27 +134,28 @@ while app_running:
     for joy in joysticks.values():
         
         # Handle start button
-        if joy.get_guid() == "03000000443300005982000000000000": # VPC Panel 1
-            ## check if activation button is pressed
-            run_button_pressed = joy.get_button(19)
-            if armed:
-                active = run_button_pressed
-            else:
-                active = False
-                
-                if joystick_config_ready():
-                    if not run_button_pressed:
-                        run.enable_arming()
+        if selected_buttonbox:
+            if joy.get_guid() == selected_buttonbox:
+                ## check if activation button is pressed
+                run_button_pressed = joy.get_button(19)
+                if armed:
+                    active = run_button_pressed
+                else:
+                    active = False
+
+                    if joystick_config_ready():
+                        if not run_button_pressed:
+                            run.enable_arming()
+                        else:
+                            run.disable_arming()
                     else:
                         run.disable_arming()
-                else:
-                    run.disable_arming()
 
-            ## update center position of mouse
-            if not active:
-                mouse_x, mouse_y = mouse.get_position()
-                last_mouse_x = joystick_resolution
-                last_mouse_y = joystick_resolution
+                ## update center position of mouse
+                if not active:
+                    mouse_x, mouse_y = mouse.get_position()
+                    last_mouse_x = joystick_resolution
+                    last_mouse_y = joystick_resolution
 
         # Handle joystick input
         if selected_joystick and selected_x_axis != None and selected_y_axis != None:
