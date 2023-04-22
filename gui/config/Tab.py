@@ -20,6 +20,8 @@ class Tab():
         self.joystick_y_selected = tk.StringVar(value="None")
         self.joystick_y_inverted = tk.BooleanVar(value=False)
 
+        self.activation_method = tk.IntVar(value=1)
+
         self.buttonbox_selected = tk.StringVar(value="None")
         self.buttonbox_activate_selected = tk.StringVar(value="None")
         self.buttonbox_activate_inverted = tk.BooleanVar(value=False)
@@ -97,13 +99,37 @@ class Tab():
         self.row_6 = ttk.Frame(self.tab)
         self.row_6.pack(side="top", expand=1, fill="both", pady=6)
 
+        # Activation method selection
+        self.row_9 = ttk.Frame(self.tab)
+        self.row_9.pack(side="top", expand=1, fill="both", pady=6)
+
+        self.activation_method_label = ttk.Label(
+            self.row_9,
+            text="Activation method:",
+            font="TkDefaultFont 10 bold"
+        )
+        self.activation_method_label.pack(side="top", fill="x", padx=10, pady=6)
+
+        self.activation_method_options = {
+            1: "Hold button",
+            2: "Toggle button"
+        }
+
+        for key, value in self.activation_method_options.items():
+            ttk.Radiobutton(
+                self.row_9,
+                text=value,
+                variable=self.activation_method,
+                value=key
+            ).pack(side="top", fill="x", padx=10)
+
         # Buttonbox selection
         self.row_7 = ttk.Frame(self.tab)
         self.row_7.pack(side="top", expand=1, fill="both", pady=6)
 
         self.joystick_select_label = ttk.Label(
             self.row_7,
-            text="Button box:",
+            text="Button box for activation:",
             font="TkDefaultFont 10 bold"
         )
         self.joystick_select_label.pack(side="top", fill="x", padx=10, pady=6)
