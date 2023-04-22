@@ -84,6 +84,7 @@ while app_running:
     armed = run.get_armed()
     run.set_run_status(active)
     joystick_resolution = int((2**config.get_joystick_resolution()) / 16)
+    selected_joystick = config.get_joystick_selected()
 
 
     # Handle PyGame events
@@ -127,56 +128,57 @@ while app_running:
                 last_mouse_y = joystick_resolution
 
         # Handle joystick input
-        if joy.get_guid() == "030000001d2300000002000000000000": # Gladiator NXT
-            if active:
-                # set mouse position
-                if translation_method == 1: # default
-                    x_axis_value = int(joy.get_axis(0) * 5000)
-                    y_axis_value = int(joy.get_axis(1) * 5000)
-                    mouse_x_pos = mouse_x + x_axis_value
-                    mouse_y_pos = mouse_y - y_axis_value
-                    pydirectinput.moveTo(mouse_x_pos, mouse_y_pos, _pause=False)
-                
-                elif translation_method == 2: # absolute mouse movement
-                    x_axis_value = int(joy.get_axis(0) * screen_x_center)
-                    y_axis_value = int(joy.get_axis(1) * screen_y_center)
-                    mouse_x_pos = screen_x_center + x_axis_value
-                    mouse_y_pos = screen_y_center - y_axis_value
-                    pydirectinput.moveTo(mouse_x_pos, mouse_y_pos, _pause=False)
+        if selected_joystick:
+            if joy.get_guid() == selected_joystick:
+                if active:
+                    # set mouse position
+                    if translation_method == 1: # default
+                        x_axis_value = int(joy.get_axis(0) * 5000)
+                        y_axis_value = int(joy.get_axis(1) * 5000)
+                        mouse_x_pos = mouse_x + x_axis_value
+                        mouse_y_pos = mouse_y - y_axis_value
+                        pydirectinput.moveTo(mouse_x_pos, mouse_y_pos, _pause=False)
 
-                elif translation_method == 3: # relavitve mouse movement
-                    x_axis_value = int(joy.get_axis(0) * joystick_resolution)
-                    y_axis_value = int(joy.get_axis(1) * joystick_resolution)
-                    mouse_Dx = x_axis_value - last_mouse_x
-                    mouse_Dy = y_axis_value - last_mouse_y
-                    last_mouse_x = x_axis_value
-                    last_mouse_y = y_axis_value
-                    pydirectinput.moveRel(mouse_Dx,mouse_Dy, _pause=False, relative=True)
+                    elif translation_method == 2: # absolute mouse movement
+                        x_axis_value = int(joy.get_axis(0) * screen_x_center)
+                        y_axis_value = int(joy.get_axis(1) * screen_y_center)
+                        mouse_x_pos = screen_x_center + x_axis_value
+                        mouse_y_pos = screen_y_center - y_axis_value
+                        pydirectinput.moveTo(mouse_x_pos, mouse_y_pos, _pause=False)
 
-
-                # center torso if joystick is in deadzone
-                if autocenter:
-                    within_deadzone_x = x_axis_value > -deadzone and x_axis_value < deadzone
-                    within_deadzone_y = y_axis_value > -deadzone and y_axis_value < deadzone
-
-                    if within_deadzone_x and within_deadzone_y:
-                        keyboard.press_and_release("c")
+                    elif translation_method == 3: # relavitve mouse movement
+                        x_axis_value = int(joy.get_axis(0) * joystick_resolution)
+                        y_axis_value = int(joy.get_axis(1) * joystick_resolution)
+                        mouse_Dx = x_axis_value - last_mouse_x
+                        mouse_Dy = y_axis_value - last_mouse_y
+                        last_mouse_x = x_axis_value
+                        last_mouse_y = y_axis_value
+                        pydirectinput.moveRel(mouse_Dx,mouse_Dy, _pause=False, relative=True)
 
 
-                if debugging:
-                    if translation_method == 3:
-                        print(f"Mouse: \tdX: {mouse_Dx} \tdY: {mouse_Dy} \tres: {joystick_resolution}")
-                    else:
-                        print(f"Mouse: \tX: {x_axis_value} \tY: {y_axis_value}")
-                
+                    # center torso if joystick is in deadzone
+                    if autocenter:
+                        within_deadzone_x = x_axis_value > -deadzone and x_axis_value < deadzone
+                        within_deadzone_y = y_axis_value > -deadzone and y_axis_value < deadzone
 
-                # extra functionality for buttons
-                if joy.get_button(0):
-                    # Left mouse button
-                    pydirectinput.click(button="left")
-                if joy.get_button(2):
-                    # Right mouse button
-                    pydirectinput.click(button="right")
+                        if within_deadzone_x and within_deadzone_y:
+                            keyboard.press_and_release("c")
+
+
+                    if debugging:
+                        if translation_method == 3:
+                            print(f"Mouse: \tdX: {mouse_Dx} \tdY: {mouse_Dy} \tres: {joystick_resolution}")
+                        else:
+                            print(f"Mouse: \tX: {x_axis_value} \tY: {y_axis_value}")
+
+
+                    # extra functionality for buttons
+                    if joy.get_button(0):
+                        # Left mouse button
+                        pydirectinput.click(button="left")
+                    if joy.get_button(2):
+                        # Right mouse button
+                        pydirectinput.click(button="right")
                     
 
     ## Update the mouse position every frame

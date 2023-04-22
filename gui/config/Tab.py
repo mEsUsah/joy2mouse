@@ -186,6 +186,16 @@ class Tab():
         return self.joystick_resolution.get()
 
 
+    def get_joystick_selected(self):
+        selected_name = self.joystick_selected.get()
+        if selected_name != "None":
+            for device in self.joysticks.values():
+                if device.get_name() == selected_name:
+                    return device.get_guid()
+        else:
+            return None
+
+
     def update_options(self):
         if self.translation_method.get() != 1:
             if not self.showing_center_option:
