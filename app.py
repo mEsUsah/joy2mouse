@@ -83,7 +83,7 @@ while app_running:
     autocenter = config.get_autocenter()
     armed = run.get_armed()
     run.set_run_status(active)
-    joystick_resolution = config.get_joystick_resolution() / 16
+    joystick_resolution = int((2**config.get_joystick_resolution()) / 16)
 
 
     # Handle PyGame events
@@ -163,7 +163,7 @@ while app_running:
 
                 if debugging:
                     if translation_method == 3:
-                        print(f"Mouse: \tdX: {mouse_Dx} \tdY: {mouse_Dy}")
+                        print(f"Mouse: \tdX: {mouse_Dx} \tdY: {mouse_Dy} \tres: {joystick_resolution}")
                     else:
                         print(f"Mouse: \tX: {x_axis_value} \tY: {y_axis_value}")
                 
