@@ -239,8 +239,8 @@ class Tab():
                     # X axis selection
                     self.x_axis_label = ttk.Label(
                         self.row_5,
-                        text="X axis:",
-                        width=8
+                        text="X axis*:",
+                        width=10
                     )
                     self.x_axis_label.pack(side="left", padx=10)
 
@@ -264,8 +264,8 @@ class Tab():
                     # Y axis selection
                     self.y_axis_label = ttk.Label(
                         self.row_6,
-                        text="Y axis:",
-                        width=8
+                        text="Y axis*:",
+                        width=10
                     )
                     self.y_axis_label.pack(side="left", padx=10)
 
@@ -290,7 +290,7 @@ class Tab():
                     self.left_mouse_button_label = ttk.Label(
                         self.row_11,
                         text="Left:",
-                        width=8
+                        width=10
                     )
                     self.left_mouse_button_label.pack(side="left", padx=10)
 
@@ -315,7 +315,7 @@ class Tab():
                     self.right_mouse_button_label = ttk.Label(
                         self.row_12,
                         text="Right:",
-                        width=8
+                        width=10
                     )
                     self.right_mouse_button_label.pack(side="left", padx=10)
 
@@ -361,8 +361,8 @@ class Tab():
                     # Activate button selection
                     self.activate_button_label = ttk.Label(
                         self.row_8,
-                        text="Activate:",
-                        width=8
+                        text="Activate*:",
+                        width=10
                     )
                     self.activate_button_label.pack(side="left", padx=10)
 
@@ -386,8 +386,8 @@ class Tab():
                     if self.activation_method.get() == 3:
                         self.deactivate_button_label = ttk.Label(
                             self.row_10,
-                            text="Deactivate:",
-                            width=8
+                            text="Deactivate*: ",
+                            width=10
                         )
                         self.deactivate_button_label.pack(side="left", padx=10)
 
