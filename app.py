@@ -96,11 +96,13 @@ while app_running:
             joysticks[joy.get_instance_id()] = joy
             print(f'Connencted Joystick "{joy.get_name()}" \t{joy.get_guid()}')
             test.update_device_list(joysticks)
+            config.update_device_list(joysticks)
 
         if event.type == pygame.JOYDEVICEREMOVED:
             del joysticks[event.instance_id]
             print(f"Joystick {event.instance_id} disconnected")
             test.update_device_list(joysticks)
+            config.update_device_list(joysticks)
 
 
     # Loop over all joysticks
