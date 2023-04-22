@@ -227,6 +227,14 @@ class Tab():
             return None
 
 
+    def get_joystick_x_inverted(self):
+        return self.joystick_x_inverted.get()
+    
+
+    def get_joystick_y_inverted(self):
+        return self.joystick_y_inverted.get()
+
+
     def update_options(self):
         if self.translation_method.get() != 1:
             if not self.showing_center_option:
