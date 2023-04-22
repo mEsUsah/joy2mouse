@@ -492,6 +492,22 @@ class Tab():
         return self.buttonbox_deactivate_inverted.get()
 
 
+    def get_mouse_left(self):
+        return self.mouse_left_selected.get()
+    
+    
+    def get_mouse_left_inverted(self):
+        return self.mouse_left_inverted.get()
+    
+
+    def get_mouse_right(self):
+        return self.mouse_right_selected.get()
+    
+
+    def get_mouse_right_inverted(self):
+        return self.mouse_right_inverted.get()
+
+
     def update_options(self):
         if self.translation_method.get() != 1:
             if not self.showing_center_option:
