@@ -31,3 +31,8 @@ pip install -r requirements.txt
 - Keyboard [Doc](https://github.com/boppreh/keyboard)
 - PyGame joystick [Doc](https://www.pygame.org/docs/ref/joystick.html)
 - PyDirectInput [Doc](https://github.com/learncodebygaming/pydirectinput)
+
+
+
+# My setup
+activate button = (0)19 (1)20
