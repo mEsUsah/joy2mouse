@@ -114,6 +114,7 @@ while app_running:
 
     selected_buttonbox = config.get_buttonbox_selected()
     activation_button = config.get_activation_button()
+    activation_button_inverted = config.get_activation_button_inverted()
 
     if not joystick_config_ready():
         run.disable_arming()
@@ -148,6 +149,9 @@ while app_running:
             if joy.get_guid() == selected_buttonbox:
                 ## check if activation button is pressed
                 run_button_pressed = joy.get_button(activation_button)
+                if activation_button_inverted:
+                    run_button_pressed = not run_button_pressed
+                    
                 if armed:
                     active = run_button_pressed
                 else:

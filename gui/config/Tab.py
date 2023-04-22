@@ -358,6 +358,10 @@ class Tab():
             return int(selected_button) - 1
         else:
             return None
+        
+        
+    def get_activation_button_inverted(self):
+        return self.buttonbox_activate_inverted.get()
 
 
     def update_options(self):
