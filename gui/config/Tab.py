@@ -25,6 +25,9 @@ class Tab():
         self.buttonbox_selected = tk.StringVar(value="None")
         self.buttonbox_activate_selected = tk.StringVar(value="None")
         self.buttonbox_activate_inverted = tk.BooleanVar(value=False)
+
+        self.buttonbox_deactivate_selected = tk.StringVar(value="None")
+        self.buttonbox_deactivate_inverted = tk.BooleanVar(value=False)
         
 
         self.row_1 = ttk.Frame(self.tab)
@@ -112,7 +115,8 @@ class Tab():
 
         self.activation_method_options = {
             1: "Hold button",
-            2: "Toggle button"
+            2: "Toggle button",
+            3: "On/Off button"
         }
 
         for key, value in self.activation_method_options.items():
@@ -120,7 +124,8 @@ class Tab():
                 self.row_9,
                 text=value,
                 variable=self.activation_method,
-                value=key
+                value=key,
+                command=self.update_button_selection
             ).pack(side="top", fill="x", padx=10)
 
         # Buttonbox selection
@@ -137,6 +142,10 @@ class Tab():
         # Activate button
         self.row_8 = ttk.Frame(self.tab)
         self.row_8.pack(side="top", expand=1, fill="both", pady=6)
+        
+        # Deactiavte button
+        self.row_10 = ttk.Frame(self.tab)
+        self.row_10.pack(side="top", expand=1, fill="both", pady=6)
 
 
     def update_device_list(self, joysticks):
@@ -266,6 +275,12 @@ class Tab():
             self.activate_button_inverted.destroy()
             self.buttonbox_activate_selected.set("None")
             self.buttonbox_activate_inverted.set(False)
+
+            self.deactivate_button_label.destroy()
+            self.deactivate_button_list.destroy()
+            self.deactivate_button_inverted.destroy()
+            self.buttonbox_deactivate_selected.set("None")
+            self.buttonbox_deactivate_inverted.set(False)
         except:
             pass
 
@@ -278,6 +293,7 @@ class Tab():
                     self.activate_button_label = ttk.Label(
                         self.row_8,
                         text="Activate:",
+                        width=10
                     )
                     self.activate_button_label.pack(side="left", padx=10)
 
@@ -286,6 +302,7 @@ class Tab():
                         values=button_list,
                         state="readonly",
                         textvariable=self.buttonbox_activate_selected,
+                        width=6
                     )  
                     self.activate_button_list.pack(side="left", padx=10)
 
@@ -295,6 +312,31 @@ class Tab():
                         variable=self.buttonbox_activate_inverted,
                     )
                     self.activate_button_inverted.pack(side="left", padx=10)
+
+                    # Deactivate button selection
+                    if self.activation_method.get() == 3:
+                        self.deactivate_button_label = ttk.Label(
+                            self.row_10,
+                            text="Deactivate:",
+                            width=10
+                        )
+                        self.deactivate_button_label.pack(side="left", padx=10)
+
+                        self.deactivate_button_list = ttk.Combobox(
+                            self.row_10,
+                            values=button_list,
+                            state="readonly",
+                            textvariable=self.buttonbox_deactivate_selected,
+                            width=6
+                        )
+                        self.deactivate_button_list.pack(side="left", padx=10)
+
+                        self.deactivate_button_inverted = ttk.Checkbutton(
+                            self.row_10,
+                            text="Inverted",
+                            variable=self.buttonbox_deactivate_inverted,
+                        )
+                        self.deactivate_button_inverted.pack(side="left", padx=10)
 
 
     def get_translation_method(self):
