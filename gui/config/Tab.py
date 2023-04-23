@@ -470,6 +470,7 @@ class Tab():
 
     def set_autocenter(self, value):
         self.autocenter.set(value)
+        self.updater_autocenter()
     
 
     def get_autocenter_key(self):
