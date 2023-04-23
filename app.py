@@ -64,6 +64,17 @@ run_tab = ttk.Frame(main_control_tab)
 test_tab = ttk.Frame(main_control_tab)
 
 
+# Menu setup
+menu = tk.Menu(window)
+window.config(menu=menu)
+
+file_menu = tk.Menu(menu, tearoff=False)
+menu.add_cascade(label="File", menu=file_menu)
+file_menu.add_command(label="Save As...")
+file_menu.add_separator()
+file_menu.add_command(label="Exit", command=stop_app)
+
+
 # Tab setup
 config_tab = ttk.Frame(main_control_tab)
 main_control_tab.add(run_tab, text="Run")
