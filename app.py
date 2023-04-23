@@ -112,15 +112,19 @@ def load_config():
         config.set_translation_method(current_config.getint('JOYSTICK', 'translation_method'))
         config.set_joystick_resolution(current_config.getint('JOYSTICK', 'joystick_resolution'))
         config.set_joystick_selected(current_config.get('JOYSTICK', 'selected_joystick'))
+
         config.set_joystick_x_axis(current_config.get('JOYSTICK', 'selected_x_axis'))
-        config.set_joystick_x_inverted(current_config.getboolean('JOYSTICK', 'joystick_x_inverted'))
         config.set_joystick_y_axis(current_config.get('JOYSTICK', 'selected_y_axis'))
+        config.set_joystick_x_inverted(current_config.getboolean('JOYSTICK', 'joystick_x_inverted'))
         config.set_joystick_y_inverted(current_config.getboolean('JOYSTICK', 'joystick_y_inverted'))
+
         config.set_mouse_left(current_config.get('JOYSTICK', 'mouse_left_button'))
-        config.set_mouse_left_inverted(current_config.getboolean('JOYSTICK', 'mouse_left_inverted'))
         config.set_mouse_right(current_config.get('JOYSTICK', 'mouse_right_button'))
+        config.set_mouse_left_inverted(current_config.getboolean('JOYSTICK', 'mouse_left_inverted'))
         config.set_mouse_right_inverted(current_config.getboolean('JOYSTICK', 'mouse_right_inverted'))
+        
         config.set_autocenter(current_config.getboolean('JOYSTICK', 'autocenter'))
+        config.set_autocenter_key(current_config.get('JOYSTICK', 'autocenter_key'))
     except:
         tk.messagebox.showerror("Open error", "Broken config file")
 

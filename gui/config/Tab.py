@@ -479,6 +479,13 @@ class Tab():
             return self.autocenter_key.get()
 
 
+    def set_autocenter_key(self, value):
+        if value == "None":
+            self.autocenter_key.set("")
+        else:
+            self.autocenter_key.set(value)
+
+
     def get_joystick_resolution(self):
         return self.joystick_resolution.get()
 
