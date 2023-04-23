@@ -619,6 +619,13 @@ class Tab():
             return int(selected_button) - 1
         else:
             return None
+        
+    
+    def set_deactivation_button(self, value):
+        if value != "None":
+            self.buttonbox_deactivate_selected.set(int(value)+1)
+        else:
+            self.buttonbox_deactivate_selected.set("None")
     
 
     def get_deactivation_button_inverted(self):

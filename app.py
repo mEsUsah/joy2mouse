@@ -135,6 +135,7 @@ def load_config():
         config.set_activation_method(current_config.getint('BUTTONBOX', 'selected_activation_method'))
         config.set_buttonbox_selected(current_config.get('BUTTONBOX', 'selected_buttonbox'))
         config.set_activation_button(current_config.get('BUTTONBOX', 'activation_button'))
+        config.set_deactivation_button(current_config.get('BUTTONBOX', 'deactivation_button'))
     except:
         tk.messagebox.showerror("Open error", "Broken config file")
 
