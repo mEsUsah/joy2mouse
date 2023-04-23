@@ -133,6 +133,7 @@ def load_config():
 
         # Buttonbox
         config.set_activation_method(current_config.getint('BUTTONBOX', 'selected_activation_method'))
+        config.set_buttonbox_selected(current_config.get('BUTTONBOX', 'selected_buttonbox'))
     except:
         tk.messagebox.showerror("Open error", "Broken config file")
 

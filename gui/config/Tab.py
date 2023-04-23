@@ -581,6 +581,18 @@ class Tab():
         else:
             return None
 
+        
+    def set_buttonbox_selected(self, guid):
+        if guid != None:
+            for device in self.joysticks.values():
+                if device.get_guid() == guid:
+                    value = device.get_name()
+                    self.buttonbox_selected.set(value)
+                    self.update_button_selection()
+                    return True
+        
+            return False
+
 
     def get_activation_button(self):
         selected_button = self.buttonbox_activate_selected.get()
