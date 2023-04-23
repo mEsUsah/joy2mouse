@@ -42,12 +42,12 @@ def handle_inverted_axis(axis, inverted):
 
 
 def save_config():
-    current_config = get_config()
+    current_config = get_current_config()
     with open('config.ini', 'w') as configfile:
         current_config.write(configfile)
 
 
-def get_config():
+def get_current_config():
     current_config = configparser.ConfigParser()
     current_config['JOYSTICK'] = {
         'translation_method': str(config.get_translation_method()),
