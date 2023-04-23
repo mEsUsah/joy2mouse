@@ -629,3 +629,7 @@ class Tab():
 
     def get_mouse_right_inverted(self):
         return self.mouse_right_inverted.get()
+    
+
+    def set_mouse_right_inverted(self, value):
+        return self.mouse_right_inverted.set(value)
