@@ -1,7 +1,7 @@
 # joy2mouse
-Simple app to translate joystick axis to mouse movement.
+Simple app to translate joystick axis to mouse movement for Windows hosts.
 
-## Installation (Windows only)
+## Installation
 For running and working on source code
 ```cmd
 # Activate virtual environment
@@ -15,8 +15,14 @@ pip install -r requriements.txt
 deactivate
 ```
 
-## How to run
-Once the installed, the program can be launched from within the virtual environment.
+## Build executable from source
+Once installed, the program can be built into a single executable:
+```cmd
+build.bat
+```
+
+## Running from source
+Once installed, the program can be launched from within the virtual environment.
 ```cmd
 python app.py
 ```
