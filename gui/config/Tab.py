@@ -547,6 +547,10 @@ class Tab():
         return self.joystick_y_inverted.get()
 
 
+    def set_joystick_y_inverted(self,value):
+        return self.joystick_y_inverted.set(value)
+
+
     def get_activation_method(self):
         return self.activation_method.get()
 
