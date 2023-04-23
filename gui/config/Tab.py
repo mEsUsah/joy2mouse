@@ -601,6 +601,13 @@ class Tab():
         else:
             return None
         
+
+    def set_activation_button(self, value):
+        if value != "None":
+            self.buttonbox_activate_selected.set(int(value)+1)
+        else:
+            self.buttonbox_activate_selected.set("None")
+
         
     def get_activation_button_inverted(self):
         return self.buttonbox_activate_inverted.get()
