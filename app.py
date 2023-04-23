@@ -129,6 +129,7 @@ window.config(menu=menu)
 file_menu = tk.Menu(menu, tearoff=False)
 menu.add_cascade(label="File", menu=file_menu)
 file_menu.add_command(label="Save", command=save_config)
+file_menu.add_command(label="Save As...", command=save_config_as)
 file_menu.add_separator()
 file_menu.add_command(label="Exit", command=stop_app)
 
