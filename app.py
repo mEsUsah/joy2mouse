@@ -42,6 +42,12 @@ def handle_inverted_axis(axis, inverted):
 
 
 def save_config():
+    current_config = get_config()
+    with open('config.ini', 'w') as configfile:
+        current_config.write(configfile)
+
+
+def get_config():
     current_config = configparser.ConfigParser()
     current_config['JOYSTICK'] = {
         'translation_method': str(config.get_translation_method()),
@@ -67,8 +73,7 @@ def save_config():
         'deactivation_button': str(config.get_deactivation_button()),
         'deactivation_button_inverted': str(config.get_deactivation_button_inverted()),
     }
-    with open('config.ini', 'w') as configfile:
-        current_config.write(configfile)
+    return current_config
 
 
 # Get game screen size
