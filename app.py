@@ -10,6 +10,7 @@ import tkinter as tk
 from tkinter import ttk
 from screeninfo import get_monitors
 import gui
+import utils
 
 def stop_app():
     global app_running
@@ -42,8 +43,13 @@ def handle_inverted_axis(axis, inverted):
 
 
 def save_config():
+    global current_config_file
+
+    if current_config_file == 'default.ini':
+        current_config_file = utils.files.gui_save_as_path()
+
     current_config = get_current_config()
-    with open('config.ini', 'w') as configfile:
+    with open(current_config_file, 'w') as configfile:
         current_config.write(configfile)
 
 
@@ -149,6 +155,7 @@ deadzone = 10
 activate_button_released = True
 deactivate_button_released = True
 activated = False
+current_config_file = 'default.ini'
 
 
 # Main loop
