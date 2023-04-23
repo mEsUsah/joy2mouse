@@ -468,6 +468,10 @@ class Tab():
         return self.autocenter.get()
     
 
+    def set_autocenter(self, value):
+        self.autocenter.set(value)
+    
+
     def get_autocenter_key(self):
         if self.autocenter_key.get() == "":
             return None

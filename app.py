@@ -120,6 +120,7 @@ def load_config():
         config.set_mouse_left_inverted(current_config.getboolean('JOYSTICK', 'mouse_left_inverted'))
         config.set_mouse_right(current_config.get('JOYSTICK', 'mouse_right_button'))
         config.set_mouse_right_inverted(current_config.getboolean('JOYSTICK', 'mouse_right_inverted'))
+        config.set_autocenter(current_config.getboolean('JOYSTICK', 'autocenter'))
     except:
         tk.messagebox.showerror("Open error", "Broken config file")
 
