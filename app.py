@@ -113,6 +113,7 @@ def load_config():
         config.set_joystick_resolution(current_config.getint('JOYSTICK', 'joystick_resolution'))
         config.set_joystick_selected(current_config.get('JOYSTICK', 'selected_joystick'))
         config.set_joystick_x_axis(current_config.get('JOYSTICK', 'selected_x_axis'))
+        config.set_joystick_x_inverted(current_config.getboolean('JOYSTICK', 'joystick_x_inverted'))
         config.set_joystick_y_axis(current_config.get('JOYSTICK', 'selected_y_axis'))
     except:
         tk.messagebox.showerror("Open error", "Broken config file")
