@@ -2,6 +2,7 @@
 
 import keyboard
 import pydirectinput
+import configparser
 import mouse
 import pygame
 import time
@@ -40,6 +41,36 @@ def handle_inverted_axis(axis, inverted):
     return axis
 
 
+def save_config():
+    current_config = configparser.ConfigParser()
+    current_config['JOYSTICK'] = {
+        'translation_method': str(config.get_translation_method()),
+        'selected_joystick': str(config.get_joystick_selected()),
+        'joystick_resolution': str(config.get_joystick_resolution()),
+        'selected_x_axis': str(config.get_joystick_x_axis()),
+        'joystick_x_inverted': str(config.get_joystick_x_inverted()),
+        'selected_y_axis': str(config.get_joystick_y_axis()),
+        'joystick_y_inverted': str(config.get_joystick_y_inverted()),
+        'mouse_left_button': str(config.get_mouse_left()),
+        'mouse_left_inverted': str(config.get_mouse_left_inverted()),
+        'mouse_right_button': str(config.get_mouse_right()),
+        'mouse_right_inverted': str(config.get_mouse_right_inverted()),
+        'autocenter': str(config.get_autocenter()),
+        'autocenter_key': str(config.get_autocenter_key()),
+        'deadzone': str(deadzone),
+    }
+    current_config['BUTTONBOX'] = {
+        'selected_activation_method': str(config.get_activation_method()),
+        'selected_buttonbox': str(config.get_buttonbox_selected()),
+        'activation_button': str(config.get_activation_button()),
+        'activation_button_inverted': str(config.get_activation_button_inverted()),
+        'deactivation_button': str(config.get_deactivation_button()),
+        'deactivation_button_inverted': str(config.get_deactivation_button_inverted()),
+    }
+    with open('config.ini', 'w') as configfile:
+        current_config.write(configfile)
+
+
 # Get game screen size
 screen_x = None
 screen_y = None
@@ -70,7 +101,7 @@ window.config(menu=menu)
 
 file_menu = tk.Menu(menu, tearoff=False)
 menu.add_cascade(label="File", menu=file_menu)
-file_menu.add_command(label="Save As...")
+file_menu.add_command(label="Save", command=save_config)
 file_menu.add_separator()
 file_menu.add_command(label="Exit", command=stop_app)
 
