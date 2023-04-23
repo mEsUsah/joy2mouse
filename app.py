@@ -99,6 +99,20 @@ def get_current_config():
     return current_config
 
 
+def load_config_file():
+    global current_config_default
+    global current_config_file
+
+    current_config_default = False
+
+    file_path = utils.files.gui_open_path()
+    if not file_path:
+        return # User canceled the open dialog
+    current_config_file = file_path
+
+    load_config()
+
+
 def load_config():
     global current_config_file
     global current_config_default
@@ -171,7 +185,7 @@ window.config(menu=menu)
 
 file_menu = tk.Menu(menu, tearoff=False)
 menu.add_cascade(label="File", menu=file_menu)
-file_menu.add_command(label="Open...", command=load_config)
+file_menu.add_command(label="Open...", command=load_config_file)
 file_menu.add_command(label="Save", command=save_config)
 file_menu.add_command(label="Save As...", command=save_config_as)
 file_menu.add_separator()
