@@ -528,6 +528,13 @@ class Tab():
             return None
 
 
+    def set_joystick_y_axis(self, value):
+        if value != "None":
+            self.joystick_y_selected.set(int(value)+1)
+        else:
+            self.joystick_y_selected.set("None")
+
+
     def get_joystick_x_inverted(self):
         return self.joystick_x_inverted.get()
     

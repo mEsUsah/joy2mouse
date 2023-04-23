@@ -110,11 +110,12 @@ def load_config():
 
     try:
         config.set_translation_method(current_config.getint('JOYSTICK', 'translation_method'))
-        config.set_joystick_selected(current_config.get('JOYSTICK', 'selected_joystick'))
         config.set_joystick_resolution(current_config.getint('JOYSTICK', 'joystick_resolution'))
+        config.set_joystick_selected(current_config.get('JOYSTICK', 'selected_joystick'))
         config.set_joystick_x_axis(current_config.get('JOYSTICK', 'selected_x_axis'))
+        config.set_joystick_y_axis(current_config.get('JOYSTICK', 'selected_y_axis'))
     except:
-        tk.messagebox.showerror("Opening error", "Broken config file")
+        tk.messagebox.showerror("Open error", "Broken config file")
 
 # Get game screen size
 screen_x = None
