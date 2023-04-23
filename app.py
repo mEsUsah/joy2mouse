@@ -46,7 +46,23 @@ def save_config():
     global current_config_file
 
     if current_config_file == 'default.ini':
-        current_config_file = utils.files.gui_save_as_path()
+        file_path = utils.files.gui_save_as_path()
+        if not file_path:
+            return # User canceled the save dialog
+        current_config_file = file_path
+
+    current_config = get_current_config()
+    with open(current_config_file, 'w') as configfile:
+        current_config.write(configfile)
+
+
+def save_config_as():
+    global current_config_file
+
+    file_path = utils.files.gui_save_as_path()
+    if not file_path:
+        return # User canceled the save dialog
+    current_config_file = file_path
 
     current_config = get_current_config()
     with open(current_config_file, 'w') as configfile:
