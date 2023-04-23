@@ -1,4 +1,6 @@
 venv/
+dist/
+build/
 __pycache__/
 gui/__pycache__/
 gui/run/__pycache__/

@@ -1,0 +1,1 @@
+pyinstaller --onefile --noconsole --icon=favicon.ico app.py

@@ -1,6 +1,11 @@
+altgraph==0.17.3
 keyboard==0.13.5
 mouse==0.7.1
+pefile==2023.2.7
 PyDirectInput==1.0.4
 pygame==2.3.0
+pyinstaller==5.10.1
+pyinstaller-hooks-contrib==2023.2
+pywin32-ctypes==0.2.0
 screeninfo==0.8.1
 six==1.16.0
