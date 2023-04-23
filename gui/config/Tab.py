@@ -567,6 +567,11 @@ class Tab():
         return self.activation_method.get()
 
 
+    def set_activation_method(self, value):
+        self.activation_method.set(value)
+        self.update_button_selection()
+
+
     def get_buttonbox_selected(self):
         selected_name = self.buttonbox_selected.get()
         if selected_name != "None":

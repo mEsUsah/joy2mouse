@@ -111,6 +111,7 @@ def load_config():
     current_config.read(current_config_file)
 
     try:
+        # Joystick
         config.set_translation_method(current_config.getint('JOYSTICK', 'translation_method'))
         config.set_joystick_resolution(current_config.getint('JOYSTICK', 'joystick_resolution'))
         config.set_joystick_selected(current_config.get('JOYSTICK', 'selected_joystick'))
@@ -128,6 +129,10 @@ def load_config():
         config.set_autocenter(current_config.getboolean('JOYSTICK', 'autocenter'))
         config.set_autocenter_key(current_config.get('JOYSTICK', 'autocenter_key'))
         deadzone = current_config.getint('JOYSTICK', 'deadzone')
+
+
+        # Buttonbox
+        config.set_activation_method(current_config.getint('BUTTONBOX', 'selected_activation_method'))
     except:
         tk.messagebox.showerror("Open error", "Broken config file")
 
