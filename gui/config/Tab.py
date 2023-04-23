@@ -636,6 +636,10 @@ class Tab():
         return self.buttonbox_deactivate_inverted.get()
 
 
+    def set_deactivation_button_inverted(self,value):
+        return self.buttonbox_deactivate_inverted.set(value)
+
+
     def get_mouse_left(self):
         selected_button = self.mouse_left_selected.get()
         if selected_button != "None":

@@ -137,6 +137,7 @@ def load_config():
         config.set_activation_button(current_config.get('BUTTONBOX', 'activation_button'))
         config.set_deactivation_button(current_config.get('BUTTONBOX', 'deactivation_button'))
         config.set_activation_button_inverted(current_config.getboolean('BUTTONBOX', 'activation_button_inverted'))
+        config.set_deactivation_button_inverted(current_config.getboolean('BUTTONBOX', 'deactivation_button_inverted'))
     except:
         tk.messagebox.showerror("Open error", "Broken config file")
 
