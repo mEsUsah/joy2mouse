@@ -611,6 +611,10 @@ class Tab():
         
     def get_activation_button_inverted(self):
         return self.buttonbox_activate_inverted.get()
+
+
+    def set_activation_button_inverted(self,value):
+        return self.buttonbox_activate_inverted.set(value)
     
 
     def get_deactivation_button(self):
