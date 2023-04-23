@@ -1,6 +1,7 @@
 venv/
 dist/
 build/
+app.spec
 __pycache__/
 gui/__pycache__/
 gui/run/__pycache__/
