@@ -233,6 +233,8 @@ activated = False
 current_config_file = 'default.ini'
 current_config_default = True
 
+# load_config()
+
 
 # Main loop
 while app_running:
@@ -382,7 +384,7 @@ while app_running:
                         )
 
                         mouse_x_pos = screen_x_center + x_axis_value
-                        mouse_y_pos = screen_y_center - y_axis_value
+                        mouse_y_pos = screen_y_center + y_axis_value
                         pydirectinput.moveTo(mouse_x_pos, mouse_y_pos, _pause=False)
 
                     elif translation_method == 3: # relavitve mouse movement
