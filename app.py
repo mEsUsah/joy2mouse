@@ -11,6 +11,7 @@ from tkinter import ttk
 from screeninfo import get_monitors
 import gui
 import utils
+import os
 
 def stop_app():
     global app_running
@@ -98,6 +99,23 @@ def get_current_config():
     return current_config
 
 
+def load_config():
+    global current_config_file
+    global current_config_default
+    if current_config_default:
+        current_config_file = os.path.join(os.getcwd(), 'default.ini')
+    
+    current_config = configparser.ConfigParser()
+    current_config.read(current_config_file)
+
+    try:
+        config.set_translation_method(current_config.getint('JOYSTICK', 'translation_method'))
+        config.set_joystick_selected(current_config.get('JOYSTICK', 'selected_joystick'))
+        config.set_joystick_resolution(current_config.getint('JOYSTICK', 'joystick_resolution'))
+        config.set_joystick_x_axis(current_config.get('JOYSTICK', 'selected_x_axis'))
+    except:
+        tk.messagebox.showerror("Opening error", "Broken config file")
+
 # Get game screen size
 screen_x = None
 screen_y = None
@@ -128,6 +146,7 @@ window.config(menu=menu)
 
 file_menu = tk.Menu(menu, tearoff=False)
 menu.add_cascade(label="File", menu=file_menu)
+file_menu.add_command(label="Open...", command=load_config)
 file_menu.add_command(label="Save", command=save_config)
 file_menu.add_command(label="Save As...", command=save_config_as)
 file_menu.add_separator()
@@ -173,6 +192,7 @@ activate_button_released = True
 deactivate_button_released = True
 activated = False
 current_config_file = 'default.ini'
+current_config_default = True
 
 
 # Main loop

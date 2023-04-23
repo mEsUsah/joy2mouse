@@ -458,6 +458,10 @@ class Tab():
 
     def get_translation_method(self):
         return self.translation_method.get()
+    
+
+    def set_translation_method(self, value):
+        self.translation_method.set(value)
 
 
     def get_autocenter(self):
@@ -475,6 +479,10 @@ class Tab():
         return self.joystick_resolution.get()
 
 
+    def set_joystick_resolution(self, value):
+        self.joystick_resolution.set(value)
+
+
     def get_joystick_selected(self):
         selected_name = self.joystick_selected.get()
         if selected_name != "None":
@@ -485,6 +493,18 @@ class Tab():
             return None
         
 
+    def set_joystick_selected(self, guid):
+        if guid != None:
+            for device in self.joysticks.values():
+                if device.get_guid() == guid:
+                    value = device.get_name()
+                    self.joystick_selected.set(value)
+                    self.update_axis_selection()
+                    return True
+        
+            return False
+        
+
     def get_joystick_x_axis(self):
         selected_x_axise = self.joystick_x_selected.get()
         if selected_x_axise != "None":
@@ -492,6 +512,13 @@ class Tab():
         else:
             return None
     
+
+    def set_joystick_x_axis(self, value):
+        if value != "None":
+            self.joystick_x_selected.set(int(value)+1)
+        else:
+            self.joystick_x_selected.set("None")
+
     
     def get_joystick_y_axis(self):
         selected_y_axise = self.joystick_y_selected.get()
