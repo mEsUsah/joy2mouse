@@ -102,6 +102,8 @@ def get_current_config():
 def load_config():
     global current_config_file
     global current_config_default
+    global deadzone
+
     if current_config_default:
         current_config_file = os.path.join(os.getcwd(), 'default.ini')
     
@@ -125,6 +127,7 @@ def load_config():
         
         config.set_autocenter(current_config.getboolean('JOYSTICK', 'autocenter'))
         config.set_autocenter_key(current_config.get('JOYSTICK', 'autocenter_key'))
+        deadzone = current_config.getint('JOYSTICK', 'deadzone')
     except:
         tk.messagebox.showerror("Open error", "Broken config file")
 
