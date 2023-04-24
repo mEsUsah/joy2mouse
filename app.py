@@ -206,7 +206,7 @@ config = gui.config.Tab(config_tab)
 # Credits
 bottomFrame = ttk.Frame(window)
 bottomFrame.pack(side="bottom", fill="x")
-versionLabel = ttk.Label(bottomFrame, text="v1.0.0")
+versionLabel = ttk.Label(bottomFrame, text=utils.APP_VERSION)
 versionLabel.pack(side="right", fill="x", padx=10, pady=10)
 
 creditsLabel = ttk.Label(bottomFrame, text="Created by Stanley Skarshaug - www.haxor.no")
