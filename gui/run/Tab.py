@@ -23,15 +23,16 @@ class Tab():
             self.row_1,
             text="Arm",
             variable=self.armed,
+            state="disabled",
             command=self.update_status
         )
         self.arm_button.pack(side="top", fill="x", padx=10)
 
         self.status_label = ttk.Label(
             self.row_1,
-            text="Disarmed",
+            text="Not configured",
             foreground="white",
-            background="green",
+            background="gray",
             font=("Helvetica", 16),
             anchor="center",
             padding=20,
