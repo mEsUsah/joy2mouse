@@ -25,15 +25,14 @@ def joystick_config_ready():
     global activation_button
     global autocenter
     global autocenter_key
-    
-    if selected_joystick == None or \
-        selected_x_axis == None or \
-        selected_y_axis == None or \
-        selected_buttonbox == None or \
-        activation_button == None:
-            return False
+
+    if (not selected_joystick == None or \
+        not selected_buttonbox == None and \
+        not activation_button == None) and \
+        (not selected_x_axis == None or not selected_y_axis == None):
+            return True
     else:
-        return True
+        return False
     
 
 def handle_inverted_axis(axis, inverted):
@@ -357,13 +356,25 @@ while app_running:
                     last_mouse_y = joystick_resolution
 
         # Handle joystick input
-        if selected_joystick and selected_x_axis != None and selected_y_axis != None:
+        if selected_joystick and (selected_x_axis != None or selected_y_axis != None):
             if joy.get_guid() == selected_joystick:
                 if active:
+
+                    # Handle one axis set to None
+                    if selected_x_axis == None:
+                        joystick_x_axis = 0
+                    else:
+                        joystick_x_axis = joy.get_axis(selected_x_axis)
+                    
+                    if selected_y_axis == None:
+                        joystick_y_axis = 0
+                    else:
+                        joystick_y_axis = joy.get_axis(selected_y_axis)
+
                     # set mouse position
                     if translation_method == 1: # default
-                        x_axis_value = int(joy.get_axis(selected_x_axis) * 5000)
-                        y_axis_value = int(joy.get_axis(selected_y_axis) * 5000)
+                        x_axis_value = int(joystick_x_axis * 5000)
+                        y_axis_value = int(joystick_y_axis * 5000)
                         
                         x_axis_value, y_axis_value = handle_inverted_axis(
                             [x_axis_value, y_axis_value], 
@@ -375,8 +386,8 @@ while app_running:
                         pydirectinput.moveTo(mouse_x_pos, mouse_y_pos, _pause=False)
 
                     elif translation_method == 2: # absolute mouse movement
-                        x_axis_value = int(joy.get_axis(selected_x_axis) * screen_x_center)
-                        y_axis_value = int(joy.get_axis(selected_y_axis) * screen_y_center)
+                        x_axis_value = int(joystick_x_axis * screen_x_center)
+                        y_axis_value = int(joystick_y_axis * screen_y_center)
 
                         x_axis_value, y_axis_value = handle_inverted_axis(
                             [x_axis_value, y_axis_value], 
@@ -388,8 +399,8 @@ while app_running:
                         pydirectinput.moveTo(mouse_x_pos, mouse_y_pos, _pause=False)
 
                     elif translation_method == 3: # relavitve mouse movement
-                        x_axis_value = int(joy.get_axis(selected_x_axis) * joystick_resolution)
-                        y_axis_value = int(joy.get_axis(selected_y_axis) * joystick_resolution)
+                        x_axis_value = int(joystick_x_axis * joystick_resolution)
+                        y_axis_value = int(joystick_y_axis * joystick_resolution)
                         mouse_Dx = x_axis_value - last_mouse_x
                         mouse_Dy = y_axis_value - last_mouse_y
 
