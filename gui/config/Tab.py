@@ -281,8 +281,10 @@ class Tab():
         if self.joystick_selected.get() != "None":
             for device in self.joysticks.values():
                 if device.get_name() == self.joystick_selected.get():
-                    axis_list = [x+1 for x in range(device.get_numaxes())]
-                    button_list = [x+1 for x in range(device.get_numbuttons())]
+                    axis_list = ["None"]
+                    axis_list.extend([x+1 for x in range(device.get_numaxes())])
+                    button_list = ["None"]
+                    button_list.extend([x+1 for x in range(device.get_numbuttons())])
 
                     # X axis selection
                     self.x_axis_label = ttk.Label(
@@ -404,7 +406,8 @@ class Tab():
         if self.buttonbox_selected.get() != "None":
             for device in self.joysticks.values():
                 if device.get_name() == self.buttonbox_selected.get():
-                    button_list = [x+1 for x in range(device.get_numbuttons())]
+                    button_list = ["None"]
+                    button_list.extend([x+1 for x in range(device.get_numbuttons())])
 
                     # Activate button selection
                     self.activate_button_label = ttk.Label(
