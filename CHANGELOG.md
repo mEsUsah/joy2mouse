@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Support for single joystick axis
+- Check for updates
 
 ### Fixes
 - Made it possible to unselect buttons and axis
