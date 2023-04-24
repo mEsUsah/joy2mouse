@@ -1,7 +1,24 @@
 # joy2mouse
 Simple app to translate joystick axis to mouse movement for Windows hosts.
 
+
 ## Installation
+- Go to the [latest release page](https://github.com/mEsUsah/joy2mouse/releases/latest), and download the .exe file. 
+- Execute the program. This program does not require any installation.
+- Ignore the Windows Defender "unsigned software warning".
+
+## Usage
+- Configure joystick and activation method.
+- Check the "Arm" checkmark
+- Start game
+- Activate/Deactivate with configured activation method to start translating joystick movement to mouse movement.
+
+
+## Notes:
+- The program will talk to the github API to check for new releases on startup.
+
+
+## Source code installation - for devs
 For running and working on source code
 ```cmd
 # Activate virtual environment
