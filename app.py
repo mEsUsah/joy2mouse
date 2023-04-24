@@ -213,6 +213,10 @@ creditsLabel = ttk.Label(bottomFrame, text="Created by Stanley Skarshaug - www.h
 creditsLabel.pack(side="left", fill="x", padx=10, pady=10)
 
 
+#Check for updates
+utils.releases.check_updates()
+
+
 # Start the app
 pygame.init()
 pydirectinput.FAILSAFE = False # allow mouse to go outside of screen
