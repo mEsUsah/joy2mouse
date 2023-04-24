@@ -4,7 +4,7 @@ import json
 import tkinter as tk
 import webbrowser
 
-APP_VERSION = "v1.0.0"
+APP_VERSION = "v1.0.1"
 
 def check_updates():
     url = "https://api.github.com/repos/mEsUsah/joy2mouse/releases/latest"
@@ -15,7 +15,6 @@ def check_updates():
     
     response = requests.get(url, headers=headers)
     data = json.loads(response.text)
-    print(data['name'])
     if data['name'] != APP_VERSION:
         message = f"""Joy2mouse {data['name']} is released!
             
