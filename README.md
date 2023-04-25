@@ -12,6 +12,7 @@ Simple app to translate joystick axis to mouse movement for Windows hosts.
 - Check the "Arm" checkmark
 - Start game
 - Activate/Deactivate with configured activation method to start translating joystick movement to mouse movement.
+- For a more in-depth user manual read my blog post over at [www.haxor.no](https://haxor.no/en/article/joy2mouse).
 
 
 ## Notes:
