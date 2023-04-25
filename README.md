@@ -15,6 +15,7 @@ Simple app to translate joystick axis to mouse movement for Windows hosts.
 
 
 ## Notes:
+- This is a work in progress - look at the [TODO](https://github.com/mEsUsah/joy2mouse/blob/master/TODO.md) for features I want to implement.
 - The program will talk to the github API to check for new releases on startup.
 
 
