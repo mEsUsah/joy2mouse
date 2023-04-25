@@ -1,7 +1,6 @@
 # joy2mouse
 Simple app to translate joystick axis to mouse movement for Windows hosts.
 
-## Pending taks
 ### Run
 - [ ] Cooler / more enjoyable arm button
 
@@ -13,6 +12,7 @@ Simple app to translate joystick axis to mouse movement for Windows hosts.
 
 
 ### Config
+- [x] Handle single axis mouse control
 - [ ] Smoother switch between activation methods
 - [ ] Handle missing controller in saved config
 - [ ] Sensitivity adjustments
@@ -23,13 +23,13 @@ Simple app to translate joystick axis to mouse movement for Windows hosts.
 - [ ] About window, showing version, and available verison with link
 
 
+### General
+- [X] Check for new releases
+
+
 ### Blog
 - [ ] Proper manual that explains every detail of the program for end-users.
 
 
-## Completed tasks
-### Config
-- [x] Handle single axis mouse control
 
-### General
-- [X] Check for new releases
+
