@@ -7,6 +7,7 @@ class Tab():
     def __init__(self, tab):
         '''This is the test tab for running the application'''
         self.joysticks = {}
+        self.device_data= {}
         
         self.row_1 = ttk.Frame(tab)
         self.row_1.pack(side="top", expand=1, fill="both")
@@ -37,16 +38,58 @@ class Tab():
         self.device_list_label.pack(side="top", fill="x", padx=10, pady=(6,6))
 
         # add new widgets for each device
-        for device in self.joysticks.values():
+        self.device_data = {}
+        for device_index, device in enumerate(self.joysticks.values()):
+            self.device_data[device_index] = {}
             ttk.Label(
                 self.row_1,
                 text=device.get_name(),
             ).pack(side="top", fill="x", padx=10)
             ttk.Label(
                 self.row_1,
-                text="GUID: " + device.get_guid(),
+                text=f"GUID: {device.get_guid()}",
                 font="TkDefaultFont 8",
             ).pack(side="top", fill="x", padx=10, pady=(0,8))
+            
+            # Add Axis
+            axis = device.get_numaxes()
+            if axis:
+                self.device_data[device_index]['axis'] = []
+                for i in range(axis):
+                    axis_row = ttk.Frame(self.row_1)
+                    axis_row.pack(side="top", fill="x", padx=10, pady=(0,4))
 
+                    axis_label = ttk.Label(
+                        axis_row,
+                        text=f"Axis {i+1}:",
+                        font="TkDefaultFont 8",
+                    )
+                    axis_label.pack(side="left", padx=(0,10))
+
+                    
+                    canvas = tk.Canvas(axis_row,
+                        width=200,
+                        height=10,
+                        highlightthickness=1,
+                        highlightbackground="black"
+                    )
+                    canvas.pack(side="left", fill="x")
+                    self.device_data[device_index]['axis'].append(canvas)
+
+
+    def update_axis_view(self):
+        for device_index, device in enumerate(self.joysticks.values()):   
+            for i in range(device.get_numaxes()):
+                self.device_data[device_index]['axis'][i].delete("all")
+                self.device_data[device_index]['axis'][i].create_rectangle(
+                    1, 
+                    1, 
+                    int(device.get_axis(i)*100)+100, 
+                    13, 
+                    fill="red", 
+                    outline=""
+                )
+                
+        
     def open_win_joystick(self):
         os.system('%SystemRoot%\System32\joy.cpl')
