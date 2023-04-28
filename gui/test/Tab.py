@@ -106,52 +106,55 @@ class Tab():
 
     def update_axis_view(self):
         for device_index, device in enumerate(self.joysticks.values()):   
-            for i in range(device.get_numaxes()):
-                self.device_data[device_index]['axis'][i].delete("all")
-                self.device_data[device_index]['axis'][i].create_rectangle(
-                    1, 
-                    1, 
-                    int(device.get_axis(i)*100)+100, 
-                    13, 
-                    fill="red", 
-                    outline=""
-                )
+            axis = device.get_numaxes()
+            if axis:
+                for i in range(device.get_numaxes()):
+                    self.device_data[device_index]['axis'][i].delete("all")
+                    self.device_data[device_index]['axis'][i].create_rectangle(
+                        1, 
+                        1, 
+                        int(device.get_axis(i)*100)+100, 
+                        13, 
+                        fill="red", 
+                        outline=""
+                    )
             
-            canvas = self.device_data[device_index]['buttons']
-            canvas.delete("all")
             buttons = device.get_numbuttons()
-            nCols = 10
-            for i in range(buttons):
-                if device.get_button(i):
-                    canvas.create_rectangle(
-                        self.button_margin +(i%nCols) * self.button_height,
-                        self.button_margin + math.floor(i / nCols) * self.button_height,
-                        (self.button_height) + (i % nCols) * self.button_height,
-                        (self.button_height) + math.floor(i / nCols) * self.button_height,
-                        fill="red",
-                        outline="black",
-                    )
-                    canvas.create_text(
-                        ((self.button_height + self.button_margin) / 2) + (i % nCols) * self.button_height,
-                        ((self.button_height + self.button_margin) / 2) + math.floor(i / nCols) * self.button_height,
-                        text=i+1,
-                        fill="white",
-                    )
-                else:
-                    canvas.create_rectangle(
-                        self.button_margin +(i%nCols) * self.button_height,
-                        self.button_margin + math.floor(i / nCols) * self.button_height,
-                        (self.button_height) + (i % nCols) * self.button_height,
-                        (self.button_height) + math.floor(i / nCols) * self.button_height,
-                        fill="white",
-                        outline="black",
-                    )
-                    canvas.create_text(
-                        ((self.button_height + self.button_margin) / 2) + (i % nCols) * self.button_height,
-                        ((self.button_height + self.button_margin) / 2) + math.floor(i / nCols) * self.button_height,
-                        text=i+1,
-                        fill="black",
-                    )
+            if buttons:
+                canvas = self.device_data[device_index]['buttons']
+                canvas.delete("all")
+                nCols = 10
+                for i in range(buttons):
+                    if device.get_button(i):
+                        canvas.create_rectangle(
+                            self.button_margin +(i%nCols) * self.button_height,
+                            self.button_margin + math.floor(i / nCols) * self.button_height,
+                            (self.button_height) + (i % nCols) * self.button_height,
+                            (self.button_height) + math.floor(i / nCols) * self.button_height,
+                            fill="red",
+                            outline="black",
+                        )
+                        canvas.create_text(
+                            ((self.button_height + self.button_margin) / 2) + (i % nCols) * self.button_height,
+                            ((self.button_height + self.button_margin) / 2) + math.floor(i / nCols) * self.button_height,
+                            text=i+1,
+                            fill="white",
+                        )
+                    else:
+                        canvas.create_rectangle(
+                            self.button_margin +(i%nCols) * self.button_height,
+                            self.button_margin + math.floor(i / nCols) * self.button_height,
+                            (self.button_height) + (i % nCols) * self.button_height,
+                            (self.button_height) + math.floor(i / nCols) * self.button_height,
+                            fill="white",
+                            outline="black",
+                        )
+                        canvas.create_text(
+                            ((self.button_height + self.button_margin) / 2) + (i % nCols) * self.button_height,
+                            ((self.button_height + self.button_margin) / 2) + math.floor(i / nCols) * self.button_height,
+                            text=i+1,
+                            fill="black",
+                        )
                 
         
     def open_win_joystick(self):
