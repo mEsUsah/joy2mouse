@@ -9,6 +9,9 @@ class Tab():
         '''This is the test tab for running the application'''
         self.joysticks = {}
         self.device_data= {}
+
+        self.button_height = 25
+        self.button_margin = 2
         
         self.row_1 = ttk.Frame(tab)
         self.row_1.pack(side="top", expand=1, fill="both")
@@ -84,24 +87,15 @@ class Tab():
                 button_row = ttk.Frame(self.row_1, width=300)
                 button_row.pack(side="top", fill="x", padx=10, pady=(0,4))
                 nCols = 10
-                cRows = math.ceil(buttons/nCols)
+                nRows = math.ceil(buttons/nCols)
 
                 canvas = tk.Canvas(
                     button_row,
                     width=240,
-                    height=22*cRows,
+                    height=(self.button_height+self.button_margin) * nRows,
                 )
                 canvas.pack(side="top", fill="x")
 
-                for i in range(buttons):
-                    canvas.create_rectangle(
-                        2+(i%nCols)*24,
-                        2+math.floor(i/nCols)*22,
-                        10+(i%nCols)*24,
-                        10+math.floor(i/nCols)*22,
-                        fill="white",
-                        outline="black",
-                    )
                 self.device_data[device_index]['buttons'] = canvas
 
 
@@ -125,21 +119,33 @@ class Tab():
             for i in range(buttons):
                 if device.get_button(i):
                     canvas.create_rectangle(
-                        2+(i%nCols)*24,
-                        2+math.floor(i/nCols)*24,
-                        22+(i%nCols)*24,
-                        22+math.floor(i/nCols)*24,
+                        self.button_margin +(i%nCols) * self.button_height,
+                        self.button_margin + math.floor(i / nCols) * self.button_height,
+                        (self.button_height) + (i % nCols) * self.button_height,
+                        (self.button_height) + math.floor(i / nCols) * self.button_height,
                         fill="red",
                         outline="black",
                     )
+                    canvas.create_text(
+                        ((self.button_height + self.button_margin) / 2) + (i % nCols) * self.button_height,
+                        ((self.button_height + self.button_margin) / 2) + math.floor(i / nCols) * self.button_height,
+                        text=i+1,
+                        fill="white",
+                    )
                 else:
                     canvas.create_rectangle(
-                        2+(i%nCols)*24,
-                        2+math.floor(i/nCols)*24,
-                        22+(i%nCols)*24,
-                        22+math.floor(i/nCols)*24,
+                        self.button_margin +(i%nCols) * self.button_height,
+                        self.button_margin + math.floor(i / nCols) * self.button_height,
+                        (self.button_height) + (i % nCols) * self.button_height,
+                        (self.button_height) + math.floor(i / nCols) * self.button_height,
                         fill="white",
                         outline="black",
+                    )
+                    canvas.create_text(
+                        ((self.button_height + self.button_margin) / 2) + (i % nCols) * self.button_height,
+                        ((self.button_height + self.button_margin) / 2) + math.floor(i / nCols) * self.button_height,
+                        text=i+1,
+                        fill="black",
                     )
                 
         
