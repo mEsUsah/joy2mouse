@@ -275,7 +275,9 @@ while app_running:
 
 
     run.set_run_status(active, configured=joystick_config_ready())
-    test.update_axis_view()
+    
+    if main_control_tab.index("current") == 1: # Test tab
+        test.update_axis_view()
 
 
     # Handle PyGame events

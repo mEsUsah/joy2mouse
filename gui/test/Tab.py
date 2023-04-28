@@ -81,28 +81,28 @@ class Tab():
             # Add Buttons
             buttons = device.get_numbuttons()
             if buttons:
-                self.device_data[device_index]['buttons'] = []
                 button_row = ttk.Frame(self.row_1, width=300)
                 button_row.pack(side="top", fill="x", padx=10, pady=(0,4))
                 nCols = 10
                 cRows = math.ceil(buttons/nCols)
 
+                canvas = tk.Canvas(
+                    button_row,
+                    width=240,
+                    height=22*cRows,
+                )
+                canvas.pack(side="top", fill="x")
+
                 for i in range(buttons):
-                    canvas = tk.Canvas(
-                        button_row,
-                        width=10,
-                        height=10,
-                        highlightthickness=1,
-                        highlightbackground="black",
-                        background="white",
+                    canvas.create_rectangle(
+                        2+(i%nCols)*24,
+                        2+math.floor(i/nCols)*22,
+                        10+(i%nCols)*24,
+                        10+math.floor(i/nCols)*22,
+                        fill="white",
+                        outline="black",
                     )
-                    canvas.grid(
-                        column=i % nCols,
-                        row=math.floor(i/nCols),
-                        padx=2,
-                        pady=2,
-                    )
-                    self.device_data[device_index]['buttons'].append(canvas)
+                self.device_data[device_index]['buttons'] = canvas
 
 
     def update_axis_view(self):
@@ -117,14 +117,29 @@ class Tab():
                     fill="red", 
                     outline=""
                 )
-            for i in range(device.get_numbuttons()):
+            
+            canvas = self.device_data[device_index]['buttons']
+            canvas.delete("all")
+            buttons = device.get_numbuttons()
+            nCols = 10
+            for i in range(buttons):
                 if device.get_button(i):
-                    self.device_data[device_index]['buttons'][i].config(
-                        background="red",
+                    canvas.create_rectangle(
+                        2+(i%nCols)*24,
+                        2+math.floor(i/nCols)*24,
+                        22+(i%nCols)*24,
+                        22+math.floor(i/nCols)*24,
+                        fill="red",
+                        outline="black",
                     )
                 else:
-                    self.device_data[device_index]['buttons'][i].config(
-                        background="white",
+                    canvas.create_rectangle(
+                        2+(i%nCols)*24,
+                        2+math.floor(i/nCols)*24,
+                        22+(i%nCols)*24,
+                        22+math.floor(i/nCols)*24,
+                        fill="white",
+                        outline="black",
                     )
                 
         
