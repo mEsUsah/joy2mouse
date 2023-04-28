@@ -13,6 +13,7 @@ import gui
 import utils
 import os
 import sys
+import webbrowser
 
 def stop_app():
     global app_running
@@ -155,6 +156,11 @@ def load_config():
     except:
         tk.messagebox.showerror("Open error", "Broken config file")
 
+
+def open_manual():
+    webbrowser.open("https://haxor.no/en/article/joy2mouse")
+
+
 # Get game screen size
 screen_x = None
 screen_y = None
@@ -191,6 +197,10 @@ file_menu.add_command(label="Save", command=save_config)
 file_menu.add_command(label="Save As...", command=save_config_as)
 file_menu.add_separator()
 file_menu.add_command(label="Exit", command=stop_app)
+
+help_menu = tk.Menu(menu, tearoff=False)
+menu.add_cascade(label="Help", menu=help_menu)
+help_menu.add_command(label="User manual", command=open_manual)
 
 
 # Tab setup
