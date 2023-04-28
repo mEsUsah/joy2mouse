@@ -5,6 +5,7 @@ idna==3.4
 keyboard==0.13.5
 mouse==0.7.1
 pefile==2023.2.7
+Pillow==9.5.0
 PyDirectInput==1.0.4
 pygame==2.3.0
 pyinstaller==5.10.1
@@ -13,4 +14,5 @@ pywin32-ctypes==0.2.0
 requests==2.28.2
 screeninfo==0.8.1
 six==1.16.0
+tkhtmlview==0.2.0
 urllib3==1.26.15
