@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - New logo
 - Visualization of all input axis
+- Visualizetion of all input buttons
 
 ## [1.0.1] - 2023.04.24
 ### Added

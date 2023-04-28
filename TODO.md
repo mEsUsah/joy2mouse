@@ -7,7 +7,7 @@ Simple app to translate joystick axis to mouse movement for Windows hosts.
 ### Test
 - [ ] List missing required configuratin
 - [ ] View selected inputs (axis and buttons)
-- [ ] Show all axis and buttons on connected joysticks
+- [X] Show all axis and buttons on connected joysticks
 - [ ] Show missing controllers from saved config
 
 
