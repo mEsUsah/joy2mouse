@@ -12,6 +12,7 @@ from screeninfo import get_monitors
 import gui
 import utils
 import os
+import sys
 
 def stop_app():
     global app_running
@@ -172,6 +173,7 @@ window.title("Joy 2 Mouse")
 window.geometry("-100+100")
 window.resizable(False, False)
 window.protocol("WM_DELETE_WINDOW", stop_app)
+# window.iconbitmap(sys.executable)
 
 main_control_tab = ttk.Notebook(window)
 run_tab = ttk.Frame(main_control_tab)

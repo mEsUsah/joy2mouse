@@ -1,1 +1,1 @@
-pyinstaller --onefile --noconsole --icon=favicon.ico app.py
+pyinstaller --onefile --noconsole --icon=logo.ico --name=joy2mouse app.py
