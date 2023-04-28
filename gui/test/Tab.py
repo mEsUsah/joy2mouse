@@ -88,23 +88,21 @@ class Tab():
                 cRows = math.ceil(buttons/nCols)
 
                 for i in range(buttons):
-                    label = ttk.Label(
+                    canvas = tk.Canvas(
                         button_row,
-                        text=f"{i+1}",
-                        font="TkDefaultFont 8",
+                        width=10,
+                        height=10,
+                        highlightthickness=1,
+                        highlightbackground="black",
                         background="white",
-                        anchor="center",
-                        borderwidth=2,
-                        relief="solid",
-                        width=3,
                     )
-                    label.grid(
+                    canvas.grid(
                         column=i % nCols,
                         row=math.floor(i/nCols),
                         padx=2,
                         pady=2,
                     )
-                    self.device_data[device_index]['buttons'].append(label)
+                    self.device_data[device_index]['buttons'].append(canvas)
 
 
     def update_axis_view(self):
@@ -119,17 +117,17 @@ class Tab():
                     fill="red", 
                     outline=""
                 )
-            for i in range(device.get_numbuttons()):
-                if device.get_button(i):
-                    self.device_data[device_index]['buttons'][i].config(
-                        background="red",
-                        foreground="white",
-                    )
-                else:
-                    self.device_data[device_index]['buttons'][i].config(
-                        background="white",
-                        foreground="black",
-                    )
+            # for i in range(device.get_numbuttons()):
+            #     if device.get_button(i):
+            #         self.device_data[device_index]['buttons'][i].config(
+            #             background="red",
+            #             foreground="white",
+            #         )
+            #     else:
+            #         self.device_data[device_index]['buttons'][i].config(
+            #             background="white",
+            #             foreground="black",
+            #         )
                 
         
     def open_win_joystick(self):
