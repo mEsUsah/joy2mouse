@@ -2,6 +2,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import gui
 import os
+import math
 
 class Tab():
     def __init__(self, tab):
@@ -71,10 +72,39 @@ class Tab():
                         width=200,
                         height=10,
                         highlightthickness=1,
-                        highlightbackground="black"
+                        highlightbackground="black",
+                        background="white",
                     )
                     canvas.pack(side="left", fill="x")
                     self.device_data[device_index]['axis'].append(canvas)
+
+            # Add Buttons
+            buttons = device.get_numbuttons()
+            if buttons:
+                self.device_data[device_index]['buttons'] = []
+                button_row = ttk.Frame(self.row_1, width=300)
+                button_row.pack(side="top", fill="x", padx=10, pady=(0,4))
+                nCols = 10
+                cRows = math.ceil(buttons/nCols)
+
+                for i in range(buttons):
+                    label = ttk.Label(
+                        button_row,
+                        text=f"{i+1}",
+                        font="TkDefaultFont 8",
+                        background="white",
+                        anchor="center",
+                        borderwidth=2,
+                        relief="solid",
+                        width=3,
+                    )
+                    label.grid(
+                        column=i % nCols,
+                        row=math.floor(i/nCols),
+                        padx=2,
+                        pady=2,
+                    )
+                    self.device_data[device_index]['buttons'].append(label)
 
 
     def update_axis_view(self):
