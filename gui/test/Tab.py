@@ -117,17 +117,15 @@ class Tab():
                     fill="red", 
                     outline=""
                 )
-            # for i in range(device.get_numbuttons()):
-            #     if device.get_button(i):
-            #         self.device_data[device_index]['buttons'][i].config(
-            #             background="red",
-            #             foreground="white",
-            #         )
-            #     else:
-            #         self.device_data[device_index]['buttons'][i].config(
-            #             background="white",
-            #             foreground="black",
-            #         )
+            for i in range(device.get_numbuttons()):
+                if device.get_button(i):
+                    self.device_data[device_index]['buttons'][i].config(
+                        background="red",
+                    )
+                else:
+                    self.device_data[device_index]['buttons'][i].config(
+                        background="white",
+                    )
                 
         
     def open_win_joystick(self):
