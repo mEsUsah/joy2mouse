@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import gui
+import utils
 import os
 import math
 
@@ -13,7 +14,11 @@ class Tab():
         self.button_height = 25
         self.button_margin = 2
         
-        self.row_1 = ttk.Frame(tab)
+        self.row_1 = utils.gui.VerticalScrolledFrame(
+            tab, 
+            height=600,
+            width=170,
+        )
         self.row_1.pack(side="top", expand=1, fill="both")
 
         self.row_2 = ttk.Frame(tab)
@@ -30,12 +35,12 @@ class Tab():
     def update_device_list(self, joysticks):
         self.joysticks = joysticks
         # destroy all widgets in frame
-        for widget in self.row_1.winfo_children():
+        for widget in self.row_1.interior.winfo_children():
             widget.destroy()
 
         # add label
         self.device_list_label = ttk.Label(
-            self.row_1, 
+            self.row_1.interior, 
             text="Connected devices:",
             font="TkDefaultFont 10 bold"
         )
@@ -46,11 +51,11 @@ class Tab():
         for device_index, device in enumerate(self.joysticks.values()):
             self.device_data[device_index] = {}
             ttk.Label(
-                self.row_1,
+                self.row_1.interior,
                 text=device.get_name(),
             ).pack(side="top", fill="x", padx=10)
             ttk.Label(
-                self.row_1,
+                self.row_1.interior,
                 text=f"GUID: {device.get_guid()}",
                 font="TkDefaultFont 8",
             ).pack(side="top", fill="x", padx=10, pady=(0,8))
@@ -60,7 +65,7 @@ class Tab():
             if axis:
                 self.device_data[device_index]['axis'] = []
                 for i in range(axis):
-                    axis_row = ttk.Frame(self.row_1)
+                    axis_row = ttk.Frame(self.row_1.interior)
                     axis_row.pack(side="top", fill="x", padx=10, pady=(0,4))
 
                     axis_label = ttk.Label(
@@ -84,7 +89,7 @@ class Tab():
             # Add Buttons
             buttons = device.get_numbuttons()
             if buttons:
-                button_row = ttk.Frame(self.row_1, width=300)
+                button_row = ttk.Frame(self.row_1.interior, width=300)
                 button_row.pack(side="top", fill="x", padx=10, pady=(0,4))
                 nCols = 10
                 nRows = math.ceil(buttons/nCols)
