@@ -4,7 +4,7 @@ import json
 import tkinter as tk
 import webbrowser
 
-APP_VERSION = "v1.0.1"
+APP_VERSION = "v1.0.2"
 
 def check_updates():
     url = "https://api.github.com/repos/mEsUsah/joy2mouse/releases/latest"
