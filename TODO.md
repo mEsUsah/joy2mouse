@@ -25,6 +25,7 @@ Simple app to translate joystick axis to mouse movement for Windows hosts.
 
 ### General
 - [X] Check for new releases
+- [ ] Refactor code to make it more readable and easier to expand
 
 
 ### Blog
