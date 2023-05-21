@@ -5,6 +5,7 @@ import tkinter as tk
 import webbrowser
 
 APP_VERSION = "v1.0.3"
+APP_NAME = "Joy 2 Mouse"
 
 def check_updates():
     url = "https://api.github.com/repos/mEsUsah/joy2mouse/releases/latest"

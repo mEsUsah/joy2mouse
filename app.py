@@ -153,6 +153,9 @@ def load_config():
         config.set_deactivation_button(current_config.get('BUTTONBOX', 'deactivation_button'))
         config.set_activation_button_inverted(current_config.getboolean('BUTTONBOX', 'activation_button_inverted'))
         config.set_deactivation_button_inverted(current_config.getboolean('BUTTONBOX', 'deactivation_button_inverted'))
+
+        # Config filename
+        window.title(os.path.basename(current_config_file) + " - " + utils.releases.APP_NAME)
     except:
         tk.messagebox.showerror("Open error", "Broken config file")
 
@@ -175,7 +178,7 @@ screen_y_center = int(screen_y/2)
 
 # Create the window
 window = tk.Tk()
-window.title("Joy 2 Mouse")
+window.title(utils.releases.APP_NAME)
 window.geometry("-100+100")
 window.resizable(False, False)
 window.protocol("WM_DELETE_WINDOW", stop_app)
