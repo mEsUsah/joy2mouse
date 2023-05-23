@@ -1,40 +1,36 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import gui
+import config
 
 class Tab():
     def __init__(self, tab):
         '''Config tab in app window'''
         self.tab = tab
         self.showing_center_option = False
-        self.translation_method = tk.IntVar(value=1)
-        self.joystick_resolution = tk.IntVar(value=16)
-        self.autocenter = tk.BooleanVar(value=False)
-        self.autocenter_key = tk.StringVar(value="c")
-
         self.joysticks = {}
-        self.joystick_selected = tk.StringVar(value="None")
-        
-        self.joystick_x_selected = tk.StringVar(value="None")
-        self.joystick_x_inverted = tk.BooleanVar(value=False)
-        
-        self.joystick_y_selected = tk.StringVar(value="None")
-        self.joystick_y_inverted = tk.BooleanVar(value=False)
+        self.configModel = {
+            'translation_method': tk.IntVar(value=1),
+            'joystick_resolution': tk.IntVar(value=16),
+            'autocenter': tk.BooleanVar(value=False),
+            'autocenter_key': tk.StringVar(value="c"),
+            'joystick_selected': tk.StringVar(value="None"),
+            'joystick_x_axis': tk.StringVar(value="None"),
+            'joystick_x_inverted': tk.BooleanVar(value=False),
+            'joystick_y_axis': tk.StringVar(value="None"),
+            'joystick_y_inverted': tk.BooleanVar(value=False),
+            'mouse_left': tk.StringVar(value="None"),
+            'mouse_left_inverted': tk.BooleanVar(value=False),
+            'mouse_right': tk.StringVar(value="None"),
+            'mouse_right_inverted': tk.BooleanVar(value=False),
 
-        self.mouse_left_selected = tk.StringVar(value="None")
-        self.mouse_left_inverted = tk.BooleanVar(value=False)
-        
-        self.mouse_right_selected = tk.StringVar(value="None")
-        self.mouse_right_inverted = tk.BooleanVar(value=False)
-
-        self.activation_method = tk.IntVar(value=1)
-
-        self.buttonbox_selected = tk.StringVar(value="None")
-        self.buttonbox_activate_selected = tk.StringVar(value="None")
-        self.buttonbox_activate_inverted = tk.BooleanVar(value=False)
-
-        self.buttonbox_deactivate_selected = tk.StringVar(value="None")
-        self.buttonbox_deactivate_inverted = tk.BooleanVar(value=False)
+            'activation_method': tk.IntVar(value=1),
+            'buttonbox_selected': tk.StringVar(value="None"),
+            'activation_button': tk.StringVar(value="None"),
+            'activation_button_inverted': tk.BooleanVar(value=False),
+            'deactivation_button': tk.StringVar(value="None"),
+            'deactivation_button_inverted': tk.BooleanVar(value=False),
+        }
         
 
         self.row_1 = ttk.Frame(self.tab)
@@ -58,8 +54,9 @@ class Tab():
             ttk.Radiobutton(
                 self.row_1,
                 text=value,
-                variable=self.translation_method,
+                variable=self.configModel['translation_method'],
                 value=key,
+                command=self.update_config
             ).pack(side="top", fill="x", padx=10)
         
         self.row_2 = ttk.Frame(self.tab)
@@ -69,7 +66,7 @@ class Tab():
         self.center_option = ttk.Checkbutton(
             self.row_2,
             text="Autocenter:",
-            variable=self.autocenter,
+            variable=self.configModel['autocenter'],
             command=self.updater_autocenter,
             width=10
         )
@@ -99,7 +96,7 @@ class Tab():
             ttk.Radiobutton(
                 self.row_1,
                 text=value,
-                variable=self.joystick_resolution,
+                variable=self.configModel['joystick_resolution'],
                 value=key
             ).pack(side="top", fill="x", padx=10)
 
@@ -150,7 +147,7 @@ class Tab():
             ttk.Radiobutton(
                 self.row_9,
                 text=value,
-                variable=self.activation_method,
+                variable=self.configModel['activation_method'],
                 value=key,
                 command=self.update_button_selection
             ).pack(side="top", fill="x", padx=10)
@@ -174,6 +171,13 @@ class Tab():
         self.row_10 = ttk.Frame(self.tab)
         self.row_10.pack(side="top", expand=1, fill="both", pady=6)
 
+    def update_config(self):   
+        for key, value in self.configModel.items():
+            config.data.configModel[key] = value.get()
+
+        config.data.configModel['selected_joystick_uuid'] = self.get_joystick_selected()
+        config.data.configModel['selected_buttonbox_uuid'] = self.get_buttonbox_selected()
+
 
     def update_device_list(self, joysticks):
         self.joysticks = joysticks
@@ -189,7 +193,7 @@ class Tab():
         except:
             pass
 
-        if self.autocenter.get():
+        if self.configModel['autocenter'].get():
             self.autocenter_list_label = ttk.Label(
                 self.row_2,
                 text="Key*:",
@@ -199,7 +203,7 @@ class Tab():
             
             self.autocenter_list = ttk.Entry(
                 self.row_2,
-                textvariable=self.autocenter_key,
+                textvariable=self.configModel['autocenter_key'],
                 width=10,
             )
             self.autocenter_list.pack(side="left", fill="x", padx=10)
@@ -220,7 +224,7 @@ class Tab():
         self.joystick_list = ttk.Combobox(
             self.row_4,
             values=joystick_list_values,
-            textvariable=self.joystick_selected,
+            textvariable=self.configModel['joystick_selected'],
             state="readonly",
         )
         self.joystick_list.bind('<<ComboboxSelected>>', self.update_axis_selection)    
@@ -242,7 +246,7 @@ class Tab():
         self.buttonbox_list = ttk.Combobox(
             self.row_7,
             values=buttonbox_list_values,
-            textvariable=self.buttonbox_selected,
+            textvariable=self.configModel['buttonbox_selected'],
             state="readonly",
         )
         self.buttonbox_list.bind('<<ComboboxSelected>>', self.update_button_selection)    
@@ -255,32 +259,32 @@ class Tab():
             self.x_axis_label.destroy()
             self.x_axis_list.destroy()
             self.x_axis_inverted.destroy()
-            self.joystick_x_selected.set("None")
-            self.joystick_x_inverted.set(False)
+            self.configModel['joystick_x_axis'].set("None")
+            self.configModel['joystick_x_inverted'].set(False)
 
             self.y_axis_label.destroy()
             self.y_axis_list.destroy()
             self.y_axis_inverted.destroy()
-            self.joystick_y_selected.set("None")
-            self.joystick_y_inverted.set(False)
+            self.configModel['joystick_y_axis'].set("None")
+            self.configModel['joystick_y_inverted'].set(False)
 
             self.left_mouse_button_label.destroy()
             self.left_mouse_button_list.destroy()
             self.left_mouse_inverted.destroy()
-            self.mouse_left_selected.set("None")
-            self.mouse_left_inverted.set(False)
+            self.configModel['mouse_left'].set("None")
+            self.configModel['mouse_left_inverted'].set(False)
             
             self.right_mouse_button_label.destroy()
             self.right_mouse_button_list.destroy()
             self.right_mouse_inverted.destroy()
-            self.mouse_right_selected.set("None")
-            self.mouse_right_inverted.set(False)
+            self.configModel['mouse_right'].set("None")
+            self.configModel['mouse_right_inverted'].set(False)
         except:
             pass
 
-        if self.joystick_selected.get() != "None":
+        if self.configModel['joystick_selected'].get() != "None":
             for device in self.joysticks.values():
-                if device.get_name() == self.joystick_selected.get():
+                if device.get_name() == self.configModel['joystick_selected'].get():
                     axis_list = ["None"]
                     axis_list.extend([x+1 for x in range(device.get_numaxes())])
                     button_list = ["None"]
@@ -298,7 +302,7 @@ class Tab():
                         self.row_5,
                         values=axis_list,
                         state="readonly",
-                        textvariable=self.joystick_x_selected,
+                        textvariable=self.configModel['joystick_x_axis'],
                         width=6
                     )  
                     self.x_axis_list.pack(side="left", padx=10)
@@ -306,7 +310,7 @@ class Tab():
                     self.x_axis_inverted = ttk.Checkbutton(
                         self.row_5,
                         text="Inverted",
-                        variable=self.joystick_x_inverted,
+                        variable=self.configModel['joystick_x_inverted'],
                     )
                     self.x_axis_inverted.pack(side="left", padx=10)
 
@@ -323,7 +327,7 @@ class Tab():
                         self.row_6,
                         values=axis_list,
                         state="readonly",
-                        textvariable=self.joystick_y_selected,
+                        textvariable=self.configModel['joystick_y_axis'],
                         width=6
                     )
                     self.y_axis_list.pack(side="left", padx=10
@@ -331,7 +335,7 @@ class Tab():
                     self.y_axis_inverted = ttk.Checkbutton(
                         self.row_6,
                         text="Inverted",
-                        variable=self.joystick_y_inverted,
+                        variable=self.configModel['joystick_y_inverted'],
                     )
                     self.y_axis_inverted.pack(side="left", padx=10)
 
@@ -348,7 +352,7 @@ class Tab():
                         self.row_11,
                         values=button_list,
                         state="readonly",
-                        textvariable=self.mouse_left_selected,
+                        textvariable=self.configModel['mouse_left'],
                         width=6
                     )
                     self.left_mouse_button_list.pack(side="left", padx=10)
@@ -356,7 +360,7 @@ class Tab():
                     self.left_mouse_inverted = ttk.Checkbutton(
                         self.row_11,
                         text="Inverted",
-                        variable=self.mouse_left_inverted,
+                        variable=self.configModel['mouse_left_inverted'],
                     )
                     self.left_mouse_inverted.pack(side="left", padx=10)
 
@@ -373,7 +377,7 @@ class Tab():
                         self.row_12,
                         values=button_list,
                         state="readonly",
-                        textvariable=self.mouse_right_selected,
+                        textvariable=self.configModel['mouse_right'],
                         width=6
                     )
                     self.right_mouse_button_list.pack(side="left", padx=10)
@@ -381,7 +385,7 @@ class Tab():
                     self.right_mouse_inverted = ttk.Checkbutton(
                         self.row_12,
                         text="Inverted",
-                        variable=self.mouse_right_inverted,
+                        variable=self.configModel['mouse_right_inverted'],
                     )
                     self.right_mouse_inverted.pack(side="left", padx=10)
 
@@ -392,20 +396,20 @@ class Tab():
             self.activate_button_label.destroy()
             self.activate_button_list.destroy()
             self.activate_button_inverted.destroy()
-            self.buttonbox_activate_selected.set("None")
-            self.buttonbox_activate_inverted.set(False)
+            self.configModel['activation_button'].set("None")
+            self.configModel['activation_button_inverted'].set(False)
 
             self.deactivate_button_label.destroy()
             self.deactivate_button_list.destroy()
             self.deactivate_button_inverted.destroy()
-            self.buttonbox_deactivate_selected.set("None")
-            self.buttonbox_deactivate_inverted.set(False)
+            self.configModel['deactivation_button'].set("None")
+            self.configModel['deactivation_button_inverted'].set(False)
         except:
             pass
 
-        if self.buttonbox_selected.get() != "None":
+        if self.configModel['buttonbox_selected'].get() != "None":
             for device in self.joysticks.values():
-                if device.get_name() == self.buttonbox_selected.get():
+                if device.get_name() == self.configModel['buttonbox_selected'].get():
                     button_list = ["None"]
                     button_list.extend([x+1 for x in range(device.get_numbuttons())])
 
@@ -421,7 +425,7 @@ class Tab():
                         self.row_8,
                         values=button_list,
                         state="readonly",
-                        textvariable=self.buttonbox_activate_selected,
+                        textvariable=self.configModel['activation_button'],
                         width=6
                     )  
                     self.activate_button_list.pack(side="left", padx=10)
@@ -429,12 +433,12 @@ class Tab():
                     self.activate_button_inverted = ttk.Checkbutton(
                         self.row_8,
                         text="Inverted",
-                        variable=self.buttonbox_activate_inverted,
+                        variable=self.configModel['activation_button_inverted'],
                     )
                     self.activate_button_inverted.pack(side="left", padx=10)
 
                     # Deactivate button selection
-                    if self.activation_method.get() == 3:
+                    if self.configModel['activation_method'].get() == 3:
                         self.deactivate_button_label = ttk.Label(
                             self.row_10,
                             text="Deactivate*: ",
@@ -446,7 +450,7 @@ class Tab():
                             self.row_10,
                             values=button_list,
                             state="readonly",
-                            textvariable=self.buttonbox_deactivate_selected,
+                            textvariable=self.configModel['deactivation_button'],
                             width=6
                         )
                         self.deactivate_button_list.pack(side="left", padx=10)
@@ -454,52 +458,52 @@ class Tab():
                         self.deactivate_button_inverted = ttk.Checkbutton(
                             self.row_10,
                             text="Inverted",
-                            variable=self.buttonbox_deactivate_inverted,
+                            variable=self.configModel['deactivation_button_inverted'],
                         )
                         self.deactivate_button_inverted.pack(side="left", padx=10)
 
 
     def get_translation_method(self):
-        return self.translation_method.get()
+        return self.configModel['translation_method'].get()
     
 
     def set_translation_method(self, value):
-        self.translation_method.set(value)
+        self.configModel['translation_method'].set(value)
 
 
     def get_autocenter(self):
-        return self.autocenter.get()
+        return self.configModel['autocenter'].get()
     
 
     def set_autocenter(self, value):
-        self.autocenter.set(value)
+        self.configModel['autocenter'].set(value)
         self.updater_autocenter()
     
 
     def get_autocenter_key(self):
-        if self.autocenter_key.get() == "":
+        if self.configModel['autocenter_key'].get() == "":
             return None
         else:
-            return self.autocenter_key.get()
+            return self.configModel['autocenter_key'].get()
 
 
     def set_autocenter_key(self, value):
         if value == "None":
-            self.autocenter_key.set("")
+            self.configModel['autocenter_key'].set("")
         else:
-            self.autocenter_key.set(value)
+            self.configModel['autocenter_key'].set(value)
 
 
     def get_joystick_resolution(self):
-        return self.joystick_resolution.get()
+        return self.configModel['joystick_resolution'].get()
 
 
     def set_joystick_resolution(self, value):
-        self.joystick_resolution.set(value)
+        self.configModel['joystick_resolution'].set(value)
 
 
     def get_joystick_selected(self):
-        selected_name = self.joystick_selected.get()
+        selected_name = self.configModel['joystick_selected'].get()
         if selected_name != "None":
             for device in self.joysticks.values():
                 if device.get_name() == selected_name:
@@ -513,7 +517,7 @@ class Tab():
             for device in self.joysticks.values():
                 if device.get_guid() == guid:
                     value = device.get_name()
-                    self.joystick_selected.set(value)
+                    self.configModel['joystick_selected'].set(value)
                     self.update_axis_selection()
                     return True
         
@@ -521,7 +525,7 @@ class Tab():
         
 
     def get_joystick_x_axis(self):
-        selected_x_axise = self.joystick_x_selected.get()
+        selected_x_axise = self.configModel['joystick_x_axis'].get()
         if selected_x_axise != "None":
             return int(selected_x_axise) - 1
         else:
@@ -530,13 +534,13 @@ class Tab():
 
     def set_joystick_x_axis(self, value):
         if value != "None":
-            self.joystick_x_selected.set(int(value)+1)
+            self.configModel['joystick_x_axis'].set(int(value)+1)
         else:
-            self.joystick_x_selected.set("None")
+            self.configModel['joystick_x_axis'].set("None")
 
     
     def get_joystick_y_axis(self):
-        selected_y_axise = self.joystick_y_selected.get()
+        selected_y_axise = self.configModel['joystick_y_axis'].get()
         if selected_y_axise != "None":
             return int(selected_y_axise) - 1
         else:
@@ -545,38 +549,38 @@ class Tab():
 
     def set_joystick_y_axis(self, value):
         if value != "None":
-            self.joystick_y_selected.set(int(value)+1)
+            self.configModel['joystick_y_axis'].set(int(value)+1)
         else:
-            self.joystick_y_selected.set("None")
+            self.configModel['joystick_y_axis'].set("None")
 
 
     def get_joystick_x_inverted(self):
-        return self.joystick_x_inverted.get()
+        return self.configModel['joystick_x_inverted'].get()
 
 
     def set_joystick_x_inverted(self,value):
-        return self.joystick_x_inverted.set(value)
+        return self.configModel['joystick_x_inverted'].set(value)
     
 
     def get_joystick_y_inverted(self):
-        return self.joystick_y_inverted.get()
+        return self.configModel['joystick_y_inverted'].get()
 
 
     def set_joystick_y_inverted(self,value):
-        return self.joystick_y_inverted.set(value)
+        return self.configModel['joystick_y_inverted'].set(value)
 
 
     def get_activation_method(self):
-        return self.activation_method.get()
+        return self.configModel['activation_method'].get()
 
 
     def set_activation_method(self, value):
-        self.activation_method.set(value)
+        self.configModel['activation_method'].set(value)
         self.update_button_selection()
 
 
     def get_buttonbox_selected(self):
-        selected_name = self.buttonbox_selected.get()
+        selected_name = self.configModel['buttonbox_selected'].get()
         if selected_name != "None":
             for device in self.joysticks.values():
                 if device.get_name() == selected_name:
@@ -590,7 +594,7 @@ class Tab():
             for device in self.joysticks.values():
                 if device.get_guid() == guid:
                     value = device.get_name()
-                    self.buttonbox_selected.set(value)
+                    self.configModel['buttonbox_selected'].set(value)
                     self.update_button_selection()
                     return True
         
@@ -598,7 +602,7 @@ class Tab():
 
 
     def get_activation_button(self):
-        selected_button = self.buttonbox_activate_selected.get()
+        selected_button = self.configModel['activation_button'].get()
         if selected_button != "None":
             return int(selected_button) - 1
         else:
@@ -607,21 +611,21 @@ class Tab():
 
     def set_activation_button(self, value):
         if value != "None":
-            self.buttonbox_activate_selected.set(int(value)+1)
+            self.configModel['activation_button'].set(int(value)+1)
         else:
-            self.buttonbox_activate_selected.set("None")
+            self.configModel['activation_button'].set("None")
 
         
     def get_activation_button_inverted(self):
-        return self.buttonbox_activate_inverted.get()
+        return self.configModel['activation_button_inverted'].get()
 
 
     def set_activation_button_inverted(self,value):
-        return self.buttonbox_activate_inverted.set(value)
+        return self.configModel['activation_button_inverted'].set(value)
     
 
     def get_deactivation_button(self):
-        selected_button = self.buttonbox_deactivate_selected.get()
+        selected_button = self.configModel['deactivation_button'].get()
         if selected_button != "None":
             return int(selected_button) - 1
         else:
@@ -630,21 +634,21 @@ class Tab():
     
     def set_deactivation_button(self, value):
         if value != "None":
-            self.buttonbox_deactivate_selected.set(int(value)+1)
+            self.configModel['deactivation_button'].set(int(value)+1)
         else:
-            self.buttonbox_deactivate_selected.set("None")
+            self.configModel['deactivation_button'].set("None")
     
 
     def get_deactivation_button_inverted(self):
-        return self.buttonbox_deactivate_inverted.get()
+        return self.configModel['deactivation_button_inverted'].get()
 
 
     def set_deactivation_button_inverted(self,value):
-        return self.buttonbox_deactivate_inverted.set(value)
+        return self.configModel['deactivation_button_inverted'].set(value)
 
 
     def get_mouse_left(self):
-        selected_button = self.mouse_left_selected.get()
+        selected_button = self.configModel['mouse_left'].get()
         if selected_button != "None":
             return int(selected_button) - 1
         else:
@@ -653,21 +657,21 @@ class Tab():
         
     def set_mouse_left(self, value):
         if value != "None":
-            self.mouse_left_selected.set(int(value)+1)
+            self.configModel['mouse_left'].set(int(value)+1)
         else:
-            self.mouse_left_selected.set("None")
+            self.configModel['mouse_left'].set("None")
     
 
     def get_mouse_left_inverted(self):
-        return self.mouse_left_inverted.get()
+        return self.configModel['mouse_left_inverted'].get()
 
 
     def set_mouse_left_inverted(self, value):
-        return self.mouse_left_inverted.set(value)
+        return self.configModel['mouse_left_inverted'].set(value)
     
 
     def get_mouse_right(self):
-        selected_button = self.mouse_right_selected.get()
+        selected_button = self.configModel['mouse_right'].get()
         if selected_button != "None":
             return int(selected_button) - 1
         else:
@@ -676,14 +680,14 @@ class Tab():
 
     def set_mouse_right(self, value):
         if value != "None":
-            self.mouse_right_selected.set(int(value)+1)
+            self.configModel['mouse_right'].set(int(value)+1)
         else:
-            self.mouse_right_selected.set("None")
+            self.configModel['mouse_right'].set("None")
     
 
     def get_mouse_right_inverted(self):
-        return self.mouse_right_inverted.get()
+        return self.configModel['mouse_right_inverted'].get()
     
 
     def set_mouse_right_inverted(self, value):
-        return self.mouse_right_inverted.set(value)
+        return self.configModel['mouse_right_inverted'].set(value)

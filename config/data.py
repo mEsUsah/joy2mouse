@@ -47,6 +47,7 @@ configModel = {
     'translation_method': 1,
     'joystick_resolution': 16,
     'joystick_selected': None,
+    'selected_joystick_uuid': None,
 
     'joystick_x_axis': None,
     'joystick_y_axis': None,
@@ -65,6 +66,7 @@ configModel = {
     # Buttonbox
     'activation_method': 1,
     'buttonbox_selected': None,
+    'selected_buttonbox_uuid': None,
     'activation_button': None,
     'deactivation_button': None,
     'activation_button_inverted': False,
