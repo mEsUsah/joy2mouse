@@ -463,6 +463,12 @@ class Tab():
                         self.deactivate_button_inverted.pack(side="left", padx=10)
 
 
+    ###########################################
+    #
+    #  GUI Setters and getters
+    #            
+    ###########################################
+
     def get_translation_method(self):
         return self.configModel['translation_method'].get()
     
