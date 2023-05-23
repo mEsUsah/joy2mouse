@@ -31,8 +31,8 @@ def get_current_config():
 
 
 def joystick_config_ready():
-    if (not configModel['joystick_selected'] == None or \
-        not configModel['buttonbox_selected'] == None and \
+    if (not configModel['selected_joystick'] == None or \
+        not configModel['selected_buttonbox'] == None and \
         not configModel['activation_button'] == None) and \
         (not configModel['joystick_x_axis'] == None or not configModel['joystick_y_axis'] == None):
             return True
@@ -46,7 +46,7 @@ configModel = {
     # Joystick
     'translation_method': 1,
     'joystick_resolution': 16,
-    'joystick_selected': None,
+    'selected_joystick': None,
     'selected_joystick_uuid': None,
 
     'joystick_x_axis': None,
@@ -65,7 +65,7 @@ configModel = {
 
     # Buttonbox
     'activation_method': 1,
-    'buttonbox_selected': None,
+    'selected_buttonbox': None,
     'selected_buttonbox_uuid': None,
     'activation_button': None,
     'deactivation_button': None,

@@ -14,7 +14,7 @@ class Tab():
             'joystick_resolution': tk.IntVar(value=16),
             'autocenter': tk.BooleanVar(value=False),
             'autocenter_key': tk.StringVar(value="c"),
-            'joystick_selected': tk.StringVar(value="None"),
+            'selected_joystick': tk.StringVar(value="None"),
             'joystick_x_axis': tk.StringVar(value="None"),
             'joystick_x_inverted': tk.BooleanVar(value=False),
             'joystick_y_axis': tk.StringVar(value="None"),
@@ -25,7 +25,7 @@ class Tab():
             'mouse_right_inverted': tk.BooleanVar(value=False),
 
             'activation_method': tk.IntVar(value=1),
-            'buttonbox_selected': tk.StringVar(value="None"),
+            'selected_buttonbox': tk.StringVar(value="None"),
             'activation_button': tk.StringVar(value="None"),
             'activation_button_inverted': tk.BooleanVar(value=False),
             'deactivation_button': tk.StringVar(value="None"),
@@ -175,8 +175,8 @@ class Tab():
         for key, value in self.configModel.items():
             config.data.configModel[key] = value.get()
 
-        config.data.configModel['selected_joystick_uuid'] = self.get_joystick_selected()
-        config.data.configModel['selected_buttonbox_uuid'] = self.get_buttonbox_selected()
+        config.data.configModel['selected_joystick_uuid'] = self.get_selected_joystick()
+        config.data.configModel['selected_buttonbox_uuid'] = self.get_selected_buttonbox()
 
 
     def update_device_list(self, joysticks):
@@ -224,7 +224,7 @@ class Tab():
         self.joystick_list = ttk.Combobox(
             self.row_4,
             values=joystick_list_values,
-            textvariable=self.configModel['joystick_selected'],
+            textvariable=self.configModel['selected_joystick'],
             state="readonly",
         )
         self.joystick_list.bind('<<ComboboxSelected>>', self.update_axis_selection)    
@@ -246,7 +246,7 @@ class Tab():
         self.buttonbox_list = ttk.Combobox(
             self.row_7,
             values=buttonbox_list_values,
-            textvariable=self.configModel['buttonbox_selected'],
+            textvariable=self.configModel['selected_buttonbox'],
             state="readonly",
         )
         self.buttonbox_list.bind('<<ComboboxSelected>>', self.update_button_selection)    
@@ -282,9 +282,9 @@ class Tab():
         except:
             pass
 
-        if self.configModel['joystick_selected'].get() != "None":
+        if self.configModel['selected_joystick'].get() != "None":
             for device in self.joysticks.values():
-                if device.get_name() == self.configModel['joystick_selected'].get():
+                if device.get_name() == self.configModel['selected_joystick'].get():
                     axis_list = ["None"]
                     axis_list.extend([x+1 for x in range(device.get_numaxes())])
                     button_list = ["None"]
@@ -407,9 +407,9 @@ class Tab():
         except:
             pass
 
-        if self.configModel['buttonbox_selected'].get() != "None":
+        if self.configModel['selected_buttonbox'].get() != "None":
             for device in self.joysticks.values():
-                if device.get_name() == self.configModel['buttonbox_selected'].get():
+                if device.get_name() == self.configModel['selected_buttonbox'].get():
                     button_list = ["None"]
                     button_list.extend([x+1 for x in range(device.get_numbuttons())])
 
@@ -502,8 +502,8 @@ class Tab():
         self.configModel['joystick_resolution'].set(value)
 
 
-    def get_joystick_selected(self):
-        selected_name = self.configModel['joystick_selected'].get()
+    def get_selected_joystick(self):
+        selected_name = self.configModel['selected_joystick'].get()
         if selected_name != "None":
             for device in self.joysticks.values():
                 if device.get_name() == selected_name:
@@ -512,12 +512,12 @@ class Tab():
             return None
         
 
-    def set_joystick_selected(self, guid):
+    def set_selected_joystick(self, guid):
         if guid != None:
             for device in self.joysticks.values():
                 if device.get_guid() == guid:
                     value = device.get_name()
-                    self.configModel['joystick_selected'].set(value)
+                    self.configModel['selected_joystick'].set(value)
                     self.update_axis_selection()
                     return True
         
@@ -579,8 +579,8 @@ class Tab():
         self.update_button_selection()
 
 
-    def get_buttonbox_selected(self):
-        selected_name = self.configModel['buttonbox_selected'].get()
+    def get_selected_buttonbox(self):
+        selected_name = self.configModel['selected_buttonbox'].get()
         if selected_name != "None":
             for device in self.joysticks.values():
                 if device.get_name() == selected_name:
@@ -589,12 +589,12 @@ class Tab():
             return None
 
         
-    def set_buttonbox_selected(self, guid):
+    def set_selected_buttonbox(self, guid):
         if guid != None:
             for device in self.joysticks.values():
                 if device.get_guid() == guid:
                     value = device.get_name()
-                    self.configModel['buttonbox_selected'].set(value)
+                    self.configModel['selected_buttonbox'].set(value)
                     self.update_button_selection()
                     return True
         
