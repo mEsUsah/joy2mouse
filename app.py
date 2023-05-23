@@ -2,7 +2,6 @@
 
 import keyboard
 import pydirectinput
-import configparser
 import mouse
 import pygame
 import time
@@ -11,153 +10,19 @@ from tkinter import ttk
 from screeninfo import get_monitors
 import gui
 import utils
-import os
-import sys
+import config
 import webbrowser
 
 def stop_app():
     global app_running
     app_running = False
 
-def joystick_config_ready():
-    global selected_joystick
-    global selected_x_axis
-    global selected_y_axis
-    global selected_buttonbox
-    global activation_button
-    global autocenter
-    global autocenter_key
-
-    if (not selected_joystick == None or \
-        not selected_buttonbox == None and \
-        not activation_button == None) and \
-        (not selected_x_axis == None or not selected_y_axis == None):
-            return True
-    else:
-        return False
-    
 
 def handle_inverted_axis(axis, inverted):
     for i in range(len(axis)):
         if inverted[i]:
             axis[i] *= -1
     return axis
-
-
-def save_config():
-    global current_config_file
-
-    if current_config_file == 'default.ini':
-        file_path = utils.files.gui_save_as_path()
-        if not file_path:
-            return # User canceled the save dialog
-        current_config_file = file_path
-
-    current_config = get_current_config()
-    with open(current_config_file, 'w') as configfile:
-        current_config.write(configfile)
-
-
-def save_config_as():
-    global current_config_file
-
-    file_path = utils.files.gui_save_as_path()
-    if not file_path:
-        return # User canceled the save dialog
-    current_config_file = file_path
-
-    current_config = get_current_config()
-    with open(current_config_file, 'w') as configfile:
-        current_config.write(configfile)
-
-
-def get_current_config():
-    current_config = configparser.ConfigParser()
-    current_config['JOYSTICK'] = {
-        'translation_method': str(config.get_translation_method()),
-        'selected_joystick': str(config.get_joystick_selected()),
-        'joystick_resolution': str(config.get_joystick_resolution()),
-        'selected_x_axis': str(config.get_joystick_x_axis()),
-        'joystick_x_inverted': str(config.get_joystick_x_inverted()),
-        'selected_y_axis': str(config.get_joystick_y_axis()),
-        'joystick_y_inverted': str(config.get_joystick_y_inverted()),
-        'mouse_left_button': str(config.get_mouse_left()),
-        'mouse_left_inverted': str(config.get_mouse_left_inverted()),
-        'mouse_right_button': str(config.get_mouse_right()),
-        'mouse_right_inverted': str(config.get_mouse_right_inverted()),
-        'autocenter': str(config.get_autocenter()),
-        'autocenter_key': str(config.get_autocenter_key()),
-        'deadzone': str(deadzone),
-    }
-    current_config['BUTTONBOX'] = {
-        'selected_activation_method': str(config.get_activation_method()),
-        'selected_buttonbox': str(config.get_buttonbox_selected()),
-        'activation_button': str(config.get_activation_button()),
-        'activation_button_inverted': str(config.get_activation_button_inverted()),
-        'deactivation_button': str(config.get_deactivation_button()),
-        'deactivation_button_inverted': str(config.get_deactivation_button_inverted()),
-    }
-    return current_config
-
-
-def load_config_file():
-    global current_config_default
-    global current_config_file
-
-    current_config_default = False
-
-    file_path = utils.files.gui_open_path()
-    if not file_path:
-        return # User canceled the open dialog
-    current_config_file = file_path
-
-    load_config()
-
-
-def load_config():
-    global current_config_file
-    global current_config_default
-    global deadzone
-
-    if current_config_default:
-        current_config_file = os.path.join(os.getcwd(), 'default.ini')
-    
-    current_config = configparser.ConfigParser()
-    current_config.read(current_config_file)
-
-    try:
-        # Joystick
-        config.set_translation_method(current_config.getint('JOYSTICK', 'translation_method'))
-        config.set_joystick_resolution(current_config.getint('JOYSTICK', 'joystick_resolution'))
-        config.set_joystick_selected(current_config.get('JOYSTICK', 'selected_joystick'))
-
-        config.set_joystick_x_axis(current_config.get('JOYSTICK', 'selected_x_axis'))
-        config.set_joystick_y_axis(current_config.get('JOYSTICK', 'selected_y_axis'))
-        config.set_joystick_x_inverted(current_config.getboolean('JOYSTICK', 'joystick_x_inverted'))
-        config.set_joystick_y_inverted(current_config.getboolean('JOYSTICK', 'joystick_y_inverted'))
-
-        config.set_mouse_left(current_config.get('JOYSTICK', 'mouse_left_button'))
-        config.set_mouse_right(current_config.get('JOYSTICK', 'mouse_right_button'))
-        config.set_mouse_left_inverted(current_config.getboolean('JOYSTICK', 'mouse_left_inverted'))
-        config.set_mouse_right_inverted(current_config.getboolean('JOYSTICK', 'mouse_right_inverted'))
-        
-        config.set_autocenter(current_config.getboolean('JOYSTICK', 'autocenter'))
-        config.set_autocenter_key(current_config.get('JOYSTICK', 'autocenter_key'))
-        deadzone = current_config.getint('JOYSTICK', 'deadzone')
-
-
-        # Buttonbox
-        config.set_activation_method(current_config.getint('BUTTONBOX', 'selected_activation_method'))
-        config.set_buttonbox_selected(current_config.get('BUTTONBOX', 'selected_buttonbox'))
-        config.set_activation_button(current_config.get('BUTTONBOX', 'activation_button'))
-        config.set_deactivation_button(current_config.get('BUTTONBOX', 'deactivation_button'))
-        config.set_activation_button_inverted(current_config.getboolean('BUTTONBOX', 'activation_button_inverted'))
-        config.set_deactivation_button_inverted(current_config.getboolean('BUTTONBOX', 'deactivation_button_inverted'))
-
-        # Config filename
-        window.title(os.path.basename(current_config_file) + " - " + utils.releases.APP_NAME)
-    except:
-        tk.messagebox.showerror("Open error", "Broken config file")
 
 
 def open_manual():
@@ -195,9 +60,9 @@ window.config(menu=menu)
 
 file_menu = tk.Menu(menu, tearoff=False)
 menu.add_cascade(label="File", menu=file_menu)
-file_menu.add_command(label="Open...", command=load_config_file)
-file_menu.add_command(label="Save", command=save_config)
-file_menu.add_command(label="Save As...", command=save_config_as)
+file_menu.add_command(label="Open...", command=config.load.load_config_file)
+file_menu.add_command(label="Save", command=config.save.save_config)
+file_menu.add_command(label="Save As...", command=config.save.save_config_as)
 file_menu.add_separator()
 file_menu.add_command(label="Exit", command=stop_app)
 
@@ -213,9 +78,9 @@ main_control_tab.add(test_tab, text="Test")
 main_control_tab.add(config_tab, text="Config")
 main_control_tab.pack(expand=1, fill="both")
 
-run = gui.run.Tab(run_tab)
-test = gui.test.Tab(test_tab)
-config = gui.config.Tab(config_tab)
+runView = gui.run.Tab(run_tab)
+testView = gui.test.Tab(test_tab)
+configView = gui.config.Tab(config_tab)
 
 
 # Credits
@@ -244,12 +109,9 @@ debugging = False
 max_refresh_rate = 165
 last_mouse_x = 0
 last_mouse_y = 0
-deadzone = 10
 activate_button_released = True
 deactivate_button_released = True
 activated = False
-current_config_file = 'default.ini'
-current_config_default = True
 
 # load_config()
 
@@ -257,40 +119,40 @@ current_config_default = True
 # Main loop
 while app_running:
     # Get configuation
-    translation_method = config.get_translation_method()
+    translation_method = configView.get_translation_method()
 
-    autocenter = config.get_autocenter()
-    autocenter_key = config.get_autocenter_key()
+    autocenter = configView.get_autocenter()
+    autocenter_key = configView.get_autocenter_key()
 
-    armed = run.get_armed()
-    joystick_resolution = int((2**config.get_joystick_resolution()) / 16)
-    selected_joystick = config.get_joystick_selected()
-    selected_x_axis = config.get_joystick_x_axis()
-    selected_y_axis = config.get_joystick_y_axis()
-    joystick_x_inverted = config.get_joystick_x_inverted()
-    joystick_y_inverted = config.get_joystick_y_inverted()
+    armed = runView.get_armed()
+    joystick_resolution = int((2**configView.get_joystick_resolution()) / 16)
+    selected_joystick = configView.get_joystick_selected()
+    selected_x_axis = configView.get_joystick_x_axis()
+    selected_y_axis = configView.get_joystick_y_axis()
+    joystick_x_inverted = configView.get_joystick_x_inverted()
+    joystick_y_inverted = configView.get_joystick_y_inverted()
 
-    mouse_left_button = config.get_mouse_left()
-    mouse_left_inverted = config.get_mouse_left_inverted()
-    mouse_right_button = config.get_mouse_right()
-    mouse_right_inverted = config.get_mouse_right_inverted()
+    mouse_left_button = configView.get_mouse_left()
+    mouse_left_inverted = configView.get_mouse_left_inverted()
+    mouse_right_button = configView.get_mouse_right()
+    mouse_right_inverted = configView.get_mouse_right_inverted()
 
-    selected_activation_method = config.get_activation_method()
-    selected_buttonbox = config.get_buttonbox_selected()
-    activation_button = config.get_activation_button()
-    activation_button_inverted = config.get_activation_button_inverted()
+    selected_activation_method = configView.get_activation_method()
+    selected_buttonbox = configView.get_buttonbox_selected()
+    activation_button = configView.get_activation_button()
+    activation_button_inverted = configView.get_activation_button_inverted()
 
-    deactivation_button = config.get_deactivation_button()
-    deactivation_button_inverted = config.get_deactivation_button_inverted()
+    deactivation_button = configView.get_deactivation_button()
+    deactivation_button_inverted = configView.get_deactivation_button_inverted()
 
-    if not joystick_config_ready():
-        run.disable_arming()
+    if not config.data.joystick_config_ready():
+        runView.disable_arming()
 
 
-    run.set_run_status(active, configured=joystick_config_ready())
+    runView.set_run_status(active, configured=config.data.joystick_config_ready())
     
     if main_control_tab.index("current") == 1: # Test tab
-        test.update_axis_view()
+        testView.update_axis_view()
 
 
     # Handle PyGame events
@@ -301,14 +163,14 @@ while app_running:
             # joystick, filling up the list without needing to create them manually.
             joy = pygame.joystick.Joystick(event.device_index)
             joysticks[joy.get_instance_id()] = joy
-            test.update_device_list(joysticks)
-            config.update_device_list(joysticks)
+            testView.update_device_list(joysticks)
+            configView.update_device_list(joysticks)
 
         if event.type == pygame.JOYDEVICEREMOVED:
             del joysticks[event.instance_id]
             print(f"Joystick {event.instance_id} disconnected")
-            test.update_device_list(joysticks)
-            config.update_device_list(joysticks)
+            testView.update_device_list(joysticks)
+            configView.update_device_list(joysticks)
 
 
     # Loop over all joysticks
@@ -367,9 +229,9 @@ while app_running:
                     active = False
 
                 if not activate_button_pressed:
-                    run.enable_arming()
+                    runView.enable_arming()
                 else:
-                    run.disable_arming()
+                    runView.disable_arming()
 
                 ## update center position of mouse
                 if not active:
@@ -438,8 +300,8 @@ while app_running:
 
                     # center torso if joystick is in deadzone
                     if autocenter and autocenter_key != None:
-                        within_deadzone_x = x_axis_value > -deadzone and x_axis_value < deadzone
-                        within_deadzone_y = y_axis_value > -deadzone and y_axis_value < deadzone
+                        within_deadzone_x = x_axis_value > -configView.data.deadzone and x_axis_value < configView.data.deadzone
+                        within_deadzone_y = y_axis_value > -configView.data.deadzone and y_axis_value < configView.data.deadzone
 
                         if within_deadzone_x and within_deadzone_y:
                             keyboard.press_and_release(autocenter_key)
