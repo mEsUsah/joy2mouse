@@ -56,7 +56,6 @@ class Tab():
                 text=value,
                 variable=self.configModel['translation_method'],
                 value=key,
-                command=self.update_config
             ).pack(side="top", fill="x", padx=10)
         
         self.row_2 = ttk.Frame(self.tab)

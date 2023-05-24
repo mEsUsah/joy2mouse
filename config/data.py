@@ -6,7 +6,7 @@ def get_current_config():
     current_config['JOYSTICK'] = {
         'translation_method': str(configModel['translation_method']),
         'joystick_resolution': str(configModel['joystick_resolution']),
-        'selected_joystick': str(configModel['joystick_selected']),
+        'selected_joystick': str(configModel['selected_joystick']),
         'selected_x_axis': str(configModel['joystick_x_axis']),
         'selected_y_axis': str(configModel['joystick_y_axis']),
         'joystick_x_inverted': str(configModel['joystick_x_inverted']),
@@ -21,7 +21,7 @@ def get_current_config():
     }
     current_config['BUTTONBOX'] = {
         'selected_activation_method': str(configModel['activation_method']),
-        'selected_buttonbox': str(configModel['buttonbox_selected']),
+        'selected_buttonbox': str(configModel['selected_buttonbox']),
         'activation_button': str(configModel['activation_button']),
         'activation_button_inverted': str(configModel['activation_button_inverted']),
         'deactivation_button': str(configModel['deactivation_button']),
@@ -40,8 +40,22 @@ def joystick_config_ready():
         return False
 
 configModel = {
+    'screen_x_center': 0,
+    'screen_y_center': 0,
     'current_config_file': 'default.ini',
     'current_config_default': True,
+    'armed': False,
+    'active': False,
+    'activated': False,
+    'debugging': False,
+    'activate_button_pressed': False,
+    'deactivate_button_pressed': False,
+    'mouse_x': 0,
+    'mouse_y': 0,
+    'last_mouse_x': 0,
+    'last_mouse_y': 0,
+    'max_refresh_rate': 165,
+    'joystick_resolution': 0,
 
     # Joystick
     'translation_method': 1,
@@ -72,3 +86,5 @@ configModel = {
     'activation_button_inverted': False,
     'deactivation_button_inverted': False,
 }
+
+joysticks = {}
