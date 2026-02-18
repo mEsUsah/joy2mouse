@@ -132,10 +132,10 @@ class Tab():
 
                 canvas = tk.Canvas(
                     button_row,
-                    width=240,
+                    width=nCols * self.button_height + self.button_margin,
                     height=(self.button_height + self.button_margin) * nRows,
                 )
-                canvas.pack(side="top", fill="x")
+                canvas.pack(side="top", anchor="center")
                 self.device_data[device_index]['buttons'] = canvas
 
     def update_axis_view(self):
