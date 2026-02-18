@@ -61,6 +61,40 @@ class Tab():
                 value=key,
             ).pack(side="top", fill="x", padx=10)
 
+        # Sensitivity slider
+        self.row_3 = ttk.Frame(self.tab)
+        self.row_3.pack(side="top", fill="x")
+
+        self.sensitivity_label = ttk.Label(
+            self.row_3,
+            text="Sensitivity:",
+            font="TkDefaultFont 10 bold"
+        )
+        self.sensitivity_label.pack(side="top", fill="x", padx=10, pady=(6, 0))
+
+        self.sensitivity_control_frame = ttk.Frame(self.row_3)
+        self.sensitivity_control_frame.pack(side="top", fill="x")
+
+        self.sensitivity_slider = tk.Scale(
+            self.sensitivity_control_frame,
+            from_=8,
+            to=16,
+            resolution=1,
+            orient=tk.HORIZONTAL,
+            variable=self.configModel['joystick_resolution'],
+            showvalue=False,
+        )
+        self.sensitivity_slider.pack(side="left", fill="x", expand=True, padx=10, pady=0)
+
+        self.sensitivity_spinbox = ttk.Spinbox(
+            self.sensitivity_control_frame,
+            from_=8,
+            to=16,
+            textvariable=self.configModel['joystick_resolution'],
+            width=4,
+        )
+        self.sensitivity_spinbox.pack(side="left", padx=(0, 10))
+
         self.row_2 = ttk.Frame(self.tab)
         self.row_2.pack(side="top", expand=1, fill="both")
 
@@ -76,31 +110,6 @@ class Tab():
 
         self.row_13 = ttk.Frame(self.tab)
         self.row_13.pack(side="top", expand=1, fill="both")
-
-        # Joystick resolution options
-        self.translation_label = ttk.Label(
-            self.row_1,
-            text="Joystick resolution:",
-            font="TkDefaultFont 10 bold"
-        )
-        self.translation_label.pack(side="top", fill="x", padx=10, pady=6)
-
-        self.row_3 = ttk.Frame(self.tab)
-        self.row_3.pack(side="top", expand=1, fill="both")
-
-        self.joystick_resolution_options = {
-            8: "8-bit",
-            12: "12-bit",
-            16: "16-bit",
-        }
-
-        for key, value in self.joystick_resolution_options.items():
-            ttk.Radiobutton(
-                self.row_1,
-                text=value,
-                variable=self.configModel['joystick_resolution'],
-                value=key
-            ).pack(side="top", fill="x", padx=10)
 
         self.row_4 = ttk.Frame(self.tab)
         self.row_4.pack(side="top", expand=1, fill="both")
