@@ -124,13 +124,13 @@ class Tab():
         self.row_11 = ttk.Frame(self.tab)
         self.row_11.pack(side="top", expand=1, fill="both", pady=6)
 
-        # Right mouse button selection
-        self.row_12 = ttk.Frame(self.tab)
-        self.row_12.pack(side="top", expand=1, fill="both", pady=6)
-
         # Middle mouse button selection
         self.row_middle = ttk.Frame(self.tab)
         self.row_middle.pack(side="top", expand=1, fill="both", pady=6)
+
+        # Right mouse button selection
+        self.row_12 = ttk.Frame(self.tab)
+        self.row_12.pack(side="top", expand=1, fill="both", pady=6)
 
         # Activation method selection
         self.row_9 = ttk.Frame(self.tab)
