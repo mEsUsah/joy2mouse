@@ -11,6 +11,20 @@ screen_y_center = configModel['screen_y_center']
 joystick_resolution = configModel['joystick_resolution']
 debugging = configModel['debugging']
 
+_left_held = False
+_right_held = False
+
+
+def release_mouse_buttons():
+    global _left_held, _right_held
+    if _left_held:
+        pydirectinput.mouseUp(button="left")
+        _left_held = False
+    if _right_held:
+        pydirectinput.mouseUp(button="right")
+        _right_held = False
+
+
 def run():
     # Loop over all joysticks
     last_mouse_x = configModel.get('last_mouse_x', 0)
@@ -96,13 +110,24 @@ def run():
                             else:
                                 print(f"Mouse: \tX: {x_axis_value} \tY: {y_axis_value}")
 
-                    # Mouse buttons
+                    # Mouse buttons — hold while joystick button held, release on release
+                    global _left_held, _right_held
                     if configModel['mouse_left_button'] != None:
-                        if joy.get_button(configModel['mouse_left_button']):
-                            pydirectinput.click(button="left")
+                        pressed = joy.get_button(configModel['mouse_left_button'])
+                        if pressed and not _left_held:
+                            pydirectinput.mouseDown(button="left")
+                            _left_held = True
+                        elif not pressed and _left_held:
+                            pydirectinput.mouseUp(button="left")
+                            _left_held = False
                     if configModel['mouse_right_button'] != None:
-                        if joy.get_button(configModel['mouse_right_button']):
-                            pydirectinput.click(button="right")
+                        pressed = joy.get_button(configModel['mouse_right_button'])
+                        if pressed and not _right_held:
+                            pydirectinput.mouseDown(button="right")
+                            _right_held = True
+                        elif not pressed and _right_held:
+                            pydirectinput.mouseUp(button="right")
+                            _right_held = False
 
     # Persist last_mouse_x and last_mouse_y
     configModel['last_mouse_x'] = last_mouse_x

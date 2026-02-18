@@ -173,6 +173,7 @@ while app_running:
 
     ## update center position of mouse
     if not active:
+        actions.joystick.release_mouse_buttons()
         mouse_x, mouse_y = mouse.get_position()
         last_mouse_x = joystick_resolution
         last_mouse_y = joystick_resolution
