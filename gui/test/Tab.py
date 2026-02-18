@@ -6,9 +6,10 @@ import math
 
 import config.data
 
-_COLOR_PRESSED  = "red"
-_COLOR_SELECTED = "#0099bb"   # teal — selected, not pressed
+_COLOR_PRESSED  = "#ea5252"   # pressed button
+_COLOR_SELECTED = "#4caf50"   # green — selected, not pressed
 _COLOR_UNSEL    = "white"
+_COLOR_AXIS     = "#ea5252"   # axis bar
 
 
 class Tab():
@@ -152,7 +153,7 @@ class Tab():
                     self.device_data[device_index]['axis'][i].create_rectangle(
                         1, 1,
                         int(device.get_axis(i) * 100) + 100, 13,
-                        fill="red", outline=""
+                        fill=_COLOR_AXIS, outline=""
                     )
                     role = axis_roles.get(i)
                     if i < len(axis_inds):

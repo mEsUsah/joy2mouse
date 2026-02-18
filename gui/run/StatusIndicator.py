@@ -18,10 +18,10 @@ class StatusIndicator:
 
     def set(self, running, armed, configured):
         if running:
-            self.label.config(text="Running",      foreground="white", background="red")
+            self.label.config(text="Running",      foreground="white", background="#ea5252")
         elif armed and configured:
             self.label.config(text="Armed",        foreground="white", background="orange")
         elif configured:
-            self.label.config(text="Disarmed",     foreground="white", background="green")
+            self.label.config(text="Disarmed",     foreground="white", background="#4caf50")
         else:
             self.label.config(text="Not configured", foreground="white", background="gray")

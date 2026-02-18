@@ -117,7 +117,7 @@ class ArmSwitch:
             track_color = "#555555"
             thumb_color = "#888888"
         elif self._running or armed:
-            track_color = "#ff0000"
+            track_color = "#ea5252"
             thumb_color = "#ffffff"
         else:
             track_color = "#aaaaaa"
