@@ -1,6 +1,5 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-import gui
 import utils
 import os
 import math
@@ -9,13 +8,13 @@ class Tab():
     def __init__(self, tab):
         '''This is the test tab for running the application'''
         self.joysticks = {}
-        self.device_data= {}
+        self.device_data = {}
 
         self.button_height = 25
         self.button_margin = 2
-        
+
         self.row_1 = utils.gui.VerticalScrolledFrame(
-            tab, 
+            tab,
             height=600,
             width=170,
         )
@@ -24,12 +23,12 @@ class Tab():
         self.row_2 = ttk.Frame(tab)
         self.row_2.pack(side="top", expand=1, fill="both")
 
-        self.open_win_joystick = ttk.Button(
+        self.open_win_joystick_button = ttk.Button(
             self.row_2,
             text="Open Window Joystick Properties",
             command=self.open_win_joystick,
         )
-        self.open_win_joystick.pack(side="bottom", fill="x", padx=10, pady=10)
+        self.open_win_joystick_button.pack(side="bottom", fill="x", padx=10, pady=10)
 
 
     def update_device_list(self, joysticks):
@@ -40,7 +39,7 @@ class Tab():
 
         # add label
         self.device_list_label = ttk.Label(
-            self.row_1.interior, 
+            self.row_1.interior,
             text="Connected devices:",
             font="TkDefaultFont 10 bold"
         )
@@ -59,7 +58,7 @@ class Tab():
                 text=f"GUID: {device.get_guid()}",
                 font="TkDefaultFont 8",
             ).pack(side="top", fill="x", padx=10, pady=(0,8))
-            
+
             # Add Axis
             axis = device.get_numaxes()
             if axis:
@@ -75,7 +74,6 @@ class Tab():
                     )
                     axis_label.pack(side="left", padx=(0,10))
 
-                    
                     canvas = tk.Canvas(axis_row,
                         width=200,
                         height=10,
@@ -105,20 +103,20 @@ class Tab():
 
 
     def update_axis_view(self):
-        for device_index, device in enumerate(self.joysticks.values()):   
+        for device_index, device in enumerate(self.joysticks.values()):
             axis = device.get_numaxes()
             if axis:
-                for i in range(device.get_numaxes()):
+                for i in range(axis):
                     self.device_data[device_index]['axis'][i].delete("all")
                     self.device_data[device_index]['axis'][i].create_rectangle(
-                        1, 
-                        1, 
-                        int(device.get_axis(i)*100)+100, 
-                        13, 
-                        fill="red", 
+                        1,
+                        1,
+                        int(device.get_axis(i)*100)+100,
+                        13,
+                        fill="red",
                         outline=""
                     )
-            
+
             buttons = device.get_numbuttons()
             if buttons:
                 canvas = self.device_data[device_index]['buttons']
@@ -155,7 +153,7 @@ class Tab():
                             text=i+1,
                             fill="black",
                         )
-                
-        
+
+
     def open_win_joystick(self):
         os.system(r'%SystemRoot%\System32\joy.cpl')
