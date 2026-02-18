@@ -342,7 +342,6 @@ class Tab():
                         values=axis_list,
                         state="readonly",
                         textvariable=self.joystick_x_axis_display,
-                        width=6
                     )
                     current_x = self.configModel['joystick_x_axis'].get()
                     if current_x != "None":
@@ -364,14 +363,14 @@ class Tab():
                                 self.configModel['joystick_x_axis'].set("None")
 
                     self.x_axis_list.bind('<<ComboboxSelected>>', on_x_axis_selected)
-                    self.x_axis_list.pack(side="left", padx=10)
 
                     self.x_axis_inverted = ttk.Checkbutton(
                         self.row_5,
                         text="Inverted",
                         variable=self.configModel['joystick_x_inverted'],
                     )
-                    self.x_axis_inverted.pack(side="left", padx=10)
+                    self.x_axis_inverted.pack(side="right", padx=(0, 10))
+                    self.x_axis_list.pack(side="left", fill="x", expand=True, padx=10)
 
                     # Y axis selection
                     self.y_axis_label = ttk.Label(
@@ -386,7 +385,6 @@ class Tab():
                         values=axis_list,
                         state="readonly",
                         textvariable=self.joystick_y_axis_display,
-                        width=6
                     )
                     current_y = self.configModel['joystick_y_axis'].get()
                     if current_y != "None":
@@ -408,14 +406,14 @@ class Tab():
                                 self.configModel['joystick_y_axis'].set("None")
 
                     self.y_axis_list.bind('<<ComboboxSelected>>', on_y_axis_selected)
-                    self.y_axis_list.pack(side="left", padx=10)
 
                     self.y_axis_inverted = ttk.Checkbutton(
                         self.row_6,
                         text="Inverted",
                         variable=self.configModel['joystick_y_inverted'],
                     )
-                    self.y_axis_inverted.pack(side="left", padx=10)
+                    self.y_axis_inverted.pack(side="right", padx=(0, 10))
+                    self.y_axis_list.pack(side="left", fill="x", expand=True, padx=10)
 
                     # Left mouse button selection
                     self.left_mouse_button_label = ttk.Label(
@@ -430,16 +428,14 @@ class Tab():
                         values=button_list,
                         state="readonly",
                         textvariable=self.configModel['mouse_left'],
-                        width=6
                     )
-                    self.left_mouse_button_list.pack(side="left", padx=10)
-
                     self.left_mouse_inverted = ttk.Checkbutton(
                         self.row_11,
                         text="Inverted",
                         variable=self.configModel['mouse_left_inverted'],
                     )
-                    self.left_mouse_inverted.pack(side="left", padx=10)
+                    self.left_mouse_inverted.pack(side="right", padx=(0, 10))
+                    self.left_mouse_button_list.pack(side="left", fill="x", expand=True, padx=10)
 
                     # Right mouse button selection
                     self.right_mouse_button_label = ttk.Label(
@@ -454,16 +450,14 @@ class Tab():
                         values=button_list,
                         state="readonly",
                         textvariable=self.configModel['mouse_right'],
-                        width=6
                     )
-                    self.right_mouse_button_list.pack(side="left", padx=10)
-
                     self.right_mouse_inverted = ttk.Checkbutton(
                         self.row_12,
                         text="Inverted",
                         variable=self.configModel['mouse_right_inverted'],
                     )
-                    self.right_mouse_inverted.pack(side="left", padx=10)
+                    self.right_mouse_inverted.pack(side="right", padx=(0, 10))
+                    self.right_mouse_button_list.pack(side="left", fill="x", expand=True, padx=10)
 
                     # Middle mouse button selection
                     self.middle_mouse_button_label = ttk.Label(
@@ -478,16 +472,14 @@ class Tab():
                         values=button_list,
                         state="readonly",
                         textvariable=self.configModel['mouse_middle'],
-                        width=6
                     )
-                    self.middle_mouse_button_list.pack(side="left", padx=10)
-
                     self.middle_mouse_inverted = ttk.Checkbutton(
                         self.row_middle,
                         text="Inverted",
                         variable=self.configModel['mouse_middle_inverted'],
                     )
-                    self.middle_mouse_inverted.pack(side="left", padx=10)
+                    self.middle_mouse_inverted.pack(side="right", padx=(0, 10))
+                    self.middle_mouse_button_list.pack(side="left", fill="x", expand=True, padx=10)
 
 
     def update_button_selection(self, _event=None):
@@ -525,9 +517,7 @@ class Tab():
                         values=button_list,
                         state="readonly",
                         textvariable=self.activation_button_display,
-                        width=6
                     )
-                    self.activate_button_list.pack(side="left", padx=10)
 
                     def on_activation_button_selected(event=None):
                         val = self.activation_button_display.get()
@@ -550,7 +540,8 @@ class Tab():
                         text="Inverted",
                         variable=self.configModel['activation_button_inverted'],
                     )
-                    self.activate_button_inverted.pack(side="left", padx=10)
+                    self.activate_button_inverted.pack(side="right", padx=(0, 10))
+                    self.activate_button_list.pack(side="left", fill="x", expand=True, padx=10)
 
                     # Deactivate button selection
                     if self.configModel['activation_method'].get() == 3:
@@ -566,9 +557,7 @@ class Tab():
                             values=button_list,
                             state="readonly",
                             textvariable=self.deactivation_button_display,
-                            width=6
                         )
-                        self.deactivation_button_list.pack(side="left", padx=10)
 
                         def on_deactivation_button_selected(event=None):
                             val = self.deactivation_button_display.get()
@@ -591,7 +580,8 @@ class Tab():
                             text="Inverted",
                             variable=self.configModel['deactivation_button_inverted'],
                         )
-                        self.deactivate_button_inverted.pack(side="left", padx=10)
+                        self.deactivate_button_inverted.pack(side="right", padx=(0, 10))
+                        self.deactivation_button_list.pack(side="left", fill="x", expand=True, padx=10)
 
 
     ###########################################
