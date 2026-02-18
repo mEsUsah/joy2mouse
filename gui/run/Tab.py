@@ -1,6 +1,7 @@
 import tkinter.ttk as ttk
 
 from gui.run.ArmSwitch import ArmSwitch
+from gui.run.InputChecklist import InputChecklist
 from gui.run.StatusIndicator import StatusIndicator
 
 
@@ -15,7 +16,8 @@ class Tab():
         self.row_1.pack(side="top", expand=1, fill="both")
 
         self.arm_switch = ArmSwitch(self.row_1, on_toggle=self._on_arm_toggled)
-        self.status = StatusIndicator(self.row_1)
+        self.checklist  = InputChecklist(self.row_1)
+        self.status     = StatusIndicator(self.row_1)
 
     def _on_arm_toggled(self):
         self._update_status()
@@ -43,4 +45,5 @@ class Tab():
         armed = self.arm_switch.get_armed()
         if not self._configured:
             self.arm_switch.reset_armed()
+        self.checklist.update()
         self.status.set(self.running, armed, self._configured)
