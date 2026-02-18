@@ -25,6 +25,7 @@ class ArmSwitch:
 
         self.canvas = tk.Canvas(
             parent,
+            width=1,
             height=ch + self._hpad * 2,
             highlightthickness=3,
             highlightbackground="#222222",
