@@ -96,14 +96,13 @@ def run():
                             else:
                                 print(f"Mouse: \tX: {x_axis_value} \tY: {y_axis_value}")
 
-                        # Mouse buttons
-                        if configModel['mouse_left_button'] != None:
-                            if joy.get_button(configModel['mouse_left_button']):
-                                pydirectinput.click(button="left")
-                        if configModel['mouse_right_button'] != None:
-                            if joy.get_button(configModel['mouse_right_button']):
-                                # Right mouse button
-                                pydirectinput.click(button="right")
+                    # Mouse buttons
+                    if configModel['mouse_left_button'] != None:
+                        if joy.get_button(configModel['mouse_left_button']):
+                            pydirectinput.click(button="left")
+                    if configModel['mouse_right_button'] != None:
+                        if joy.get_button(configModel['mouse_right_button']):
+                            pydirectinput.click(button="right")
 
     # Persist last_mouse_x and last_mouse_y
     configModel['last_mouse_x'] = last_mouse_x

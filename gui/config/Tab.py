@@ -175,6 +175,8 @@ class Tab():
     def update_config(self):
         # Always store axis/button as int or None, not string 'None'
         axis_keys = ['joystick_x_axis', 'joystick_y_axis', 'activation_button', 'deactivation_button']
+        # GUI uses 'mouse_left'/'mouse_right' (1-indexed), data model uses 'mouse_left_button'/'mouse_right_button' (0-indexed)
+        button_keys = {'mouse_left': 'mouse_left_button', 'mouse_right': 'mouse_right_button'}
         for key, value in self.configModel.items():
             v = value.get()
             if key in axis_keys:
@@ -185,6 +187,14 @@ class Tab():
                         config.data.configModel[key] = int(v)
                     except Exception:
                         config.data.configModel[key] = None
+            elif key in button_keys:
+                if v == "None" or v == "" or v is None:
+                    config.data.configModel[button_keys[key]] = None
+                else:
+                    try:
+                        config.data.configModel[button_keys[key]] = int(v) - 1  # convert 1-indexed display to 0-indexed
+                    except Exception:
+                        config.data.configModel[button_keys[key]] = None
             else:
                 config.data.configModel[key] = v
 
