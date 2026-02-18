@@ -4,7 +4,6 @@ import config
 
 pydirectinput.FAILSAFE = False # allow mouse to go outside of screen
 configModel = config.data.configModel
-joystick_resolution = configModel['joystick_resolution']
 debugging = configModel['debugging']
 
 _left_held = False
@@ -87,34 +86,32 @@ def run():
                         mouse_y_pos = _screen_y_center + y_axis_value
                         pydirectinput.moveTo(mouse_x_pos, mouse_y_pos, _pause=False)
 
-                    elif configModel['translation_method'] == 3: # relavitve mouse movement
-                        x_axis_value = int(joystick_x_axis * joystick_resolution)
-                        y_axis_value = int(joystick_y_axis * joystick_resolution)
+                    elif configModel['translation_method'] == 3: # relative mouse movement
+                        _resolution = int((2**configModel['joystick_resolution']) / 16)
+                        x_axis_value = int(joystick_x_axis * _resolution)
+                        y_axis_value = int(joystick_y_axis * _resolution)
                         mouse_Dx = x_axis_value - last_mouse_x
                         mouse_Dy = y_axis_value - last_mouse_y
 
                         mouse_Dx, mouse_Dy = handle_inverted_axis(
-                            [mouse_Dx, mouse_Dy], 
+                            [mouse_Dx, mouse_Dy],
                             (configModel['joystick_x_inverted'], configModel['joystick_y_inverted'])
                         )
 
                         last_mouse_x = x_axis_value
                         last_mouse_y = y_axis_value
-                        pydirectinput.moveRel(mouse_Dx,mouse_Dy, _pause=False, relative=True)
+                        pydirectinput.moveRel(mouse_Dx, mouse_Dy, _pause=False, relative=True)
 
                         # center torso if joystick is in deadzone
                         if configModel['autocenter'] and configModel['autocenter_key'] != None:
-                            within_deadzone_x = x_axis_value > -configModel['deadzone'] and x_axis_value < configModel['deadzone']
-                            within_deadzone_y = y_axis_value > -configModel['deadzone'] and y_axis_value < configModel['deadzone']
+                            within_deadzone_x = abs(x_axis_value) < configModel['deadzone']
+                            within_deadzone_y = abs(y_axis_value) < configModel['deadzone']
 
                             if within_deadzone_x and within_deadzone_y:
                                 keyboard.press_and_release(configModel['autocenter_key'])
 
                         if debugging:
-                            if configModel['translation_method'] == 3:
-                                print(f"Mouse: \tdX: {mouse_Dx} \tdY: {mouse_Dy} \tres: {joystick_resolution}")
-                            else:
-                                print(f"Mouse: \tX: {x_axis_value} \tY: {y_axis_value}")
+                            print(f"Mouse: \tdX: {mouse_Dx} \tdY: {mouse_Dy} \tres: {_resolution}")
 
                     # Mouse buttons — hold while joystick button held, release on release
                     global _left_held, _right_held, _middle_held
