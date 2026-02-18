@@ -28,8 +28,21 @@ class VerticalScrolledFrame(ttk.Frame):
         self.interior.bind('<Configure>', self._configure_interior)
         self.canvas.bind('<Configure>', self._configure_canvas)
         self.interior_id = self.canvas.create_window(0, 0, window=self.interior, anchor="nw")
- 
- 
+
+        self.canvas.bind('<Enter>', self._bind_mousewheel)
+        self.canvas.bind('<Leave>', self._unbind_mousewheel)
+
+
+    def _bind_mousewheel(self, event):
+        self.canvas.bind_all('<MouseWheel>', self._on_mousewheel)
+
+    def _unbind_mousewheel(self, event):
+        self.canvas.unbind_all('<MouseWheel>')
+
+    def _on_mousewheel(self, event):
+        self.canvas.yview_scroll(int(-1 * (event.delta / 120)), 'units')
+
+
     def _configure_interior(self, event):
         # Update the scrollbars to match the size of the inner frame.
         size = (self.interior.winfo_reqwidth(), self.interior.winfo_reqheight())
