@@ -21,6 +21,8 @@ class Tab():
             'mouse_left_inverted': tk.BooleanVar(value=False),
             'mouse_right': tk.StringVar(value="None"),
             'mouse_right_inverted': tk.BooleanVar(value=False),
+            'mouse_middle': tk.StringVar(value="None"),
+            'mouse_middle_inverted': tk.BooleanVar(value=False),
 
             'activation_method': tk.IntVar(value=1),
             'selected_buttonbox': tk.StringVar(value="None"),
@@ -126,6 +128,10 @@ class Tab():
         self.row_12 = ttk.Frame(self.tab)
         self.row_12.pack(side="top", expand=1, fill="both", pady=6)
 
+        # Middle mouse button selection
+        self.row_middle = ttk.Frame(self.tab)
+        self.row_middle.pack(side="top", expand=1, fill="both", pady=6)
+
         # Activation method selection
         self.row_9 = ttk.Frame(self.tab)
         self.row_9.pack(side="top", expand=1, fill="both", pady=6)
@@ -175,8 +181,8 @@ class Tab():
     def update_config(self):
         # Always store axis/button as int or None, not string 'None'
         axis_keys = ['joystick_x_axis', 'joystick_y_axis', 'activation_button', 'deactivation_button']
-        # GUI uses 'mouse_left'/'mouse_right' (1-indexed), data model uses 'mouse_left_button'/'mouse_right_button' (0-indexed)
-        button_keys = {'mouse_left': 'mouse_left_button', 'mouse_right': 'mouse_right_button'}
+        # GUI uses 'mouse_left'/'mouse_right'/'mouse_middle' (1-indexed), data model uses '*_button' keys (0-indexed)
+        button_keys = {'mouse_left': 'mouse_left_button', 'mouse_right': 'mouse_right_button', 'mouse_middle': 'mouse_middle_button'}
         for key, value in self.configModel.items():
             v = value.get()
             if key in axis_keys:
@@ -297,6 +303,12 @@ class Tab():
             self.right_mouse_inverted.destroy()
             self.configModel['mouse_right'].set("None")
             self.configModel['mouse_right_inverted'].set(False)
+
+            self.middle_mouse_button_label.destroy()
+            self.middle_mouse_button_list.destroy()
+            self.middle_mouse_inverted.destroy()
+            self.configModel['mouse_middle'].set("None")
+            self.configModel['mouse_middle_inverted'].set(False)
         except (AttributeError, tk.TclError):
             pass
 
@@ -443,6 +455,30 @@ class Tab():
                         variable=self.configModel['mouse_right_inverted'],
                     )
                     self.right_mouse_inverted.pack(side="left", padx=10)
+
+                    # Middle mouse button selection
+                    self.middle_mouse_button_label = ttk.Label(
+                        self.row_middle,
+                        text="Middle:",
+                        width=10
+                    )
+                    self.middle_mouse_button_label.pack(side="left", padx=10)
+
+                    self.middle_mouse_button_list = ttk.Combobox(
+                        self.row_middle,
+                        values=button_list,
+                        state="readonly",
+                        textvariable=self.configModel['mouse_middle'],
+                        width=6
+                    )
+                    self.middle_mouse_button_list.pack(side="left", padx=10)
+
+                    self.middle_mouse_inverted = ttk.Checkbutton(
+                        self.row_middle,
+                        text="Inverted",
+                        variable=self.configModel['mouse_middle_inverted'],
+                    )
+                    self.middle_mouse_inverted.pack(side="left", padx=10)
 
 
     def update_button_selection(self, _event=None):
@@ -785,6 +821,29 @@ class Tab():
         return self.configModel['mouse_right_inverted'].set(value)
 
 
+    def get_mouse_middle(self):
+        selected_button = self.configModel['mouse_middle'].get()
+        if selected_button != "None":
+            return int(selected_button) - 1
+        else:
+            return None
+
+
+    def set_mouse_middle(self, value):
+        if value != "None":
+            self.configModel['mouse_middle'].set(int(value)+1)
+        else:
+            self.configModel['mouse_middle'].set("None")
+
+
+    def get_mouse_middle_inverted(self):
+        return self.configModel['mouse_middle_inverted'].get()
+
+
+    def set_mouse_middle_inverted(self, value):
+        return self.configModel['mouse_middle_inverted'].set(value)
+
+
     def populate_from_config(self, model):
         '''Populate all GUI widgets from a loaded config data model.'''
         self.set_translation_method(model['translation_method'])
@@ -817,6 +876,10 @@ class Tab():
         mouse_right = model['mouse_right_button']
         self.set_mouse_right(mouse_right if mouse_right is not None else "None")
         self.configModel['mouse_right_inverted'].set(model['mouse_right_inverted'])
+
+        mouse_middle = model['mouse_middle_button']
+        self.set_mouse_middle(mouse_middle if mouse_middle is not None else "None")
+        self.configModel['mouse_middle_inverted'].set(model['mouse_middle_inverted'])
 
         # Set activation method and rebuild button UI
         self.set_activation_method(model['activation_method'])

@@ -13,16 +13,20 @@ debugging = configModel['debugging']
 
 _left_held = False
 _right_held = False
+_middle_held = False
 
 
 def release_mouse_buttons():
-    global _left_held, _right_held
+    global _left_held, _right_held, _middle_held
     if _left_held:
         pydirectinput.mouseUp(button="left")
         _left_held = False
     if _right_held:
         pydirectinput.mouseUp(button="right")
         _right_held = False
+    if _middle_held:
+        pydirectinput.mouseUp(button="middle")
+        _middle_held = False
 
 
 def run():
@@ -111,7 +115,7 @@ def run():
                                 print(f"Mouse: \tX: {x_axis_value} \tY: {y_axis_value}")
 
                     # Mouse buttons — hold while joystick button held, release on release
-                    global _left_held, _right_held
+                    global _left_held, _right_held, _middle_held
                     if configModel['mouse_left_button'] != None:
                         pressed = joy.get_button(configModel['mouse_left_button'])
                         if pressed and not _left_held:
@@ -128,6 +132,14 @@ def run():
                         elif not pressed and _right_held:
                             pydirectinput.mouseUp(button="right")
                             _right_held = False
+                    if configModel['mouse_middle_button'] != None:
+                        pressed = joy.get_button(configModel['mouse_middle_button'])
+                        if pressed and not _middle_held:
+                            pydirectinput.mouseDown(button="middle")
+                            _middle_held = True
+                        elif not pressed and _middle_held:
+                            pydirectinput.mouseUp(button="middle")
+                            _middle_held = False
 
     # Persist last_mouse_x and last_mouse_y
     configModel['last_mouse_x'] = last_mouse_x

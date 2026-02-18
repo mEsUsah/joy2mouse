@@ -31,8 +31,10 @@ configModel = {
 
     'mouse_left_button': None,
     'mouse_right_button': None,
+    'mouse_middle_button': None,
     'mouse_left_inverted': False,
     'mouse_right_inverted': False,
+    'mouse_middle_inverted': False,
 
     'deadzone': 10,
     'autocenter': False,
@@ -63,8 +65,10 @@ def get_current_config():
         'joystick_y_inverted': str(configModel['joystick_y_inverted']),
         'mouse_left_button': str(configModel['mouse_left_button']),
         'mouse_right_button': str(configModel['mouse_right_button']),
+        'mouse_middle_button': str(configModel['mouse_middle_button']),
         'mouse_left_inverted': str(configModel['mouse_left_inverted']),
         'mouse_right_inverted': str(configModel['mouse_right_inverted']),
+        'mouse_middle_inverted': str(configModel['mouse_middle_inverted']),
         'autocenter': str(configModel['autocenter']),
         'autocenter_key': str(configModel['autocenter_key']),
         'deadzone': str(configModel['deadzone']),
