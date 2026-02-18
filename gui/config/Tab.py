@@ -9,7 +9,7 @@ class Tab():
         self.joysticks = {}
         self.configModel = {
             'translation_method': tk.IntVar(value=1),
-            'joystick_resolution': tk.IntVar(value=16),
+            'joystick_resolution': tk.IntVar(value=500),
             'autocenter': tk.BooleanVar(value=False),
             'autocenter_key': tk.StringVar(value="c"),
             'selected_joystick': tk.StringVar(value="None"),
@@ -77,8 +77,8 @@ class Tab():
 
         self.sensitivity_slider = tk.Scale(
             self.sensitivity_control_frame,
-            from_=8,
-            to=16,
+            from_=1,
+            to=4000,
             resolution=1,
             orient=tk.HORIZONTAL,
             variable=self.configModel['joystick_resolution'],
@@ -88,10 +88,10 @@ class Tab():
 
         self.sensitivity_spinbox = ttk.Spinbox(
             self.sensitivity_control_frame,
-            from_=8,
-            to=16,
+            from_=1,
+            to=4000,
             textvariable=self.configModel['joystick_resolution'],
-            width=4,
+            width=6,
         )
         self.sensitivity_spinbox.pack(side="left", padx=(0, 10))
 

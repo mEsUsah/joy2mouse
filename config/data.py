@@ -20,7 +20,7 @@ configModel = {
 
     # Joystick
     'translation_method': 1,
-    'joystick_resolution': 16,
+    'joystick_resolution': 500,
     'selected_joystick': None,
     'selected_joystick_uuid': None,
 

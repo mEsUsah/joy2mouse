@@ -132,8 +132,6 @@ pygame.init()
 while app_running:
     # Get configuation
     config.data.configModel['armed'] = runView.get_armed()
-    joystick_resolution = int((2**configModel['joystick_resolution']) / 16)
-
     # Always update 'active' from configModel
     active = configModel['active']
 
@@ -177,8 +175,8 @@ while app_running:
         mouse_x, mouse_y = mouse.get_position()
         configModel['mouse_x'] = mouse_x
         configModel['mouse_y'] = mouse_y
-        last_mouse_x = joystick_resolution
-        last_mouse_y = joystick_resolution
+        configModel['last_mouse_x'] = 0
+        configModel['last_mouse_y'] = 0
 
     if config.data.joystick_config_ready():
         actions.buttonbox.run()

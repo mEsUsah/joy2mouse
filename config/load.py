@@ -30,7 +30,7 @@ def load_config():
 
     # Joystick
     model['translation_method'] = cfg.getint('JOYSTICK', 'translation_method', fallback=1)
-    model['joystick_resolution'] = cfg.getint('JOYSTICK', 'joystick_resolution', fallback=16)
+    model['joystick_resolution'] = cfg.getint('JOYSTICK', 'joystick_resolution', fallback=500)
     model['joystick_selected'] = cfg.get('JOYSTICK', 'selected_joystick', fallback='None')
 
     model['joystick_x_axis'] = cfg.get('JOYSTICK', 'selected_x_axis', fallback='None')
