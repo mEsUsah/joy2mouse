@@ -4,10 +4,6 @@ import config
 
 pydirectinput.FAILSAFE = False # allow mouse to go outside of screen
 configModel = config.data.configModel
-mouse_x = configModel['mouse_x']
-mouse_y = configModel['mouse_y']
-screen_x_center = configModel['screen_x_center']
-screen_y_center = configModel['screen_y_center']
 joystick_resolution = configModel['joystick_resolution']
 debugging = configModel['debugging']
 
@@ -60,29 +56,35 @@ def run():
 
                     # set mouse position
                     if configModel['translation_method'] == 1: # default
-                        x_axis_value = int(joystick_x_axis * 5000)
-                        y_axis_value = int(joystick_y_axis * 5000)
-                        
-                        x_axis_value, y_axis_value = handle_inverted_axis(
-                            [x_axis_value, y_axis_value], 
-                            (configModel['joystick_x_inverted'], configModel['joystick_y_inverted'])
-                        )
+                        screen_w = configModel['screen_x_center'] * 2
+                        screen_h = configModel['screen_y_center'] * 2
+                        origin_x = configModel['mouse_x']
+                        origin_y = configModel['mouse_y']
 
-                        mouse_x_pos = mouse_x + x_axis_value
-                        mouse_y_pos = mouse_y + y_axis_value
+                        jx = -joystick_x_axis if configModel['joystick_x_inverted'] else joystick_x_axis
+                        jy = -joystick_y_axis if configModel['joystick_y_inverted'] else joystick_y_axis
+
+                        # joystick 0 → origin, +1 → right/bottom edge, -1 → left/top edge
+                        mouse_x_pos = int(origin_x + jx * (screen_w - 1 - origin_x) if jx >= 0 else origin_x + jx * origin_x)
+                        mouse_y_pos = int(origin_y + jy * (screen_h - 1 - origin_y) if jy >= 0 else origin_y + jy * origin_y)
+
+                        mouse_x_pos = max(0, min(mouse_x_pos, screen_w - 1))
+                        mouse_y_pos = max(0, min(mouse_y_pos, screen_h - 1))
                         pydirectinput.moveTo(mouse_x_pos, mouse_y_pos, _pause=False)
 
                     elif configModel['translation_method'] == 2: # absolute mouse movement
-                        x_axis_value = int(joystick_x_axis * screen_x_center)
-                        y_axis_value = int(joystick_y_axis * screen_y_center)
+                        _screen_x_center = configModel['screen_x_center']
+                        _screen_y_center = configModel['screen_y_center']
+                        x_axis_value = int(joystick_x_axis * _screen_x_center)
+                        y_axis_value = int(joystick_y_axis * _screen_y_center)
 
                         x_axis_value, y_axis_value = handle_inverted_axis(
-                            [x_axis_value, y_axis_value], 
+                            [x_axis_value, y_axis_value],
                             (configModel['joystick_x_inverted'], configModel['joystick_y_inverted'])
                         )
 
-                        mouse_x_pos = screen_x_center + x_axis_value
-                        mouse_y_pos = screen_y_center + y_axis_value
+                        mouse_x_pos = _screen_x_center + x_axis_value
+                        mouse_y_pos = _screen_y_center + y_axis_value
                         pydirectinput.moveTo(mouse_x_pos, mouse_y_pos, _pause=False)
 
                     elif configModel['translation_method'] == 3: # relavitve mouse movement

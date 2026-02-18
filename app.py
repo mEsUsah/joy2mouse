@@ -62,10 +62,10 @@ for m in get_monitors():
         screen_x = m.width
         screen_y = m.height
 
-screen_x_center = configModel['screen_x_center']
-screen_y_center = configModel['screen_y_center']
 screen_x_center = int(screen_x/2)
 screen_y_center = int(screen_y/2)
+configModel['screen_x_center'] = screen_x_center
+configModel['screen_y_center'] = screen_y_center
 
 
 # Create the window
@@ -175,6 +175,8 @@ while app_running:
     if not active:
         actions.joystick.release_mouse_buttons()
         mouse_x, mouse_y = mouse.get_position()
+        configModel['mouse_x'] = mouse_x
+        configModel['mouse_y'] = mouse_y
         last_mouse_x = joystick_resolution
         last_mouse_y = joystick_resolution
 
