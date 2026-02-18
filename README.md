@@ -23,12 +23,14 @@ Simple app to translate joystick axis to mouse movement for Windows hosts.
 ## Source code installation - for devs
 For running and working on source code
 ```cmd
+# NB! Use Python 3.12
+
 # Activate virtual environment
 python3 -m venv venv
 venv\Scripts\actiavate.bat
 
 # Install dependencies
-pip install -r requriements.txt
+py -m pip install -r .\requirements.txt
 
 # When needed - deactivate virtual environment
 deactivate
