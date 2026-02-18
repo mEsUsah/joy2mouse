@@ -34,8 +34,8 @@ def load_config():
     config.data.configModel['joystick_x_inverted'] = config.data.configModel['current_config'].getboolean('JOYSTICK', 'joystick_x_inverted')
     config.data.configModel['joystick_y_inverted'] = config.data.configModel['current_config'].getboolean('JOYSTICK', 'joystick_y_inverted')
 
-    config.data.configModel['mouse_left'] = config.data.configModel['current_config'].get('JOYSTICK', 'mouse_left_button')
-    config.data.configModel['mouse_right'] = config.data.configModel['current_config'].get('JOYSTICK', 'mouse_right_button')
+    config.data.configModel['mouse_left_button'] = config.data.configModel['current_config'].getint('JOYSTICK', 'mouse_left_button')
+    config.data.configModel['mouse_right_button'] = config.data.configModel['current_config'].getint('JOYSTICK', 'mouse_right_button')
     config.data.configModel['mouse_left_inverted'] = config.data.configModel['current_config'].getboolean('JOYSTICK', 'mouse_left_inverted')
     config.data.configModel['mouse_right_inverted'] = config.data.configModel['current_config'].getboolean('JOYSTICK', 'mouse_right_inverted')
     
@@ -47,8 +47,8 @@ def load_config():
     # Buttonbox
     config.data.configModel['activation_method'] = config.data.configModel['current_config'].getint('BUTTONBOX', 'selected_activation_method')
     config.data.configModel['buttonbox_selected'] = config.data.configModel['current_config'].get('BUTTONBOX', 'selected_buttonbox')
-    config.data.configModel['activation_button'] = config.data.configModel['current_config'].get('BUTTONBOX', 'activation_button')
-    config.data.configModel['deactivation_button'] = config.data.configModel['current_config'].get('BUTTONBOX', 'deactivation_button')
+    config.data.configModel['activation_button'] = config.data.configModel['current_config'].getint('BUTTONBOX', 'activation_button')
+    config.data.configModel['deactivation_button'] = config.data.configModel['current_config'].getint('BUTTONBOX', 'deactivation_button')
     config.data.configModel['activation_button_inverted'] = config.data.configModel['current_config'].getboolean('BUTTONBOX', 'activation_button_inverted')
     config.data.configModel['deactivation_button_inverted'] = config.data.configModel['current_config'].getboolean('BUTTONBOX', 'deactivation_button_inverted')
 

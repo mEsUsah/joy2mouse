@@ -13,6 +13,8 @@ debugging = configModel['debugging']
 
 def run():
     # Loop over all joysticks
+    last_mouse_x = configModel.get('last_mouse_x', 0)
+    last_mouse_y = configModel.get('last_mouse_y', 0)
     for joy in config.data.joysticks.values():
         # Handle joystick input
         if configModel['selected_joystick'] and (configModel['joystick_x_axis'] != None or configModel['joystick_y_axis'] != None):
@@ -20,15 +22,23 @@ def run():
                 if configModel['active']:
 
                     # Handle one axis set to None
-                    if configModel['selected_x_axis'] == None:
+                    try:
+                        x_axis_index = int(configModel['joystick_x_axis']) if configModel['joystick_x_axis'] is not None and configModel['joystick_x_axis'] != "None" else None
+                    except ValueError:
+                        x_axis_index = None
+                    if x_axis_index is None:
                         joystick_x_axis = 0
                     else:
-                        joystick_x_axis = joy.get_axis(configModel['selected_x_axis'])
-                    
-                    if configModel['selected_y_axis'] == None:
+                        joystick_x_axis = joy.get_axis(x_axis_index)
+
+                    try:
+                        y_axis_index = int(configModel['joystick_y_axis']) if configModel['joystick_y_axis'] is not None and configModel['joystick_y_axis'] != "None" else None
+                    except ValueError:
+                        y_axis_index = None
+                    if y_axis_index is None:
                         joystick_y_axis = 0
                     else:
-                        joystick_y_axis = joy.get_axis(configModel['selected_y_axis'])
+                        joystick_y_axis = joy.get_axis(y_axis_index)
 
                     # set mouse position
                     if configModel['translation_method'] == 1: # default
@@ -72,31 +82,32 @@ def run():
                         last_mouse_y = y_axis_value
                         pydirectinput.moveRel(mouse_Dx,mouse_Dy, _pause=False, relative=True)
 
+                        # center torso if joystick is in deadzone
+                        if configModel['autocenter'] and configModel['autocenter_key'] != None:
+                            within_deadzone_x = x_axis_value > -configModel['deadzone'] and x_axis_value < configModel['deadzone']
+                            within_deadzone_y = y_axis_value > -configModel['deadzone'] and y_axis_value < configModel['deadzone']
 
-                    # center torso if joystick is in deadzone
-                    if configModel['autocenter'] and configModel['autocenter_key'] != None:
-                        within_deadzone_x = x_axis_value > -configModel['deadzone'] and x_axis_value < configModel['deadzone']
-                        within_deadzone_y = y_axis_value > -configModel['deadzone'] and y_axis_value < configModel['deadzone']
+                            if within_deadzone_x and within_deadzone_y:
+                                keyboard.press_and_release(configModel['autocenter_key'])
 
-                        if within_deadzone_x and within_deadzone_y:
-                            keyboard.press_and_release(configModel['autocenter_key'])
+                        if debugging:
+                            if configModel['translation_method'] == 3:
+                                print(f"Mouse: \tdX: {mouse_Dx} \tdY: {mouse_Dy} \tres: {joystick_resolution}")
+                            else:
+                                print(f"Mouse: \tX: {x_axis_value} \tY: {y_axis_value}")
 
+                        # Mouse buttons
+                        if configModel['mouse_left_button'] != None:
+                            if joy.get_button(configModel['mouse_left_button']):
+                                pydirectinput.click(button="left")
+                        if configModel['mouse_right_button'] != None:
+                            if joy.get_button(configModel['mouse_right_button']):
+                                # Right mouse button
+                                pydirectinput.click(button="right")
 
-                    if debugging:
-                        if configModel['translation_method'] == 3:
-                            print(f"Mouse: \tdX: {mouse_Dx} \tdY: {mouse_Dy} \tres: {joystick_resolution}")
-                        else:
-                            print(f"Mouse: \tX: {x_axis_value} \tY: {y_axis_value}")
-
-
-                    # Mouse buttons
-                    if configModel['mouse_left_button'] != None:
-                        if joy.get_button(configModel['mouse_left_button']):
-                            pydirectinput.click(button="left")
-                    if configModel['mouse_right_button'] != None:
-                        if joy.get_button(configModel['mouse_right_button']):
-                            # Right mouse button
-                            pydirectinput.click(button="right")
+    # Persist last_mouse_x and last_mouse_y
+    configModel['last_mouse_x'] = last_mouse_x
+    configModel['last_mouse_y'] = last_mouse_y
 
 
 def handle_inverted_axis(axis, inverted):

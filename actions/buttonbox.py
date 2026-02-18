@@ -3,19 +3,27 @@ import gui
 import utils
 
 configModel = config.data.configModel
-activated = configModel['activated']
-deactivate_button_pressed = configModel['deactivate_button_pressed']
-activate_button_pressed = configModel['activate_button_pressed']
+
+# Persistent state for toggle logic
+activated = False
+activate_button_released = True
+deactivate_button_released = True
 
 
 # Handle activate button
 # Loop over all joysticks
 def run():
+    global activated, activate_button_released, deactivate_button_released
     for joy in config.data.joysticks.values():
+        deactivate_button_pressed = False  # Ensure always defined
         if configModel['selected_buttonbox'] != None and configModel['activation_button'] != None:
             if joy.get_guid() == configModel['selected_buttonbox_uuid']:
                 ## check if activation button is pressed
-                activate_button_pressed = joy.get_button(configModel['activation_button'])
+                try:
+                    activation_button_index = int(configModel['activation_button']) if configModel['activation_button'] is not None and configModel['activation_button'] != "None" else None
+                except ValueError:
+                    activation_button_index = None
+                activate_button_pressed = joy.get_button(activation_button_index) if activation_button_index is not None else False
                 if configModel['activation_button_inverted']:
                     activate_button_pressed = not activate_button_pressed
 
@@ -35,8 +43,12 @@ def run():
                         activate_button_released = True
 
                 elif configModel['activation_method'] == 3: # on/off
-                    if configModel['deactivation_button'] != None:
-                        deactivate_button_pressed = joy.get_button(configModel['deactivation_button'])
+                    if configModel['deactivation_button'] != None and configModel['deactivation_button'] != "None":
+                        try:
+                            deactivation_button_index = int(configModel['deactivation_button'])
+                        except ValueError:
+                            deactivation_button_index = None
+                        deactivate_button_pressed = joy.get_button(deactivation_button_index) if deactivation_button_index is not None else False
                         if configModel['deactivation_button_inverted']:
                             deactivate_button_pressed = not deactivate_button_pressed
 
@@ -64,7 +76,6 @@ def run():
                 else:
                     configModel['active'] = False
 
-                print(configModel['armed'], configModel['active'], activate_button_pressed, deactivate_button_pressed)
                     
 
            

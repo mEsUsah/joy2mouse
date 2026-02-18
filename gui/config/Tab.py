@@ -31,6 +31,10 @@ class Tab():
             'deactivation_button': tk.StringVar(value="None"),
             'deactivation_button_inverted': tk.BooleanVar(value=False),
         }
+        self.activation_button_display = tk.StringVar(value="None")
+        self.deactivation_button_display = tk.StringVar(value="None")
+        self.joystick_x_axis_display = tk.StringVar(value="None")
+        self.joystick_y_axis_display = tk.StringVar(value="None")
         
 
         self.row_1 = ttk.Frame(self.tab)
@@ -57,7 +61,7 @@ class Tab():
                 variable=self.configModel['translation_method'],
                 value=key,
             ).pack(side="top", fill="x", padx=10)
-        
+
         self.row_2 = ttk.Frame(self.tab)
         self.row_2.pack(side="top", expand=1, fill="both")
 
@@ -301,9 +305,29 @@ class Tab():
                         self.row_5,
                         values=axis_list,
                         state="readonly",
-                        textvariable=self.configModel['joystick_x_axis'],
+                        textvariable=self.joystick_x_axis_display,
                         width=6
-                    )  
+                    )
+                    # Set display to 1-based for GUI
+                    current_x = self.configModel['joystick_x_axis'].get()
+                    if current_x != "None":
+                        try:
+                            self.joystick_x_axis_display.set(str(int(current_x) + 1))
+                        except Exception:
+                            self.joystick_x_axis_display.set("None")
+                    else:
+                        self.joystick_x_axis_display.set("None")
+                    def on_x_axis_selected(event=None):
+                        val = self.joystick_x_axis_display.get()
+                        if val == "None":
+                            self.configModel['joystick_x_axis'].set("None")
+                        else:
+                            try:
+                                self.configModel['joystick_x_axis'].set(str(int(val) - 1))
+                            except Exception:
+                                self.configModel['joystick_x_axis'].set("None")
+
+                    self.x_axis_list.bind('<<ComboboxSelected>>', on_x_axis_selected)
                     self.x_axis_list.pack(side="left", padx=10)
 
                     self.x_axis_inverted = ttk.Checkbutton(
@@ -326,11 +350,30 @@ class Tab():
                         self.row_6,
                         values=axis_list,
                         state="readonly",
-                        textvariable=self.configModel['joystick_y_axis'],
+                        textvariable=self.joystick_y_axis_display,
                         width=6
                     )
-                    self.y_axis_list.pack(side="left", padx=10
-                                          )
+                    # Set display to 1-based for GUI
+                    current_y = self.configModel['joystick_y_axis'].get()
+                    if current_y != "None":
+                        try:
+                            self.joystick_y_axis_display.set(str(int(current_y) + 1))
+                        except Exception:
+                            self.joystick_y_axis_display.set("None")
+                    else:
+                        self.joystick_y_axis_display.set("None")
+                    def on_y_axis_selected(event=None):
+                        val = self.joystick_y_axis_display.get()
+                        if val == "None":
+                            self.configModel['joystick_y_axis'].set("None")
+                        else:
+                            try:
+                                self.configModel['joystick_y_axis'].set(str(int(val) - 1))
+                            except Exception:
+                                self.configModel['joystick_y_axis'].set("None")
+
+                    self.y_axis_list.bind('<<ComboboxSelected>>', on_y_axis_selected)
+                    self.y_axis_list.pack(side="left", padx=10)
                     self.y_axis_inverted = ttk.Checkbutton(
                         self.row_6,
                         text="Inverted",
@@ -424,10 +467,24 @@ class Tab():
                         self.row_8,
                         values=button_list,
                         state="readonly",
-                        textvariable=self.configModel['activation_button'],
+                        textvariable=self.activation_button_display,
                         width=6
-                    )  
+                    )
                     self.activate_button_list.pack(side="left", padx=10)
+                    # Sync display <-> configModel
+                    def on_activation_button_selected(event=None):
+                        val = self.activation_button_display.get()
+                        if val != "None":
+                            self.configModel['activation_button'].set(str(int(val) - 1))
+                        else:
+                            self.configModel['activation_button'].set("None")
+                    self.activate_button_list.bind("<<ComboboxSelected>>", on_activation_button_selected)
+                    # When loading config, update display
+                    val = self.configModel['activation_button'].get()
+                    if val != "None":
+                        self.activation_button_display.set(str(int(val) + 1))
+                    else:
+                        self.activation_button_display.set("None")
 
                     self.activate_button_inverted = ttk.Checkbutton(
                         self.row_8,
@@ -445,14 +502,28 @@ class Tab():
                         )
                         self.deactivate_button_label.pack(side="left", padx=10)
 
-                        self.deactivate_button_list = ttk.Combobox(
+                        self.deactivation_button_list = ttk.Combobox(
                             self.row_10,
                             values=button_list,
                             state="readonly",
-                            textvariable=self.configModel['deactivation_button'],
+                            textvariable=self.deactivation_button_display,
                             width=6
                         )
-                        self.deactivate_button_list.pack(side="left", padx=10)
+                        self.deactivation_button_list.pack(side="left", padx=10)
+                        # Sync display <-> configModel
+                        def on_deactivation_button_selected(event=None):
+                            val = self.deactivation_button_display.get()
+                            if val != "None":
+                                self.configModel['deactivation_button'].set(str(int(val) - 1))
+                            else:
+                                self.configModel['deactivation_button'].set("None")
+                        self.deactivation_button_list.bind("<<ComboboxSelected>>", on_deactivation_button_selected)
+                        # When loading config, update display
+                        val = self.configModel['deactivation_button'].get()
+                        if val != "None":
+                            self.deactivation_button_display.set(str(int(val) + 1))
+                        else:
+                            self.deactivation_button_display.set("None")
 
                         self.deactivate_button_inverted = ttk.Checkbutton(
                             self.row_10,
@@ -530,31 +601,44 @@ class Tab():
         
 
     def get_joystick_x_axis(self):
-        selected_x_axise = self.configModel['joystick_x_axis'].get()
-        if selected_x_axise != "None":
-            return int(selected_x_axise) - 1
+        selected_x_axis = self.configModel['joystick_x_axis'].get()
+        if selected_x_axis != "None":
+            return int(selected_x_axis)
         else:
             return None
+
+    def set_joystick_x_axis(self, value):
+        if value != "None":
+            # Store zero-based, display one-based
+            self.configModel['joystick_x_axis'].set(str(int(value) + 1))
+        else:
+            self.configModel['joystick_x_axis'].set("None")
     
 
     def set_joystick_x_axis(self, value):
         if value != "None":
-            self.configModel['joystick_x_axis'].set(int(value)+1)
+            self.configModel['joystick_x_axis'].set(int(value))
         else:
             self.configModel['joystick_x_axis'].set("None")
 
     
     def get_joystick_y_axis(self):
-        selected_y_axise = self.configModel['joystick_y_axis'].get()
-        if selected_y_axise != "None":
-            return int(selected_y_axise) - 1
+        selected_y_axis = self.configModel['joystick_y_axis'].get()
+        if selected_y_axis != "None":
+            return int(selected_y_axis)
         else:
             return None
+
+    def set_joystick_y_axis(self, value):
+        if value != "None":
+            self.configModel['joystick_y_axis'].set(str(int(value) + 1))
+        else:
+            self.configModel['joystick_y_axis'].set("None")
 
 
     def set_joystick_y_axis(self, value):
         if value != "None":
-            self.configModel['joystick_y_axis'].set(int(value)+1)
+            self.configModel['joystick_y_axis'].set(int(value))
         else:
             self.configModel['joystick_y_axis'].set("None")
 
@@ -607,18 +691,56 @@ class Tab():
 
 
     def get_activation_button(self):
-        selected_button = self.configModel['activation_button'].get()
-        if selected_button != "None":
-            return int(selected_button) - 1
+        # For GUI display: always show 1-based
+        val = self.configModel['activation_button'].get()
+        if val != "None":
+            return str(int(val) + 1)
         else:
-            return None
-        
+            return "None"
 
     def set_activation_button(self, value):
+        # From GUI: value is 1-based, store as 0-based
         if value != "None":
-            self.configModel['activation_button'].set(int(value)+1)
+            self.configModel['activation_button'].set(str(int(value) - 1))
         else:
             self.configModel['activation_button'].set("None")
+    def get_deactivation_button(self):
+        val = self.configModel['deactivation_button'].get()
+        if val != "None":
+            return str(int(val) + 1)
+        else:
+            return "None"
+
+    def set_deactivation_button(self, value):
+        if value != "None":
+            self.configModel['deactivation_button'].set(str(int(value) - 1))
+        else:
+            self.configModel['deactivation_button'].set("None")
+    def get_mouse_left(self):
+        val = self.configModel['mouse_left'].get()
+        if val != "None":
+            return str(int(val) + 1)
+        else:
+            return "None"
+
+    def set_mouse_left(self, value):
+        if value != "None":
+            self.configModel['mouse_left'].set(str(int(value) - 1))
+        else:
+            self.configModel['mouse_left'].set("None")
+
+    def get_mouse_right(self):
+        val = self.configModel['mouse_right'].get()
+        if val != "None":
+            return str(int(val) + 1)
+        else:
+            return "None"
+
+    def set_mouse_right(self, value):
+        if value != "None":
+            self.configModel['mouse_right'].set(str(int(value) - 1))
+        else:
+            self.configModel['mouse_right'].set("None")
 
         
     def get_activation_button_inverted(self):

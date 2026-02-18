@@ -158,4 +158,4 @@ class Tab():
                 
         
     def open_win_joystick(self):
-        os.system('%SystemRoot%\System32\joy.cpl')
+        os.system(r'%SystemRoot%\System32\joy.cpl')

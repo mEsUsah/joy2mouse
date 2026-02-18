@@ -118,17 +118,18 @@ while app_running:
     config.data.configModel['armed'] = runView.get_armed()
     joystick_resolution = int((2**configModel['joystick_resolution']) / 16)
 
+    # Always update 'active' from configModel
+    active = configModel['active']
+
     if not config.data.joystick_config_ready():
         runView.disable_arming()
 
-
     runView.set_run_status(active, configured=config.data.joystick_config_ready())
-    
+
     if main_control_tab.index("current") == 1: # Test tab
         testView.update_axis_view()
     if main_control_tab.index("current") == 2: # Config tab
         configView.update_config()
-
 
     # Handle PyGame events
     for event in pygame.event.get():
@@ -147,7 +148,6 @@ while app_running:
             testView.update_device_list(config.data.joysticks)
             configView.update_device_list(config.data.joysticks)
 
-
     if not activate_button_pressed:
         runView.enable_arming()
     else:
@@ -158,8 +158,6 @@ while app_running:
         mouse_x, mouse_y = mouse.get_position()
         last_mouse_x = joystick_resolution
         last_mouse_y = joystick_resolution
-
-
 
     if config.data.joystick_config_ready():
         actions.buttonbox.run()

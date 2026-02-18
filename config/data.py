@@ -11,8 +11,8 @@ def get_current_config():
         'selected_y_axis': str(configModel['joystick_y_axis']),
         'joystick_x_inverted': str(configModel['joystick_x_inverted']),
         'joystick_y_inverted': str(configModel['joystick_y_inverted']),
-        'mouse_left_button': str(configModel['mouse_left']),
-        'mouse_right_button': str(configModel['mouse_right']),
+        'mouse_left_button': str(configModel['mouse_left_button']),
+        'mouse_right_button': str(configModel['mouse_right_button']),
         'mouse_left_inverted': str(configModel['mouse_left_inverted']),
         'mouse_right_inverted': str(configModel['mouse_right_inverted']),
         'autocenter': str(configModel['autocenter']),
@@ -68,8 +68,8 @@ configModel = {
     'joystick_x_inverted': False,
     'joystick_y_inverted': False,
 
-    'mouse_left': None,
-    'mouse_right': None,
+    'mouse_left_button': None,
+    'mouse_right_button': None,
     'mouse_left_inverted': False,
     'mouse_right_inverted': False,
             
