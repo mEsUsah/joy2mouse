@@ -23,6 +23,11 @@ def open_manual():
     webbrowser.open("https://haxor.no/en/article/joy2mouse")
 
 
+def open_config_file():
+    config.load.load_config_file()
+    configView.populate_from_config(config.data.configModel)
+
+
 configModel = config.data.configModel
 app_running = True
 active = configModel['active']
@@ -71,7 +76,7 @@ window.config(menu=menu)
 
 file_menu = tk.Menu(menu, tearoff=False)
 menu.add_cascade(label="File", menu=file_menu)
-file_menu.add_command(label="Open...", command=config.load.load_config_file)
+file_menu.add_command(label="Open...", command=open_config_file)
 file_menu.add_command(label="Save", command=config.save.save_config)
 file_menu.add_command(label="Save As...", command=config.save.save_config_as)
 file_menu.add_separator()

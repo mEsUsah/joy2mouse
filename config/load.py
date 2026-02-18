@@ -5,14 +5,18 @@ import os
 
 
 def load_config_file():
-    config.data.current_config_default = False
-
     file_path = utils.files.gui_open_path()
     if not file_path:
         return  # User canceled the open dialog
-    config.data.current_config_file = file_path
+    config.data.configModel['current_config_default'] = False
+    config.data.configModel['current_config_file'] = file_path
 
     load_config()
+
+
+def _get_int_or_none(cfg, section, option):
+    val = cfg.get(section, option)
+    return None if val == 'None' else int(val)
 
 
 def load_config():
@@ -34,8 +38,8 @@ def load_config():
     model['joystick_x_inverted'] = cfg.getboolean('JOYSTICK', 'joystick_x_inverted')
     model['joystick_y_inverted'] = cfg.getboolean('JOYSTICK', 'joystick_y_inverted')
 
-    model['mouse_left_button'] = cfg.getint('JOYSTICK', 'mouse_left_button')
-    model['mouse_right_button'] = cfg.getint('JOYSTICK', 'mouse_right_button')
+    model['mouse_left_button'] = _get_int_or_none(cfg, 'JOYSTICK', 'mouse_left_button')
+    model['mouse_right_button'] = _get_int_or_none(cfg, 'JOYSTICK', 'mouse_right_button')
     model['mouse_left_inverted'] = cfg.getboolean('JOYSTICK', 'mouse_left_inverted')
     model['mouse_right_inverted'] = cfg.getboolean('JOYSTICK', 'mouse_right_inverted')
 
@@ -46,7 +50,7 @@ def load_config():
     # Buttonbox
     model['activation_method'] = cfg.getint('BUTTONBOX', 'selected_activation_method')
     model['buttonbox_selected'] = cfg.get('BUTTONBOX', 'selected_buttonbox')
-    model['activation_button'] = cfg.getint('BUTTONBOX', 'activation_button')
-    model['deactivation_button'] = cfg.getint('BUTTONBOX', 'deactivation_button')
+    model['activation_button'] = _get_int_or_none(cfg, 'BUTTONBOX', 'activation_button')
+    model['deactivation_button'] = _get_int_or_none(cfg, 'BUTTONBOX', 'deactivation_button')
     model['activation_button_inverted'] = cfg.getboolean('BUTTONBOX', 'activation_button_inverted')
     model['deactivation_button_inverted'] = cfg.getboolean('BUTTONBOX', 'deactivation_button_inverted')

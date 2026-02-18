@@ -773,3 +773,56 @@ class Tab():
 
     def set_mouse_right_inverted(self, value):
         return self.configModel['mouse_right_inverted'].set(value)
+
+
+    def populate_from_config(self, model):
+        '''Populate all GUI widgets from a loaded config data model.'''
+        self.set_translation_method(model['translation_method'])
+        self.set_joystick_resolution(model['joystick_resolution'])
+        self.set_autocenter(model['autocenter'])
+        self.set_autocenter_key(model['autocenter_key'] or "None")
+
+        # Set joystick by name and rebuild axis UI
+        joystick_name = model.get('joystick_selected') or 'None'
+        self.configModel['selected_joystick'].set(joystick_name)
+        self.update_axis_selection()
+
+        # Restore axis/button values after update_axis_selection clears them
+        x_axis = model['joystick_x_axis']
+        if x_axis not in (None, 'None'):
+            self.configModel['joystick_x_axis'].set(str(x_axis))
+            self.joystick_x_axis_display.set(str(int(x_axis) + 1))
+        self.configModel['joystick_x_inverted'].set(model['joystick_x_inverted'])
+
+        y_axis = model['joystick_y_axis']
+        if y_axis not in (None, 'None'):
+            self.configModel['joystick_y_axis'].set(str(y_axis))
+            self.joystick_y_axis_display.set(str(int(y_axis) + 1))
+        self.configModel['joystick_y_inverted'].set(model['joystick_y_inverted'])
+
+        mouse_left = model['mouse_left_button']
+        self.set_mouse_left(mouse_left if mouse_left is not None else "None")
+        self.configModel['mouse_left_inverted'].set(model['mouse_left_inverted'])
+
+        mouse_right = model['mouse_right_button']
+        self.set_mouse_right(mouse_right if mouse_right is not None else "None")
+        self.configModel['mouse_right_inverted'].set(model['mouse_right_inverted'])
+
+        # Set activation method and rebuild button UI
+        self.set_activation_method(model['activation_method'])
+        buttonbox_name = model.get('buttonbox_selected') or 'None'
+        self.configModel['selected_buttonbox'].set(buttonbox_name)
+        self.update_button_selection()
+
+        # Restore button values after update_button_selection clears them
+        activation_btn = model['activation_button']
+        if activation_btn is not None:
+            self.configModel['activation_button'].set(str(activation_btn))
+            self.activation_button_display.set(str(activation_btn + 1))
+        self.configModel['activation_button_inverted'].set(model['activation_button_inverted'])
+
+        deactivation_btn = model['deactivation_button']
+        if deactivation_btn is not None:
+            self.configModel['deactivation_button'].set(str(deactivation_btn))
+            self.deactivation_button_display.set(str(deactivation_btn + 1))
+        self.configModel['deactivation_button_inverted'].set(model['deactivation_button_inverted'])
