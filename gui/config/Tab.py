@@ -36,12 +36,12 @@ class Tab():
         self.joystick_x_axis_display = tk.StringVar(value="None")
         self.joystick_y_axis_display = tk.StringVar(value="None")
 
-        self.row_1 = ttk.Frame(self.tab)
-        self.row_1.pack(side="top", expand=1, fill="both")
+        self.translation_frame = ttk.Frame(self.tab)
+        self.translation_frame.pack(side="top", fill="x")
 
         # Translation method selection
         self.translation_label = ttk.Label(
-            self.row_1,
+            self.translation_frame,
             text="Translation method:",
             font="TkDefaultFont 10 bold"
         )
@@ -55,24 +55,24 @@ class Tab():
 
         for key, value in self.translation_methods.items():
             ttk.Radiobutton(
-                self.row_1,
+                self.translation_frame,
                 text=value,
                 variable=self.configModel['translation_method'],
                 value=key,
             ).pack(side="top", fill="x", padx=10)
 
         # Sensitivity slider
-        self.row_3 = ttk.Frame(self.tab)
-        self.row_3.pack(side="top", fill="x")
+        self.sensitivity_frame = ttk.Frame(self.tab)
+        self.sensitivity_frame.pack(side="top", fill="x")
 
         self.sensitivity_label = ttk.Label(
-            self.row_3,
+            self.sensitivity_frame,
             text="Sensitivity:",
             font="TkDefaultFont 10 bold"
         )
         self.sensitivity_label.pack(side="top", fill="x", padx=10, pady=(6, 0))
 
-        self.sensitivity_control_frame = ttk.Frame(self.row_3)
+        self.sensitivity_control_frame = ttk.Frame(self.sensitivity_frame)
         self.sensitivity_control_frame.pack(side="top", fill="x")
 
         self.sensitivity_slider = tk.Scale(
@@ -95,12 +95,12 @@ class Tab():
         )
         self.sensitivity_spinbox.pack(side="left", padx=(0, 10))
 
-        self.row_2 = ttk.Frame(self.tab)
-        self.row_2.pack(side="top", expand=1, fill="both")
+        self.autocenter_frame = ttk.Frame(self.tab)
+        self.autocenter_frame.pack(side="top", fill="x")
 
         # Autocenter option
         self.center_option = ttk.Checkbutton(
-            self.row_2,
+            self.autocenter_frame,
             text="Autocenter:",
             variable=self.configModel['autocenter'],
             command=self.updater_autocenter,
@@ -108,45 +108,45 @@ class Tab():
         )
         self.center_option.pack(side="left", padx=10, pady=6)
 
-        self.row_13 = ttk.Frame(self.tab)
-        self.row_13.pack(side="top", expand=1, fill="both")
+        self.joystick_gap_frame = ttk.Frame(self.tab)
+        self.joystick_gap_frame.pack(side="top", fill="x")
 
-        self.row_4 = ttk.Frame(self.tab)
-        self.row_4.pack(side="top", expand=1, fill="both")
+        self.joystick_frame = ttk.Frame(self.tab)
+        self.joystick_frame.pack(side="top", fill="x")
 
         self.joystick_select_label = ttk.Label(
-            self.row_4,
+            self.joystick_frame,
             text="Joystick for mouse control:",
             font="TkDefaultFont 10 bold"
         )
         self.joystick_select_label.pack(side="top", fill="x", padx=10, pady=6)
 
         # X axis selection
-        self.row_5 = ttk.Frame(self.tab)
-        self.row_5.pack(side="top", expand=1, fill="both", pady=6)
+        self.x_axis_frame = ttk.Frame(self.tab)
+        self.x_axis_frame.pack(side="top", fill="x", pady=6)
 
         # Y axis selection
-        self.row_6 = ttk.Frame(self.tab)
-        self.row_6.pack(side="top", expand=1, fill="both", pady=6)
+        self.y_axis_frame = ttk.Frame(self.tab)
+        self.y_axis_frame.pack(side="top", fill="x", pady=6)
 
         # Left mouse button selection
-        self.row_11 = ttk.Frame(self.tab)
-        self.row_11.pack(side="top", expand=1, fill="both", pady=6)
+        self.mouse_left_frame = ttk.Frame(self.tab)
+        self.mouse_left_frame.pack(side="top", fill="x", pady=6)
 
         # Middle mouse button selection
-        self.row_middle = ttk.Frame(self.tab)
-        self.row_middle.pack(side="top", expand=1, fill="both", pady=6)
+        self.mouse_middle_frame = ttk.Frame(self.tab)
+        self.mouse_middle_frame.pack(side="top", fill="x", pady=6)
 
         # Right mouse button selection
-        self.row_12 = ttk.Frame(self.tab)
-        self.row_12.pack(side="top", expand=1, fill="both", pady=6)
+        self.mouse_right_frame = ttk.Frame(self.tab)
+        self.mouse_right_frame.pack(side="top", fill="x", pady=6)
 
         # Activation method selection
-        self.row_9 = ttk.Frame(self.tab)
-        self.row_9.pack(side="top", expand=1, fill="both", pady=6)
+        self.activation_method_frame = ttk.Frame(self.tab)
+        self.activation_method_frame.pack(side="top", fill="x", pady=6)
 
         self.activation_method_label = ttk.Label(
-            self.row_9,
+            self.activation_method_frame,
             text="Activation method:",
             font="TkDefaultFont 10 bold"
         )
@@ -160,7 +160,7 @@ class Tab():
 
         for key, value in self.activation_method_options.items():
             ttk.Radiobutton(
-                self.row_9,
+                self.activation_method_frame,
                 text=value,
                 variable=self.configModel['activation_method'],
                 value=key,
@@ -168,23 +168,23 @@ class Tab():
             ).pack(side="top", fill="x", padx=10)
 
         # Buttonbox selection
-        self.row_7 = ttk.Frame(self.tab)
-        self.row_7.pack(side="top", expand=1, fill="both", pady=6)
+        self.buttonbox_frame = ttk.Frame(self.tab)
+        self.buttonbox_frame.pack(side="top", fill="x", pady=6)
 
         self.joystick_select_label = ttk.Label(
-            self.row_7,
+            self.buttonbox_frame,
             text="Button box for activation:",
             font="TkDefaultFont 10 bold"
         )
         self.joystick_select_label.pack(side="top", fill="x", padx=10, pady=6)
 
         # Activate button
-        self.row_8 = ttk.Frame(self.tab)
-        self.row_8.pack(side="top", expand=1, fill="both", pady=6)
+        self.activate_btn_frame = ttk.Frame(self.tab)
+        self.activate_btn_frame.pack(side="top", fill="x", pady=6)
 
         # Deactivate button
-        self.row_10 = ttk.Frame(self.tab)
-        self.row_10.pack(side="top", expand=1, fill="both", pady=6)
+        self.deactivate_btn_frame = ttk.Frame(self.tab)
+        self.deactivate_btn_frame.pack(side="top", fill="x", pady=6)
 
 
     def update_config(self):
@@ -233,14 +233,14 @@ class Tab():
 
         if self.configModel['autocenter'].get():
             self.autocenter_list_label = ttk.Label(
-                self.row_2,
+                self.autocenter_frame,
                 text="Key*:",
                 width=5
             )
             self.autocenter_list_label.pack(side="left", padx=10)
 
             self.autocenter_list = ttk.Entry(
-                self.row_2,
+                self.autocenter_frame,
                 textvariable=self.configModel['autocenter_key'],
                 width=10,
             )
@@ -258,7 +258,7 @@ class Tab():
             joystick_list_values.append(device.get_name())
 
         self.joystick_list = ttk.Combobox(
-            self.row_4,
+            self.joystick_frame,
             values=joystick_list_values,
             textvariable=self.configModel['selected_joystick'],
             state="readonly",
@@ -278,7 +278,7 @@ class Tab():
             buttonbox_list_values.append(device.get_name())
 
         self.buttonbox_list = ttk.Combobox(
-            self.row_7,
+            self.buttonbox_frame,
             values=buttonbox_list_values,
             textvariable=self.configModel['selected_buttonbox'],
             state="readonly",
@@ -321,7 +321,16 @@ class Tab():
         except (AttributeError, tk.TclError):
             pass
 
+        for row in (self.x_axis_frame, self.y_axis_frame, self.mouse_left_frame, self.mouse_middle_frame, self.mouse_right_frame):
+            row.pack_forget()
+
         if self.configModel['selected_joystick'].get() != "None":
+            self.x_axis_frame.pack(side="top", fill="x", pady=6, after=self.joystick_frame)
+            self.y_axis_frame.pack(side="top", fill="x", pady=6, after=self.x_axis_frame)
+            self.mouse_left_frame.pack(side="top", fill="x", pady=6, after=self.y_axis_frame)
+            self.mouse_middle_frame.pack(side="top", fill="x", pady=6, after=self.mouse_left_frame)
+            self.mouse_right_frame.pack(side="top", fill="x", pady=6, after=self.mouse_middle_frame)
+
             for device in self.joysticks.values():
                 if device.get_name() == self.configModel['selected_joystick'].get():
                     axis_list = ["None"]
@@ -331,14 +340,14 @@ class Tab():
 
                     # X axis selection
                     self.x_axis_label = ttk.Label(
-                        self.row_5,
+                        self.x_axis_frame,
                         text="X axis*:",
                         width=10
                     )
                     self.x_axis_label.pack(side="left", padx=10)
 
                     self.x_axis_list = ttk.Combobox(
-                        self.row_5,
+                        self.x_axis_frame,
                         values=axis_list,
                         state="readonly",
                         textvariable=self.joystick_x_axis_display,
@@ -365,7 +374,7 @@ class Tab():
                     self.x_axis_list.bind('<<ComboboxSelected>>', on_x_axis_selected)
 
                     self.x_axis_inverted = ttk.Checkbutton(
-                        self.row_5,
+                        self.x_axis_frame,
                         text="Inverted",
                         variable=self.configModel['joystick_x_inverted'],
                     )
@@ -374,14 +383,14 @@ class Tab():
 
                     # Y axis selection
                     self.y_axis_label = ttk.Label(
-                        self.row_6,
+                        self.y_axis_frame,
                         text="Y axis*:",
                         width=10
                     )
                     self.y_axis_label.pack(side="left", padx=10)
 
                     self.y_axis_list = ttk.Combobox(
-                        self.row_6,
+                        self.y_axis_frame,
                         values=axis_list,
                         state="readonly",
                         textvariable=self.joystick_y_axis_display,
@@ -408,7 +417,7 @@ class Tab():
                     self.y_axis_list.bind('<<ComboboxSelected>>', on_y_axis_selected)
 
                     self.y_axis_inverted = ttk.Checkbutton(
-                        self.row_6,
+                        self.y_axis_frame,
                         text="Inverted",
                         variable=self.configModel['joystick_y_inverted'],
                     )
@@ -417,20 +426,20 @@ class Tab():
 
                     # Left mouse button selection
                     self.left_mouse_button_label = ttk.Label(
-                        self.row_11,
+                        self.mouse_left_frame,
                         text="Left:",
                         width=10
                     )
                     self.left_mouse_button_label.pack(side="left", padx=10)
 
                     self.left_mouse_button_list = ttk.Combobox(
-                        self.row_11,
+                        self.mouse_left_frame,
                         values=button_list,
                         state="readonly",
                         textvariable=self.configModel['mouse_left'],
                     )
                     self.left_mouse_inverted = ttk.Checkbutton(
-                        self.row_11,
+                        self.mouse_left_frame,
                         text="Inverted",
                         variable=self.configModel['mouse_left_inverted'],
                     )
@@ -439,20 +448,20 @@ class Tab():
 
                     # Right mouse button selection
                     self.right_mouse_button_label = ttk.Label(
-                        self.row_12,
+                        self.mouse_right_frame,
                         text="Right:",
                         width=10
                     )
                     self.right_mouse_button_label.pack(side="left", padx=10)
 
                     self.right_mouse_button_list = ttk.Combobox(
-                        self.row_12,
+                        self.mouse_right_frame,
                         values=button_list,
                         state="readonly",
                         textvariable=self.configModel['mouse_right'],
                     )
                     self.right_mouse_inverted = ttk.Checkbutton(
-                        self.row_12,
+                        self.mouse_right_frame,
                         text="Inverted",
                         variable=self.configModel['mouse_right_inverted'],
                     )
@@ -461,20 +470,20 @@ class Tab():
 
                     # Middle mouse button selection
                     self.middle_mouse_button_label = ttk.Label(
-                        self.row_middle,
+                        self.mouse_middle_frame,
                         text="Middle:",
                         width=10
                     )
                     self.middle_mouse_button_label.pack(side="left", padx=10)
 
                     self.middle_mouse_button_list = ttk.Combobox(
-                        self.row_middle,
+                        self.mouse_middle_frame,
                         values=button_list,
                         state="readonly",
                         textvariable=self.configModel['mouse_middle'],
                     )
                     self.middle_mouse_inverted = ttk.Checkbutton(
-                        self.row_middle,
+                        self.mouse_middle_frame,
                         text="Inverted",
                         variable=self.configModel['mouse_middle_inverted'],
                     )
@@ -506,14 +515,14 @@ class Tab():
 
                     # Activate button selection
                     self.activate_button_label = ttk.Label(
-                        self.row_8,
+                        self.activate_btn_frame,
                         text="Activate*:",
                         width=10
                     )
                     self.activate_button_label.pack(side="left", padx=10)
 
                     self.activate_button_list = ttk.Combobox(
-                        self.row_8,
+                        self.activate_btn_frame,
                         values=button_list,
                         state="readonly",
                         textvariable=self.activation_button_display,
@@ -536,7 +545,7 @@ class Tab():
                         self.activation_button_display.set("None")
 
                     self.activate_button_inverted = ttk.Checkbutton(
-                        self.row_8,
+                        self.activate_btn_frame,
                         text="Inverted",
                         variable=self.configModel['activation_button_inverted'],
                     )
@@ -546,14 +555,14 @@ class Tab():
                     # Deactivate button selection
                     if self.configModel['activation_method'].get() == 3:
                         self.deactivate_button_label = ttk.Label(
-                            self.row_10,
+                            self.deactivate_btn_frame,
                             text="Deactivate*: ",
                             width=10
                         )
                         self.deactivate_button_label.pack(side="left", padx=10)
 
                         self.deactivation_button_list = ttk.Combobox(
-                            self.row_10,
+                            self.deactivate_btn_frame,
                             values=button_list,
                             state="readonly",
                             textvariable=self.deactivation_button_display,
@@ -576,7 +585,7 @@ class Tab():
                             self.deactivation_button_display.set("None")
 
                         self.deactivate_button_inverted = ttk.Checkbutton(
-                            self.row_10,
+                            self.deactivate_btn_frame,
                             text="Inverted",
                             variable=self.configModel['deactivation_button_inverted'],
                         )
