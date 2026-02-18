@@ -24,19 +24,22 @@ def open_manual():
 
 
 def open_config_file():
+    pygame.event.pump()  # Flush pygame state before blocking tkinter dialog
     config.load.load_config_file()
-    pygame.event.pump()  # Prevent GIL crash after blocking tkinter dialog
+    pygame.event.pump()  # Drain events that queued during dialog
     configView.populate_from_config(config.data.configModel)
 
 
 def save_config():
+    pygame.event.pump()
     config.save.save_config()
-    pygame.event.pump()  # Prevent GIL crash after blocking tkinter dialog
+    pygame.event.pump()
 
 
 def save_config_as():
+    pygame.event.pump()
     config.save.save_config_as()
-    pygame.event.pump()  # Prevent GIL crash after blocking tkinter dialog
+    pygame.event.pump()
 
 
 configModel = config.data.configModel
