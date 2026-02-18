@@ -28,6 +28,7 @@ def open_config_file():
     config.load.load_config_file()
     pygame.event.pump()  # Drain events that queued during dialog
     configView.populate_from_config(config.data.configModel)
+    configView.update_config()
 
 
 def save_config():
