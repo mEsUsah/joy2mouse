@@ -31,13 +31,21 @@ def get_current_config():
 
 
 def joystick_config_ready():
-    if (not configModel['selected_joystick'] == None or \
-        not configModel['selected_buttonbox'] == None and \
-        not configModel['activation_button'] == None) and \
-        (not configModel['joystick_x_axis'] == None or not configModel['joystick_y_axis'] == None):
+    # Only allow arming if at least one axis and activation button is set
+    axis_selected = configModel['joystick_x_axis'] is not None or configModel['joystick_y_axis'] is not None
+    activation_button_selected = configModel['activation_button'] is not None
+    # If activation method is 3 (on/off button), require both activation and deactivation button
+    if int(configModel.get('activation_method', 1)) == 3:
+        deactivation_button_selected = configModel['deactivation_button'] is not None
+        if axis_selected and activation_button_selected and deactivation_button_selected:
             return True
+        else:
+            return False
     else:
-        return False
+        if axis_selected and activation_button_selected:
+            return True
+        else:
+            return False
 
 configModel = {
     'screen_x_center': 0,

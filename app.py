@@ -121,10 +121,17 @@ while app_running:
     # Always update 'active' from configModel
     active = configModel['active']
 
-    if not config.data.joystick_config_ready():
-        runView.disable_arming()
 
-    runView.set_run_status(active, configured=config.data.joystick_config_ready())
+    config_ready = config.data.joystick_config_ready()
+    if not config_ready:
+        runView.disable_arming()
+    else:
+        if not activate_button_pressed:
+            runView.enable_arming()
+        else:
+            runView.disable_arming()
+
+    runView.set_run_status(active, configured=config_ready)
 
     if main_control_tab.index("current") == 1: # Test tab
         testView.update_axis_view()
@@ -147,11 +154,6 @@ while app_running:
             print(f"Joystick {event.instance_id} disconnected")
             testView.update_device_list(config.data.joysticks)
             configView.update_device_list(config.data.joysticks)
-
-    if not activate_button_pressed:
-        runView.enable_arming()
-    else:
-        runView.disable_arming()
 
     ## update center position of mouse
     if not active:

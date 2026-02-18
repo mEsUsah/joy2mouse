@@ -174,9 +174,31 @@ class Tab():
         self.row_10 = ttk.Frame(self.tab)
         self.row_10.pack(side="top", expand=1, fill="both", pady=6)
 
-    def update_config(self):   
+    def update_config(self):
+        # Always store axis/button as int or None, not string 'None'
+        axis_keys = ['joystick_x_axis', 'joystick_y_axis', 'activation_button', 'deactivation_button']
         for key, value in self.configModel.items():
-            config.data.configModel[key] = value.get()
+            v = value.get()
+            if key in axis_keys:
+                if v == "None" or v == "" or v is None:
+                    config.data.configModel[key] = None
+                else:
+                    try:
+                        config.data.configModel[key] = int(v)
+                    except Exception:
+                        config.data.configModel[key] = None
+            else:
+                config.data.configModel[key] = v
+
+        # Ensure activation_button is int or None
+        ab = self.configModel['activation_button'].get()
+        if ab == "None" or ab == "" or ab is None:
+            config.data.configModel['activation_button'] = None
+        else:
+            try:
+                config.data.configModel['activation_button'] = int(ab)
+            except Exception:
+                config.data.configModel['activation_button'] = None
 
         config.data.configModel['selected_joystick_uuid'] = self.get_selected_joystick()
         config.data.configModel['selected_buttonbox_uuid'] = self.get_selected_buttonbox()
