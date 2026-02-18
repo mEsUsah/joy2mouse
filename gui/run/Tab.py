@@ -1,6 +1,5 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-import gui
 
 class Tab():
     def __init__(self, tab):
@@ -63,7 +62,7 @@ class Tab():
                 foreground="white",
                 background="red"
             )
-        elif self.armed.get() and not self.running and configured:
+        elif self.armed.get() and configured:
             self.status_label.config(
                 text="Armed",
                 foreground="white",
