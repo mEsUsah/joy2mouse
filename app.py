@@ -110,7 +110,6 @@ window = tk.Tk()
 window.withdraw()  # hide before taskbar captures the feather icon
 _set_icon(window, _resource("logo.ico"))
 window.title(utils.releases.APP_NAME)
-window.geometry("-100+100")
 window.resizable(False, False)
 window.protocol("WM_DELETE_WINDOW", stop_app)
 
@@ -162,6 +161,7 @@ creditsLabel.pack(side="left", fill="x", padx=10, pady=10)
 utils.releases.check_updates()
 
 window.deiconify()  # show now that the icon is set
+# window.geometry("-100+100")
 
 # Start the app
 pygame.init()
