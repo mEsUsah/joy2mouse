@@ -1,5 +1,38 @@
 #! /bin/env python3
 
+import sys
+import os
+import ctypes
+
+def _resource(rel):
+    base = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base, rel)
+
+def _set_icon(window, ico_path):
+    """Set window + taskbar icon using PIL iconphoto + ctypes class override."""
+    from PIL import Image, ImageTk
+    from ctypes import wintypes
+
+    window.update_idletasks()
+
+    # PIL iconphoto — sets title bar and informs tkinter's icon system
+    img   = Image.open(ico_path).convert("RGBA")
+    photo = ImageTk.PhotoImage(img)
+    window.iconphoto(True, photo)
+    window._icon_photo = photo  # prevent GC
+
+    # ctypes — overwrite the Tk window class icon so taskbar picks it up
+    hwnd   = window.winfo_id()
+    user32 = ctypes.windll.user32
+    buf_l  = (wintypes.HICON * 1)()
+    buf_s  = (wintypes.HICON * 1)()
+    if ctypes.windll.shell32.ExtractIconExW(sys.executable, 0, buf_l, buf_s, 1) > 0:
+        if buf_l[0]:
+            user32.SetClassLongPtrW(hwnd, -14, buf_l[0])   # GCL_HICON
+            user32.SendMessageW(hwnd, 0x80, 1, buf_l[0])   # WM_SETICON ICON_BIG
+        if buf_s[0]:
+            user32.SetClassLongPtrW(hwnd, -34, buf_s[0])   # GCL_HICONSM
+            user32.SendMessageW(hwnd, 0x80, 0, buf_s[0])   # WM_SETICON ICON_SMALL
 
 
 import mouse
@@ -74,11 +107,12 @@ configModel['screen_y_center'] = screen_y_center
 
 # Create the window
 window = tk.Tk()
+window.withdraw()  # hide before taskbar captures the feather icon
+_set_icon(window, _resource("logo.ico"))
 window.title(utils.releases.APP_NAME)
 window.geometry("-100+100")
 window.resizable(False, False)
 window.protocol("WM_DELETE_WINDOW", stop_app)
-# window.iconbitmap(sys.executable)
 
 main_control_tab = ttk.Notebook(window)
 run_tab = ttk.Frame(main_control_tab)
@@ -127,6 +161,7 @@ creditsLabel.pack(side="left", fill="x", padx=10, pady=10)
 #Check for updates
 utils.releases.check_updates()
 
+window.deiconify()  # show now that the icon is set
 
 # Start the app
 pygame.init()

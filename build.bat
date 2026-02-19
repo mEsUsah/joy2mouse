@@ -1,1 +1,1 @@
-pyinstaller --onefile --noconsole --icon=logo.ico --name=joy2mouse app.py
+pyinstaller joy2mouse.spec
