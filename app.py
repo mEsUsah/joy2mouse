@@ -161,7 +161,6 @@ creditsLabel.pack(side="left", fill="x", padx=10, pady=10)
 utils.releases.check_updates()
 
 window.deiconify()  # show now that the icon is set
-# window.geometry("-100+100")
 
 # Start the app
 pygame.init()
