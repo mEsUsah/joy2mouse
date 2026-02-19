@@ -9,7 +9,24 @@ import config.data
 _COLOR_PRESSED  = "#ea5252"   # pressed button
 _COLOR_SELECTED = "#4caf50"   # green — selected, not pressed
 _COLOR_UNSEL    = "white"
+_COLOR_UNSEL_BORDER = "#8f8f8f"
 _COLOR_AXIS     = "#ea5252"   # axis bar
+_BTN_RADIUS     = 5           # button corner radius
+_IND_W          = 20          # axis indicator canvas width
+_IND_H          = 20          # axis indicator canvas height
+
+
+def _rounded_rect(canvas, x0, y0, x1, y1, r, **kw):
+    """Draw a filled rounded rectangle on a Canvas."""
+    pts = [
+        x0+r, y0,    x1-r, y0,
+        x1,   y0,    x1,   y0+r,
+        x1,   y1-r,  x1,   y1,
+        x1-r, y1,    x0+r, y1,
+        x0,   y1,    x0,   y1-r,
+        x0,   y0+r,  x0,   y0,
+    ]
+    return canvas.create_polygon(pts, smooth=True, **kw)
 
 
 class Tab():
@@ -108,18 +125,16 @@ class Tab():
 
                     canvas = tk.Canvas(axis_row,
                         width=200, height=10,
-                        highlightthickness=1, highlightbackground="black",
+                        highlightthickness=1, highlightbackground=_COLOR_AXIS,
                         background="white",
                     )
                     canvas.pack(side="left", fill="x")
                     self.device_data[device_index]['axis'].append(canvas)
 
-                    ind = tk.Label(axis_row, text="",
-                                   width=2, anchor="center",
-                                   fg="white", bg=self._frame_bg,
-                                   padx=3, pady=1,
-                                   highlightthickness=1,
-                                   highlightbackground="black")
+                    ind = tk.Canvas(axis_row,
+                                    width=_IND_W, height=_IND_H,
+                                    highlightthickness=0,
+                                    bg=self._frame_bg)
                     ind.pack(side="left", padx=(4, 0))
                     self.device_data[device_index]['axis_ind'].append(ind)
 
@@ -157,10 +172,13 @@ class Tab():
                     )
                     role = axis_roles.get(i)
                     if i < len(axis_inds):
+                        ind = axis_inds[i]
+                        ind.delete("all")
                         if role:
-                            axis_inds[i].config(text=role, bg=_COLOR_SELECTED)
-                        else:
-                            axis_inds[i].config(text="", bg=self._frame_bg)
+                            _rounded_rect(ind, 1, 1, _IND_W - 1, _IND_H - 1,
+                                          _BTN_RADIUS, fill=_COLOR_SELECTED, outline=_COLOR_SELECTED)
+                            ind.create_text(_IND_W // 2, _IND_H // 2, text=role,
+                                            fill="white", font=("TkDefaultFont", 8))
 
             # Buttons
             buttons = device.get_numbuttons()
@@ -173,11 +191,11 @@ class Tab():
                     role    = btn_roles.get(i)
 
                     if pressed:
-                        fill, text_fill, label = _COLOR_PRESSED,  "white", str(i + 1)
+                        fill, border, text_fill, label = _COLOR_PRESSED,  _COLOR_PRESSED,  "white", str(i + 1)
                     elif role:
-                        fill, text_fill, label = _COLOR_SELECTED, "white", role
+                        fill, border, text_fill, label = _COLOR_SELECTED, _COLOR_SELECTED, "white", role
                     else:
-                        fill, text_fill, label = _COLOR_UNSEL,    "black", str(i + 1)
+                        fill, border, text_fill, label = _COLOR_UNSEL, _COLOR_UNSEL_BORDER, "black", str(i + 1)
 
                     x0 = self.button_margin + (i % nCols) * self.button_height
                     y0 = self.button_margin + math.floor(i / nCols) * self.button_height
@@ -186,7 +204,9 @@ class Tab():
                     cx = (self.button_height + self.button_margin) / 2 + (i % nCols) * self.button_height
                     cy = (self.button_height + self.button_margin) / 2 + math.floor(i / nCols) * self.button_height
 
-                    canvas.create_rectangle(x0, y0, x1, y1, fill=fill, outline="black")
+                    
+
+                    _rounded_rect(canvas, x0, y0, x1, y1, _BTN_RADIUS, fill=fill, outline=border)
                     canvas.create_text(cx, cy, text=label, fill=text_fill)
 
     def open_win_joystick(self):
