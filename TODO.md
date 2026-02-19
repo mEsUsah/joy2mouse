@@ -2,20 +2,19 @@
 Simple app to translate joystick axis to mouse movement for Windows hosts.
 
 ### Run
-- [ ] Cooler / more enjoyable arm button
+- [x] Cooler / more enjoyable arm button
+- [x] List ok/missing required configuratin
 
 ### Test
-- [ ] List missing required configuratin
 - [ ] View selected inputs (axis and buttons)
 - [X] Show all axis and buttons on connected joysticks
-- [ ] Show missing controllers from saved config
 
 
 ### Config
 - [x] Handle single axis mouse control
-- [ ] Smoother switch between activation methods
-- [ ] Handle missing controller in saved config
-- [ ] Sensitivity adjustments
+- [x] Smoother switch between activation methods
+- [x] Handle missing controller in saved config
+- [x] Sensitivity adjustments
 
 
 ## Menu
@@ -25,7 +24,7 @@ Simple app to translate joystick axis to mouse movement for Windows hosts.
 
 ### General
 - [X] Check for new releases
-- [ ] Refactor code to make it more readable and easier to expand
+- [x] Refactor code to make it more readable and easier to expand
 
 
 ### Blog
