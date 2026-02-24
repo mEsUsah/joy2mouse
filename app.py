@@ -1,12 +1,38 @@
 #! /bin/env python3
 
-import sys
-import os
+# stdlib
+import argparse
 import ctypes
+import io
+import os
+import sys
+import time
+import webbrowser
+import tkinter as tk
+from tkinter import ttk
+
+# PyInstaller console builds can set sys.stdout/stderr to None.
+if sys.stdout is None:
+    sys.stdout = io.StringIO()
+if sys.stderr is None:
+    sys.stderr = io.StringIO()
+
+# third-party
+import mouse
+import pygame
+from screeninfo import get_monitors
+
+# local
+import actions
+import config
+import gui
+import utils
+
 
 def _resource(rel):
     base = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base, rel)
+
 
 def _set_icon(window, ico_path):
     """Set window + taskbar icon using PIL iconphoto + ctypes class override."""
@@ -34,20 +60,6 @@ def _set_icon(window, ico_path):
             user32.SetClassLongPtrW(hwnd, -34, buf_s[0])   # GCL_HICONSM
             user32.SendMessageW(hwnd, 0x80, 0, buf_s[0])   # WM_SETICON ICON_SMALL
 
-
-import argparse
-import mouse
-import pygame
-import time
-import tkinter as tk
-from tkinter import ttk
-from screeninfo import get_monitors
-import gui
-import utils
-import config
-import webbrowser
-import actions
-
 _parser = argparse.ArgumentParser(
     prog="joy2mouse",
     description="Joy 2 Mouse — use your joystick as a mouse",
@@ -65,6 +77,15 @@ _parser.add_argument(
     help="arm automatically on startup (requires --config)",
 )
 _args = _parser.parse_args()
+
+# Hide the console window — built with console=True for CLI flag support,
+# but the console itself should never be visible to the user.
+try:
+    _hwnd_console = ctypes.windll.kernel32.GetConsoleWindow()
+    if _hwnd_console:
+        ctypes.windll.user32.ShowWindow(_hwnd_console, 0)  # SW_HIDE
+except Exception:
+    pass
 
 def stop_app():
     global app_running
