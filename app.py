@@ -35,6 +35,7 @@ def _set_icon(window, ico_path):
             user32.SendMessageW(hwnd, 0x80, 0, buf_s[0])   # WM_SETICON ICON_SMALL
 
 
+import argparse
 import mouse
 import pygame
 import time
@@ -46,6 +47,10 @@ import utils
 import config
 import webbrowser
 import actions
+
+_parser = argparse.ArgumentParser(description="Joy 2 Mouse")
+_parser.add_argument("-c", "--config", metavar="FILE", help="Config file to load on startup")
+_args = _parser.parse_args()
 
 def stop_app():
     global app_running
@@ -155,7 +160,6 @@ runView = gui.run.Tab(run_tab)
 testView = gui.test.Tab(test_tab)
 configView = gui.config.Tab(config_tab)
 
-
 # Credits
 bottomFrame = ttk.Frame(window)
 bottomFrame.pack(side="bottom", fill="x")
@@ -173,6 +177,7 @@ window.deiconify()  # show now that the icon is set
 
 # Start the app
 pygame.init()
+_autoload_pending = bool(_args.config)
 
 
 # Main loop
@@ -215,6 +220,15 @@ while app_running:
             print(f"Joystick {event.instance_id} disconnected")
             testView.update_device_list(config.data.joysticks)
             configView.update_device_list(config.data.joysticks)
+
+    if _autoload_pending:
+        _autoload_pending = False
+        config.data.configModel['current_config_file'] = _args.config
+        config.data.configModel['current_config_default'] = False
+        config.load.load_config()
+        configView.populate_from_config(config.data.configModel)
+        configView.update_config()
+        update_title()
 
     ## update center position of mouse
     if not active:
