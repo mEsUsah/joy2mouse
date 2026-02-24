@@ -15,7 +15,7 @@ Simple app to translate joystick axis to mouse movement for Windows hosts.
 - [x] Smoother switch between activation methods
 - [x] Handle missing controller in saved config
 - [x] Sensitivity adjustments
-- [ ] Center zone size adjustment
+- [x] Center zone size adjustment
 
 
 ## Menu
@@ -34,7 +34,7 @@ Simple app to translate joystick axis to mouse movement for Windows hosts.
 - [ ] Update with v2.x.x features
 
 ### CLI
-- [ ] Load config file during startup
-- [ ] Arm after startup (if config file was loaded)
+- [x] Load config file during startup
+- [x] Arm after startup (if config file was loaded)
 
 
