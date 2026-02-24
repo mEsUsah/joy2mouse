@@ -52,6 +52,12 @@ def stop_app():
     app_running = False
 
 
+def update_title():
+    cfg_file = config.data.configModel['current_config_file']
+    filename = os.path.basename(cfg_file)
+    window.title(f"{utils.releases.APP_NAME} - {filename}")
+
+
 def open_manual():
     webbrowser.open("https://haxor.no/en/article/joy2mouse")
 
@@ -62,18 +68,21 @@ def open_config_file():
     pygame.event.pump()  # Drain events that queued during dialog
     configView.populate_from_config(config.data.configModel)
     configView.update_config()
+    update_title()
 
 
 def save_config():
     pygame.event.pump()
     config.save.save_config()
     pygame.event.pump()
+    update_title()
 
 
 def save_config_as():
     pygame.event.pump()
     config.save.save_config_as()
     pygame.event.pump()
+    update_title()
 
 
 configModel = config.data.configModel
