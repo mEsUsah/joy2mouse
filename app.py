@@ -48,8 +48,17 @@ import config
 import webbrowser
 import actions
 
-_parser = argparse.ArgumentParser(description="Joy 2 Mouse")
-_parser.add_argument("-c", "--config", metavar="FILE", help="Config file to load on startup")
+_parser = argparse.ArgumentParser(
+    prog="joy2mouse",
+    description="Joy 2 Mouse — use your joystick as a mouse",
+    epilog="User manual: https://haxor.no/en/article/joy2mouse",
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+)
+_parser.add_argument(
+    "-c", "--config",
+    metavar="FILE",
+    help="path to a .ini profile to load on startup",
+)
 _args = _parser.parse_args()
 
 def stop_app():
