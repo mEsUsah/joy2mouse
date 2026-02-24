@@ -102,16 +102,14 @@ def run():
                         last_mouse_y = y_axis_value
                         pydirectinput.moveRel(mouse_Dx, mouse_Dy, _pause=False, relative=True)
 
-                        # center torso if joystick is in deadzone
-                        if configModel['autocenter'] and configModel['autocenter_key'] != None:
-                            within_deadzone_x = abs(x_axis_value) < configModel['deadzone']
-                            within_deadzone_y = abs(y_axis_value) < configModel['deadzone']
-
-                            if within_deadzone_x and within_deadzone_y:
-                                keyboard.press_and_release(configModel['autocenter_key'])
-
                         if debugging:
                             print(f"Mouse: \tdX: {mouse_Dx} \tdY: {mouse_Dy} \tres: {_resolution}")
+
+                    # Autocenter: spam key while joystick is within the active area
+                    if configModel['autocenter'] and configModel['autocenter_key'] not in (None, 'None'):
+                        threshold = configModel['deadzone'] / 100.0
+                        if abs(joystick_x_axis) < threshold and abs(joystick_y_axis) < threshold:
+                            keyboard.press_and_release(configModel['autocenter_key'])
 
                     # Mouse buttons — hold while joystick button held, release on release
                     global _left_held, _right_held, _middle_held
