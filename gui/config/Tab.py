@@ -12,6 +12,7 @@ class Tab():
             'joystick_resolution': tk.IntVar(value=500),
             'autocenter': tk.BooleanVar(value=False),
             'autocenter_key': tk.StringVar(value="c"),
+            'deadzone': tk.IntVar(value=10),
             'selected_joystick': tk.StringVar(value="None"),
             'joystick_x_axis': tk.StringVar(value="None"),
             'joystick_x_inverted': tk.BooleanVar(value=False),
@@ -98,15 +99,26 @@ class Tab():
         self.autocenter_frame = ttk.Frame(self.tab)
         self.autocenter_frame.pack(side="top", fill="x")
 
-        # Autocenter option
-        self.center_option = ttk.Checkbutton(
+        self.autocenter_headline = ttk.Label(
             self.autocenter_frame,
             text="Autocenter:",
+            font="TkDefaultFont 10 bold"
+        )
+        self.autocenter_headline.pack(side="top", fill="x", padx=10, pady=(6, 0))
+
+        self.autocenter_controls_frame = ttk.Frame(self.autocenter_frame)
+        self.autocenter_controls_frame.pack(side="top", fill="x")
+
+        self.center_option = ttk.Checkbutton(
+            self.autocenter_controls_frame,
+            text="Active",
             variable=self.configModel['autocenter'],
             command=self.updater_autocenter,
-            width=10
         )
         self.center_option.pack(side="left", padx=10, pady=6)
+
+        self.autocenter_deadzone_frame = ttk.Frame(self.tab)
+        # packed/unpacked dynamically by updater_autocenter
 
         self.joystick_gap_frame = ttk.Frame(self.tab)
         self.joystick_gap_frame.pack(side="top", fill="x")
@@ -228,23 +240,61 @@ class Tab():
         try:
             self.autocenter_list_label.destroy()
             self.autocenter_list.destroy()
+            self.autocenter_deadzone_label.destroy()
+            self.autocenter_deadzone_slider.destroy()
+            self.autocenter_deadzone_spinbox.destroy()
         except (AttributeError, tk.TclError):
             pass
 
         if self.configModel['autocenter'].get():
             self.autocenter_list_label = ttk.Label(
-                self.autocenter_frame,
+                self.autocenter_controls_frame,
                 text="Key*:",
                 width=5
             )
             self.autocenter_list_label.pack(side="left", padx=10)
 
             self.autocenter_list = ttk.Entry(
-                self.autocenter_frame,
+                self.autocenter_controls_frame,
                 textvariable=self.configModel['autocenter_key'],
                 width=10,
             )
             self.autocenter_list.pack(side="left", fill="x", padx=10)
+
+            self.autocenter_deadzone_frame.pack(
+                side="top", fill="x", after=self.autocenter_frame
+            )
+
+            self.autocenter_deadzone_label = ttk.Label(
+                self.autocenter_deadzone_frame,
+                text="Active area:",
+                width=10
+            )
+            self.autocenter_deadzone_label.pack(side="left", padx=10)
+
+            self.autocenter_deadzone_slider = tk.Scale(
+                self.autocenter_deadzone_frame,
+                from_=0,
+                to=100,
+                resolution=1,
+                orient=tk.HORIZONTAL,
+                variable=self.configModel['deadzone'],
+                showvalue=False,
+            )
+            self.autocenter_deadzone_slider.pack(
+                side="left", fill="x", expand=True, padx=10, pady=0
+            )
+
+            self.autocenter_deadzone_spinbox = ttk.Spinbox(
+                self.autocenter_deadzone_frame,
+                from_=0,
+                to=100,
+                textvariable=self.configModel['deadzone'],
+                width=6,
+            )
+            self.autocenter_deadzone_spinbox.pack(side="left", padx=(0, 10))
+        else:
+            self.autocenter_deadzone_frame.pack_forget()
 
 
     def update_joystick_selection(self):
@@ -616,6 +666,12 @@ class Tab():
         self.updater_autocenter()
 
 
+    def get_deadzone(self):
+        return self.configModel['deadzone'].get()
+
+    def set_deadzone(self, value):
+        self.configModel['deadzone'].set(int(value))
+
     def get_autocenter_key(self):
         if self.configModel['autocenter_key'].get() == "":
             return None
@@ -858,6 +914,7 @@ class Tab():
         self.set_joystick_resolution(model['joystick_resolution'])
         self.set_autocenter(model['autocenter'])
         self.set_autocenter_key(model['autocenter_key'] or "None")
+        self.set_deadzone(model.get('deadzone', 10))
 
         # Set joystick by name and rebuild axis UI
         joystick_name = model.get('joystick_selected') or 'None'
