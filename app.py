@@ -19,6 +19,7 @@ if sys.stderr is None:
 
 # third-party
 import mouse
+os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 import pygame
 from screeninfo import get_monitors
 
