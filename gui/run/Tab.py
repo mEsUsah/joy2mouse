@@ -25,6 +25,9 @@ class Tab():
     def get_armed(self):
         return self.arm_switch.get_armed()
 
+    def arm(self):
+        self.arm_switch.arm()
+
     def enable_arming(self):
         self._configured = True
         self.arm_switch.enable_arming()

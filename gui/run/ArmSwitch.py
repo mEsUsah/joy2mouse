@@ -47,6 +47,13 @@ class ArmSwitch:
     def reset_armed(self):
         self.armed.set(False)
 
+    def arm(self):
+        if not self.armed.get():
+            self.armed.set(True)
+            self._draw()
+            if self._on_toggle:
+                self._on_toggle()
+
     def enable_arming(self):
         self._configured = True
         self._draw()

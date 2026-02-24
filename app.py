@@ -59,6 +59,11 @@ _parser.add_argument(
     metavar="FILE",
     help="path to a .ini profile to load on startup",
 )
+_parser.add_argument(
+    "-a", "--arm",
+    action="store_true",
+    help="arm automatically on startup (requires --config)",
+)
 _args = _parser.parse_args()
 
 def stop_app():
@@ -187,6 +192,7 @@ window.deiconify()  # show now that the icon is set
 # Start the app
 pygame.init()
 _autoload_pending = bool(_args.config)
+_autoarm_pending  = False
 
 
 # Main loop
@@ -230,6 +236,10 @@ while app_running:
             testView.update_device_list(config.data.joysticks)
             configView.update_device_list(config.data.joysticks)
 
+    if _autoarm_pending and config.data.joystick_config_ready():
+        _autoarm_pending = False
+        runView.arm()
+
     if _autoload_pending:
         _autoload_pending = False
         config.data.configModel['current_config_file'] = _args.config
@@ -238,6 +248,7 @@ while app_running:
         configView.populate_from_config(config.data.configModel)
         configView.update_config()
         update_title()
+        _autoarm_pending = bool(_args.arm)
 
     ## update center position of mouse
     if not active:
