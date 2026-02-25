@@ -11,7 +11,7 @@ import webbrowser
 import tkinter as tk
 from tkinter import ttk
 
-# PyInstaller console builds can set sys.stdout/stderr to None.
+# PyInstaller windowed builds set sys.stdout/stderr to None.
 if sys.stdout is None:
     sys.stdout = io.StringIO()
 if sys.stderr is None:
