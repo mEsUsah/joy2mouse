@@ -5,7 +5,7 @@ Simple program to translate joystick axis to mouse movements and inputs for Wind
 ## 📦 Installation
 1. Go to the [latest release page](https://github.com/mEsUsah/joy2mouse/releases/latest), and download the .exe file. 
 2. Start the program. This program does not require any installation.
-- Ignore the Windows Defender "unsigned software warning".
+3. Ignore the Windows Defender "unsigned software warning".
 - The program will check for new releases on startup.
 
 ## 🕹️ GUI
