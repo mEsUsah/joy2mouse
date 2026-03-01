@@ -1,9 +1,12 @@
 # joy2mouse
 Simple app to translate joystick axis to mouse movements and inputs for Windows hosts.
 
+### GUI
+- [ ] Store window position when closing the app.
+
 ### Config
 - [ ] Add option for scroll wheel settings
-- [ ] Limit window height by adding scrollbar
+- [ ] Limit window height by adding a scrollbar
 
 ## Menu
 - [ ] About window, showing version, and available version with a link
